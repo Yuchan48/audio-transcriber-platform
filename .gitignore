@@ -13,6 +13,9 @@ __pycache__/
 *.sqlite3
 *.log
 
+backend/memo.txt
+backend/uploads/
+
 # Editor / VS Code
 .vscode/
 *.code-workspace
@@ -24,6 +27,7 @@ frontend/.env.local
 frontend/.env.development.local
 frontend/.env.test.local
 frontend/.env.production.local
+frontend/memo.txt
 
 memo.txt
 roadmap.txt

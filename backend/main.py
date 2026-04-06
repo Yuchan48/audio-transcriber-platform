@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.db.session import Base, engine
 
-from app.api import auth, audio
+from app.api import auth, audio, admin
 
 app = FastAPI(title="Audio Transcriber Platform")
 
@@ -16,3 +16,5 @@ def root():
 app.include_router(auth.router)
 # Include the audio router
 app.include_router(audio.router)
+# Include the admin router
+app.include_router(admin.router)

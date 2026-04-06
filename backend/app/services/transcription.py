@@ -1,14 +1,6 @@
-from fastapi import BackgroundTasks
-import time
-
 from app.models.models import AudioFile, Transcription
 from app.db.session import SessionLocal
-
-# Simulate sending the audio file to Deepgram and getting a transcription
-def send_to_deepgram(file_path: str) -> str:
-    # Simulate sending the file to Deepgram and getting a transcription
-    time.sleep(5)  # Simulate processing time
-    return "This is a simulated transcription of the audio file."
+from app.services.deepgram_service import transcribe_file
 
 
 # Background task to process the audio file and update the transcription
@@ -22,7 +14,7 @@ def transcribe_audio(audio_file_id: int):
         db.commit()
 
         # Call deepgram API to get the transcription
-        text = send_to_deepgram(audio_file.file_path)
+        text = transcribe_file(audio_file.file_path)
 
         # Save the transcription to the database
         transcription = Transcription(audio_file_id=audio_file.id, text=text)

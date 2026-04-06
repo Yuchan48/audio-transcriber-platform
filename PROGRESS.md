@@ -73,3 +73,60 @@ Initialized the Audio Transcriber Platform project as a production-ready full-st
 - Implement `get_current_user` dependency in routes to simplify authentication.
 - Begin frontend integration with React/Vite to support login, upload, and file listing.
 - Integrate DeepGram API for actual transcription in BackgroundTasks.
+
+# Day 2 – Audio Management & DeepGram Integration
+
+## Summary
+
+Implemented full audio management functionality in FastAPI. Added audio upload, deletion, and pagination. Integrated real DeepGram transcription API. Developed admin endpoints to view all users and files. Verified background tasks and user-based access control. Tested all flows using Postman to ensure robust per-user data isolation.
+
+## Development Implementation
+
+- **Audio Upload Endpoint**
+  - Created `/audio/upload` POST route with FastAPI `UploadFile`.
+  - Stored uploaded files in `/uploads` directory.
+  - Saved metadata in PostgreSQL `audio_files` table with initial status `"uploaded"`.
+  - Triggered transcription asynchronously using `BackgroundTasks`.
+
+- **DeepGram Integration**
+  - Replaced simulated transcription with real API calls.
+  - Dynamically determined `Content-Type` using Python `mimetypes` for `.mp3`, `.wav`, `.flac`.
+  - Implemented error handling and logging for failed transcription attempts.
+  - Verified transcription success updates `status="completed"` in database.
+
+- **Delete Audio Functionality**
+  - Added `/audio/{audio_id}` DELETE route.
+  - Ensured only the owner can delete their files.
+  - Removed audio file from `/uploads` and related `Transcription` records from database.
+  - Confirmed proper cleanup and status updates.
+
+- **Admin Endpoints**
+  - Added `/admin/users` and `/admin/audio` GET endpoints.
+  - Admins can view all users and all audio files.
+  - Restricted access to users with `role="admin"`.
+
+- **Pagination**
+  - Added `skip` and `limit` query parameters to `/audio/` GET route.
+  - Default limit 20, maximum 100 per request.
+  - Ensured smooth handling of large audio file lists for dashboard display.
+
+- **Testing & Debugging**
+  - Used Postman to test:
+    - Uploading audio files
+    - Retrieving paginated audio lists
+    - Deleting files as owner and verifying permissions
+    - Admin routes access control
+    - Real DeepGram transcription flow
+  - Resolved environment variable issues to correctly load new DeepGram API key.
+
+## Issues Encountered
+
+- DeepGram API failed with old credentials — fixed by generating a new key and ensuring `.env` loads correctly.
+- Some audio files initially failed due to incorrect MIME type headers — fixed using dynamic MIME detection and normalization.
+- Background task exceptions were previously swallowed — added logging for easier debugging.
+
+## Next Steps
+
+- Implement WebSocket support for real-time transcription updates on the dashboard.
+- Enhance frontend to reflect transcription progress dynamically.
+- Continue testing multi-user flows and admin dashboard features.

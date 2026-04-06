@@ -24,6 +24,7 @@ def transcribe_audio(audio_file_id: int):
         audio_file.status = "completed"
         db.commit()
     except Exception as e:
+        print(f"❌ Transcription failed for id {audio_file_id}: {str(e)}")
         audio_file.status = "failed"
         audio_file.error_message = str(e)
         db.commit()

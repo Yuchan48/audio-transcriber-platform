@@ -34,7 +34,7 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # Create JWT token and set it as a cookie
-    access_token = create_access_token({"sub": str(db_user.id)})
+    access_token = create_access_token({"sub": str(db_user.id), "role": db_user.role})
     response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax")
     return {"message": "Login successful"}
 

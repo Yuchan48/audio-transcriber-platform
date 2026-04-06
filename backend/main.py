@@ -6,7 +6,7 @@ from app.api import auth, audio
 app = FastAPI(title="Audio Transcriber Platform")
 
 # Create the database tables
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def root():

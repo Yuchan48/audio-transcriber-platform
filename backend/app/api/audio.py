@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Depends,  BackgroundTasks, Request
+from fastapi import APIRouter, HTTPException, Query, UploadFile, File, Depends,  BackgroundTasks, Request
 import os
 
 from app.models.models import AudioFile, Transcription
@@ -25,8 +25,10 @@ def get_current_user(request: Request, db: Session = Depends(get_db)):
 
 # List all audio files for the current user
 @router.get("/")
-def list_audio_files(user_id: int = Depends(get_current_user), db: Session = Depends(get_db)):
-    audio_files = db.query(AudioFile).filter(AudioFile.user_id == user_id).all()
+def list_audio_files(user_id: int = Depends(get_current_user), db: Session = Depends(get_db), skip: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100)):
+    # fetch audio files for the current user with pagination
+    # Default limit 20, max 100
+    audio_files = db.query(AudioFile).filter(AudioFile.user_id == user_id).offset(skip).limit(limit).all()
     return [{"id": f.id, "filename": f.filename, "status": f.status} for f in audio_files]
 
 # Upload an audio file and trigger transcription

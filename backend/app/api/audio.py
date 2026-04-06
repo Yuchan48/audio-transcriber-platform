@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends,  BackgroundTasks, Request
 import os
 
-from app.models.models import AudioFile
+from app.models.models import AudioFile, Transcription
 from app.db.session import get_db
 from app.services.transcription import transcribe_audio
 from sqlalchemy.orm import Session
@@ -54,3 +54,29 @@ def upload_audio(
     background_tasks.add_task(transcribe_audio, audio_file.id)
 
     return {"message": "File uploaded successfully", "audio_file_id": audio_file.id}
+
+# Delete an audio file and its transcription
+@router.delete("/{audio_id}")
+def delete_audio(audio_id: int, request: Request, db: Session = Depends(get_db)):
+    user_id = get_current_user(request, db)
+    # fetch audio file
+    audio_file = db.query(AudioFile).filter(AudioFile.id == audio_id).first()
+    if not audio_file:
+        raise HTTPException(status_code=404, detail="Audio file not found")
+
+    # Check if the audio file belongs to the current user
+    if audio_file.user_id != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this audio file")
+
+    # Delete the audio file from the filesystem
+    if os.path.exists(audio_file.file_path):
+        os.remove(audio_file.file_path)
+
+    # delete the transcription if exists
+    db.query(Transcription).filter(Transcription.audio_file_id == audio_id).delete()
+
+    # Delete audio file record from the database
+    db.delete(audio_file)
+    db.commit()
+
+    return {"message": "Audio file and its transcriptions deleted successfully"}

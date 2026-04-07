@@ -4,6 +4,8 @@ import os
 from app.models.models import AudioFile, Transcription
 from app.db.session import get_db
 from app.services.transcription import transcribe_audio
+from app.utils.file_validation import validate_file_count, validate_file_size
+
 from sqlalchemy.orm import Session
 from app.core.jwt import decode_access_token
 
@@ -42,10 +44,16 @@ def upload_audio(
 ):
 
     try:
-            # Save file locally
+        # Validate file count
+        validate_file_count(db, user_id)
+
+        # Validate file size
+        contents = validate_file_size(file)
+
+        # Save file locally
         file_path = os.path.join(UPLOAD_DIR, file.filename)
         with open(file_path, "wb") as f:
-            f.write(file.file.read())
+            f.write(contents)
 
         # Save DB record
         audio_file = AudioFile(user_id=user_id, filename=file.filename, file_path=file_path, status="uploaded")

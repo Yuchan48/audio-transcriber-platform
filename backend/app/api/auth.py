@@ -19,10 +19,14 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
 
     # Create new user
     new_user = User(email=user.email, hashed_password=hash_password(user.password))
-    # add new user to the database
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+    try:
+        # add new user to the database
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to register user: {str(e)}")
     return new_user
 
 # User Login

@@ -41,16 +41,20 @@ def upload_audio(
     user_id: int = Depends(get_current_user),
 ):
 
-    # Save file locally
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
-    with open(file_path, "wb") as f:
-        f.write(file.file.read())
+    try:
+            # Save file locally
+        file_path = os.path.join(UPLOAD_DIR, file.filename)
+        with open(file_path, "wb") as f:
+            f.write(file.file.read())
 
-    # Save DB record
-    audio_file = AudioFile(user_id=user_id, filename=file.filename, file_path=file_path, status="uploaded")
-    db.add(audio_file)
-    db.commit()
-    db.refresh(audio_file)
+        # Save DB record
+        audio_file = AudioFile(user_id=user_id, filename=file.filename, file_path=file_path, status="uploaded")
+        db.add(audio_file)
+        db.commit()
+        db.refresh(audio_file)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
 
     # Trigger background task to transcribe the audio
     background_tasks.add_task(transcribe_audio, audio_file.id)

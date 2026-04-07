@@ -4,8 +4,16 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.models import User
 from app.schemas.auth import UserRegister, UserLogin, UserOut
+from app.utils.reset_demo_user import reset_demo_user
+
 from app.core.security import hash_password, verify_password
 from app.core.jwt import create_access_token, decode_access_token
+
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -34,8 +42,14 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
 def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     # get user from the database
     db_user = db.query(User).filter(User.email == user.email).first()
+
+    # verify password
     if not db_user or not verify_password(user.password, db_user.hashed_password): # type: ignore
         raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    # If the user is the demo user, reset their data on login
+    if db_user.email == os.getenv("DEMO_EMAIL"):
+        reset_demo_user(db, db_user.id)
 
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(db_user.id), "role": db_user.role})

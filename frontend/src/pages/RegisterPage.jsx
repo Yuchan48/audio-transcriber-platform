@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import functions
-import { register } from "../services/userService";
-import { logout } from "../services/authService";
+import { logout, register } from "../services/authService";
 import { validateEmail, validatePassword } from "../utils/inputValidators";
 
 // import UI components

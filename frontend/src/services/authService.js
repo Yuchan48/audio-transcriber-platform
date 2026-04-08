@@ -30,3 +30,23 @@ export function logout() {
     credentials: "include",
   });
 }
+
+export async function register(email, password) {
+  const response = await apiFetch("/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "Registration failed");
+  }
+  return data;
+}
+
+export async function fetchCurrentUser() {
+  await apiFetch("/auth/me");
+}

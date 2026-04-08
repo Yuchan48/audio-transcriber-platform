@@ -131,52 +131,49 @@ Implemented full audio management functionality in FastAPI. Added audio upload, 
 - Enhance frontend to reflect transcription progress dynamically.
 - Continue testing multi-user flows and admin dashboard features.
 
-# Day 3 – Frontend Implementation & CORS Setup
+# Day 3 – Frontend Implementation & CORS Configuration
 
 ## Summary
 
-Implemented the React frontend for the Audio Transcriber Platform. Created **login, register, and dashboard pages** with authentication via HTTP-only cookies. Added input validation, loading/error states, and automatic navigation. Configured CORS in FastAPI to allow secure frontend-backend communication.
+Implemented the frontend for the Audio Transcriber Platform using React + Vite + TailwindCSS. Added login, registration, and protected dashboard routes with form validation, loading/error states, and smooth navigation. Enabled CORS in the backend to allow cross-origin requests with http-only cookies.
 
 ## Development Implementation
 
-- **Frontend**
-  - React + Vite + Tailwind setup.
-  - `pages`: Login, Register, Dashboard.
-  - `components`: prepared for upload and file list.
-  - `utils/inputValidators.js`: email/password validation.
-  - `services/authService.js` & `userService.js`: login, logout, register API calls.
-  - `apiFetch.js`: fetch wrapper with `credentials: "include"`.
+- **CORS Middleware in FastAPI**
+  - Added `CORSMiddleware` in `main.py` to allow requests from the Vite frontend (`http://localhost:5173`).
+  - Configured `allow_credentials=True` to support http-only cookie authentication.
+  - Allowed all methods and headers to ensure preflight OPTIONS requests pass.
 
-- **Authentication**
-  - Login page with demo user button.
-  - Register page with validation and redirect to login.
-  - Loading indicators and error messages added.
+- **Authentication Pages**
+  - Created **Login** and **Register** pages with input validators for email and password.
+  - Implemented loading indicators and error messages for better UX.
+  - Success flows:
+    - Register → redirect to Login page
+    - Login → redirect to Dashboard page
 
-- **CORS**
-  - FastAPI middleware added to `main.py`:
+- **Protected Routes**
+  - Implemented `ProtectedRoutes.jsx` to restrict access to authenticated users only.
+  - Redirect unauthenticated users to login page.
 
-    ```python
-    from fastapi.middleware.cors import CORSMiddleware
+- **Auth Services & API Client**
+  - Created `authService.js` for login, logout, register, and fetching current user.
+  - Added `apiFetch.js` utility to automatically include cookies for requests.
+  - Ensured consistent error handling for API calls.
 
-    origins = ["http://localhost:5173"]
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-    ```
+- **Frontend Utilities**
+  - `inputValidators.js` for email/password validation across login and register forms.
 
-  - Resolved 405 OPTIONS errors for POST requests from React.
+- **Navigation & State Management**
+  - Used React `useState` and `useEffect` hooks to manage authentication state.
+  - Smooth redirection after login/register with state updates.
 
 ## Issues Encountered
 
-- Preflight OPTIONS requests failed until CORS middleware was configured.
-- Learned the importance of `allow_credentials=True` with http-only cookies.
+- Preflight OPTIONS requests from React caused 405 errors until CORS middleware was properly configured.
+- Ensured `credentials: "include"` in fetch calls to send cookies for http-only authentication.
 
 ## Next Steps
 
-- Implement **Dashboard**: audio upload, file list, status display.
-- Integrate **WebSocket** for real-time transcription updates.
-- Add pagination, admin endpoints, and further UI polish.
+- Implement **Dashboard UI** with audio upload, file list, and real-time transcription status updates.
+- Integrate **WebSocket** for live transcription updates.
+- Add pagination and admin view for large file lists.

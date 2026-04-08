@@ -130,3 +130,53 @@ Implemented full audio management functionality in FastAPI. Added audio upload, 
 - Implement WebSocket support for real-time transcription updates on the dashboard.
 - Enhance frontend to reflect transcription progress dynamically.
 - Continue testing multi-user flows and admin dashboard features.
+
+# Day 3 – Frontend Implementation & CORS Setup
+
+## Summary
+
+Implemented the React frontend for the Audio Transcriber Platform. Created **login, register, and dashboard pages** with authentication via HTTP-only cookies. Added input validation, loading/error states, and automatic navigation. Configured CORS in FastAPI to allow secure frontend-backend communication.
+
+## Development Implementation
+
+- **Frontend**
+  - React + Vite + Tailwind setup.
+  - `pages`: Login, Register, Dashboard.
+  - `components`: prepared for upload and file list.
+  - `utils/inputValidators.js`: email/password validation.
+  - `services/authService.js` & `userService.js`: login, logout, register API calls.
+  - `apiFetch.js`: fetch wrapper with `credentials: "include"`.
+
+- **Authentication**
+  - Login page with demo user button.
+  - Register page with validation and redirect to login.
+  - Loading indicators and error messages added.
+
+- **CORS**
+  - FastAPI middleware added to `main.py`:
+
+    ```python
+    from fastapi.middleware.cors import CORSMiddleware
+
+    origins = ["http://localhost:5173"]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    ```
+
+  - Resolved 405 OPTIONS errors for POST requests from React.
+
+## Issues Encountered
+
+- Preflight OPTIONS requests failed until CORS middleware was configured.
+- Learned the importance of `allow_credentials=True` with http-only cookies.
+
+## Next Steps
+
+- Implement **Dashboard**: audio upload, file list, status display.
+- Integrate **WebSocket** for real-time transcription updates.
+- Add pagination, admin endpoints, and further UI polish.

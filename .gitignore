@@ -24,9 +24,9 @@ backend/uploads/
 frontend/node_modules/
 frontend/dist/
 frontend/.env.local
-frontend/.env.development.local
+frontend/.env.development
 frontend/.env.test.local
-frontend/.env.production.local
+frontend/.env.production
 frontend/memo.txt
 
 memo.txt

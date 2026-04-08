@@ -10,6 +10,8 @@ import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import RegisterPage from "./pages/RegisterPage";
 
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 const App = () => {
   return (
     <div className="App bg-gray-300 min-h-screen w-full flex items-center justify-center">
@@ -17,7 +19,14 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>

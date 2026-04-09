@@ -28,6 +28,8 @@ async def websocket_transcriptions(websocket: WebSocket, db: Session = Depends(g
         return
 
     active_connections[user_id] = websocket
+
+    # print("Cookies:", websocket.cookies)
     try:
         while True:
             await websocket.receive_text()

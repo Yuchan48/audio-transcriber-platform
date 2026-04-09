@@ -67,13 +67,6 @@ Initialized the Audio Transcriber Platform project as a production-ready full-st
 - Repetition of JWT validation in each route
   - Planned refactor to use `Depends(get_current_user)` to remove duplicate validation
 
-## Next Steps
-
-- Implement `/audio/upload` endpoint with file storage, PostgreSQL record creation, and BackgroundTasks for asynchronous transcription.
-- Implement `get_current_user` dependency in routes to simplify authentication.
-- Begin frontend integration with React/Vite to support login, upload, and file listing.
-- Integrate DeepGram API for actual transcription in BackgroundTasks.
-
 # Day 2 – Audio Management & DeepGram Integration
 
 ## Summary
@@ -125,12 +118,6 @@ Implemented full audio management functionality in FastAPI. Added audio upload, 
 - Some audio files initially failed due to incorrect MIME type headers — fixed using dynamic MIME detection and normalization.
 - Background task exceptions were previously swallowed — added logging for easier debugging.
 
-## Next Steps
-
-- Implement WebSocket support for real-time transcription updates on the dashboard.
-- Enhance frontend to reflect transcription progress dynamically.
-- Continue testing multi-user flows and admin dashboard features.
-
 # Day 3 – Frontend Implementation & CORS Configuration
 
 ## Summary
@@ -172,8 +159,46 @@ Implemented the frontend for the Audio Transcriber Platform using React + Vite +
 - Preflight OPTIONS requests from React caused 405 errors until CORS middleware was properly configured.
 - Ensured `credentials: "include"` in fetch calls to send cookies for http-only authentication.
 
+# Day 4 – Dashboard Implementation, Services, and WebSocket Setup
+
+## Summary
+
+Implemented the main **Dashboard** for users, including audio file management and initial WebSocket setup. Created frontend services for fetching user and audio data. Troubleshot WebSocket connection issues in development, ultimately resolving them by including the WS router in the backend, installing `uvicorn[standard]`, and removing React Strict Mode to avoid double connections.
+
+## Development Implementation
+
+- **Dashboard Page**
+  - Built Dashboard layout for users.
+  - Displayed audio file list with filename, status, and actions (delete, play, transcription).
+  - Integrated protected route so only authenticated users can access the Dashboard.
+
+- **Frontend Services**
+  - `userService.js`:
+    - `fetchCurrentUser()` – fetches logged-in user info.
+    - `fetchAllUser()` – admin endpoint to fetch all users.
+  - `audioService.js`:
+    - `getAudioFiles()` – fetch user's audio files.
+    - `uploadAudioFile()` – handles audio file upload.
+    - `deleteAudioFile()` – deletes a user audio file.
+    - `fetchAllAudioFiles()` – admin endpoint to fetch all audio files.
+
+- **WebSocket Setup**
+  - Added `/ws` router to backend and installed `uvicorn[standard]` to enable WebSocket support.
+  - Initial connection failed due to missing router and package, and React Strict Mode caused double connections.
+  - After fixes, WebSocket successfully connects, laying groundwork for real-time transcription updates.
+  - Confirmed per-user connection can be tracked in `active_connections` dictionary on backend.
+
+- **Issues Encountered**
+  - WebSocket connection failed initially due to:
+    - Missing inclusion of WS router in FastAPI backend.
+    - Uvicorn installed without `[standard]` extras.
+    - React Strict Mode creating double connection attempts.
+  - Resolved by including router, installing required package, and disabling Strict Mode in frontend development.
+
 ## Next Steps
 
-- Implement **Dashboard UI** with audio upload, file list, and real-time transcription status updates.
-- Integrate **WebSocket** for live transcription updates.
-- Add pagination and admin view for large file lists.
+- Implement **instant UI update** when transcription completes via WebSocket.
+- Build **audio upload form** on the Dashboard.
+- Style **UI components** using TailwindCSS for a polished, user-friendly interface.
+- Ensure **per-user WebSocket handling** for multi-user environment.
+- Add additional features such as pagination, admin dashboard UI, and demo user reset functionality.

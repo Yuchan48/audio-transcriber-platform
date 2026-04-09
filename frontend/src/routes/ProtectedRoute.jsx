@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-import { fetchCurrentUser } from "../services/authService";
+import { fetchCurrentUser } from "../services/userService";
 
 function ProtectedRoute({ children }) {
   const location = useLocation();

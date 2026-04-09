@@ -46,7 +46,3 @@ export async function register(email, password) {
   }
   return data;
 }
-
-export async function fetchCurrentUser() {
-  await apiFetch("/auth/me");
-}

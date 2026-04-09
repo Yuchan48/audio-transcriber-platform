@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
 from app.db.session import get_db
 from app.models.models import User, AudioFile
 from app.core.jwt import decode_access_token
@@ -31,5 +32,5 @@ def get_all_users(request: Request, db: Session = Depends(get_db)):
 @router.get("/audio")
 def get_all_audio(request: Request, db: Session = Depends(get_db)):
     admin = get_current_admin(request, db)
-    audio_files = db.query(AudioFile).all()
-    return [{"id": f.id, "filename": f.filename, "status": f.status, "user_id": f.user_id} for f in audio_files]
+    audio_files = db.query(AudioFile).options(joinedload(AudioFile.user)).all()
+    return [{"id": f.id, "filename": f.filename, "status": f.status, "user_id": f.user_id, "user_email": f.user.email if f.user else None} for f in audio_files]

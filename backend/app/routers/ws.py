@@ -19,19 +19,21 @@ def get_current_user_ws(websocket: WebSocket, db: Session = Depends(get_db)):
         return None
     return payload.get("sub")
 
-@router.websocket("/transcription")
+@router.websocket("/transcriptions")
 async def websocket_transcriptions(websocket: WebSocket, db: Session = Depends(get_db)):
-    await websocket.accept()
     user_id = get_current_user_ws(websocket, db)
     if not user_id:
         await websocket.close(code=1008)  # Policy Violation
         return
 
+    # Accept the WebSocket connection and store it in the active connections
+    await websocket.accept()
     active_connections[user_id] = websocket
 
     # print("Cookies:", websocket.cookies)
     try:
         while True:
+            # Keep the connection alive by waiting for messages
             await websocket.receive_text()
     except WebSocketDisconnect:
         active_connections.pop(user_id, None)

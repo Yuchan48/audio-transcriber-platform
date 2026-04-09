@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.routers import ws
 from app.db.session import Base, engine
 
 from app.api import auth, audio, admin
@@ -30,3 +31,5 @@ app.include_router(auth.router)
 app.include_router(audio.router)
 # Include the admin router
 app.include_router(admin.router)
+# Include the WebSocket router
+app.include_router(ws.router)

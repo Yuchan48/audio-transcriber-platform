@@ -1,17 +1,18 @@
+import os
 from fastapi import FastAPI
 from app.routers import ws
 from app.db.session import Base, engine
+from dotenv import load_dotenv
 
 from app.api import auth, audio, admin
+
+load_dotenv()  # Load environment variables from .env file
 
 app = FastAPI(title="Audio Transcriber Platform")
 
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = [
-    "http://localhost:5173",  # Vite dev server
-    "http://127.0.0.1:5173",
-]
+origins = os.getenv("FRONTEND_ORIGINS", "").split(",")
 
 app.add_middleware(
     CORSMiddleware,

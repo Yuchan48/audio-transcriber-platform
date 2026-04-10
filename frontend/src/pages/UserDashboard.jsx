@@ -4,12 +4,13 @@ import useWebSocket from "../hooks/useWebSocket";
 // import functions
 import {
   getAudioFiles,
-  uploadAudioFile,
   deleteAudioFile,
+  uploadAudioFile,
 } from "../services/audioService";
 
 // import UI components
 import AudioList from "../components/audio/AudioList";
+import UploadBox from "../components/audio/UploadBox";
 
 const UserDashboard = () => {
   const [audioLoading, setAudioLoading] = useState(true);
@@ -38,23 +39,6 @@ const UserDashboard = () => {
     fetchAudioFiles();
   }, []);
 
-  // upload audio file
-  const handleUploadAudio = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      setUploading(true);
-      setError("");
-      await uploadAudioFile(file);
-      fetchAudioFiles(); // refresh list after upload
-    } catch (error) {
-      setError("Error uploading audio file: " + error.message);
-    } finally {
-      setUploading(false);
-    }
-  };
-
   // delete audio file
   const handleDeleteAudio = async (id) => {
     try {
@@ -76,26 +60,46 @@ const UserDashboard = () => {
     );
   }, [wsUpdate]);
 
+  // upload audio file
+  const handleUploadAudio = async (file) => {
+    if (!file) return;
+
+    try {
+      setUploading(true);
+      setError("");
+      await uploadAudioFile(file);
+
+      // Refresh audio list after successful upload
+      fetchAudioFiles();
+    } catch (error) {
+      setError("Error uploading audio file: " + error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Dashboard</h1>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <h1 className="text-2xl font-semibold">My Dashboard</h1>
 
       {/* Upload */}
-      <div className="mb-4">
-        <input type="file" onChange={handleUploadAudio} />
+      <UploadBox
+        uploading={uploading}
+        setUploading={setUploading}
+        error={error}
+        setError={setError}
+        fetchAudioFiles={fetchAudioFiles}
+        handleUploadAudio={handleUploadAudio}
+      />
 
-        {uploading && <p className="text-blue-500 mt-2">Uploading...</p>}
+      {/* Audio list */}
+      <div>
+        {audioLoading ? (
+          <p className="p-4">Loading...</p>
+        ) : (
+          <AudioList audioFiles={audioFiles} onDelete={handleDeleteAudio} />
+        )}
       </div>
-
-      {/* Error */}
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-
-      {/* Loading */}
-      {audioLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <AudioList files={audioFiles} onDelete={handleDeleteAudio} />
-      )}
     </div>
   );
 };

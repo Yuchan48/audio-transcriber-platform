@@ -17,6 +17,8 @@ const Dashboard = () => {
   const [userLoading, setUserLoading] = useState(true);
   const [view, setView] = useState("dashboard");
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   // fetch current user
   const fetchUser = async () => {
     try {
@@ -44,13 +46,37 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-full  bg-gray-50">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <Sidebar user={user} setView={setView} />
+      <div
+        className={`
+          fixed md:static z-50
+          h-full w-64 bg-gray-900 text-white p-4
+          transform transition-transform duration-200
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
+      >
+        <Sidebar
+          user={user}
+          setView={(v) => {
+            setView(v);
+            setSidebarOpen(false);
+          }}
+        />
+      </div>
 
       {/* Main */}
       <div className="flex-1 flex flex-col">
-        <Navbar user={user} />
+        <Navbar user={user} onMenuClick={() => setSidebarOpen(true)} />
 
         <div className="p-6 overflow-auto">
           {view === "dashboard" && <UserDashboard />}

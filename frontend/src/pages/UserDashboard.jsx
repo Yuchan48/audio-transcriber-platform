@@ -80,7 +80,7 @@ const UserDashboard = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-semibold">My Dashboard</h1>
+      <h1 className="text-2xl font-semibold">Dashboard</h1>
 
       {/* Upload */}
       <UploadBox

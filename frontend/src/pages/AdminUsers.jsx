@@ -67,7 +67,9 @@ const AdminUsers = () => {
                 <p className="text-xs text-gray-500">{u.role}</p>
               </div>
 
-              <DeleteButton onClick={() => onDeleteUser(u.id)} />
+              {u.role !== "admin" && (
+                <DeleteButton onClick={() => onDeleteUser(u.id)} />
+              )}
             </div>
           ))}
         </div>

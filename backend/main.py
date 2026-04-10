@@ -1,8 +1,10 @@
 import os
 from fastapi import FastAPI
 from app.routers import ws
-from app.db.session import Base, engine
+from app.db.session import Base, engine, SessionLocal
+from contextlib import asynccontextmanager
 from dotenv import load_dotenv
+from app.utils.init_admin import init_admin_if_not_exists
 
 from app.api import auth, audio, admin
 
@@ -12,7 +14,21 @@ app = FastAPI(title="Audio Transcriber Platform")
 
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = os.getenv("FRONTEND_ORIGINS", "").split(",")
+origins = [
+    origin.strip()
+    for origin in os.getenv("FRONTEND_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    db = SessionLocal()
+    init_admin_if_not_exists(db)
+    db.close()
+    yield
+
+app = FastAPI(title="Audio Transcriber Platform", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,6 +37,7 @@ app.add_middleware(
     allow_methods=["*"],         # OPTIONS, GET, POST, etc.
     allow_headers=["*"],         # Content-Type, etc.
 )
+
 
 @app.get("/")
 def root():

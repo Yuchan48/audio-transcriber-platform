@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from app.utils.init_admin import init_admin_if_not_exists
 
-from app.api import auth, audio, admin
+from app.api import auth, audio, user
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -47,7 +47,8 @@ def root():
 app.include_router(auth.router)
 # Include the audio router
 app.include_router(audio.router)
-# Include the admin router
-app.include_router(admin.router)
+# Include the user router
+app.include_router(user.router)
 # Include the WebSocket router
 app.include_router(ws.router)
+

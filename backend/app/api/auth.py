@@ -3,7 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.models import User
-from app.schemas.auth import UserRegister, UserLogin, UserOut
+from app.schemas.auth import UserRegister, UserLogin
+from app.schemas.user import UserOut
 from app.utils.reset_demo_user import reset_demo_user
 
 from app.core.security import hash_password, verify_password
@@ -55,26 +56,6 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     access_token = create_access_token({"sub": str(db_user.id), "role": db_user.role})
     response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax")
     return {"message": "Login successful"}
-
-# GET current user
-@router.get("/me", response_model=UserOut)
-def get_current_user(request: Request, db: Session = Depends(get_db)):
-    # Get token from cookies
-    token = request.cookies.get("access_token")
-    if not token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    # Decode token and get user ID
-    payload = decode_access_token(token)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
-    user_id = int(payload.get("sub")) # type: ignore
-
-    # Get user from the database
-    db_user = db.query(User).filter(User.id == user_id).first()
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
 
 # User Logout
 @router.post("/logout")

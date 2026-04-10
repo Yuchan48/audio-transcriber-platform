@@ -1,8 +1,10 @@
 import { apiFetch } from "./apiFetch";
 
-// get audio files for the user
+const prefix = "/audio";
+
+// get audio files for the current user
 export async function getAudioFiles() {
-  const response = await apiFetch("/audio");
+  const response = await apiFetch(`${prefix}`);
   if (!response.ok) {
     throw new Error("Failed to fetch audio files");
   }
@@ -15,7 +17,7 @@ export async function uploadAudioFile(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await apiFetch("/audio/upload", {
+  const response = await apiFetch(`${prefix}/upload`, {
     method: "POST",
     body: formData,
   });
@@ -27,8 +29,9 @@ export async function uploadAudioFile(file) {
   return response.json();
 }
 
+// delete audio file by id
 export async function deleteAudioFile(id) {
-  const response = await apiFetch(`/audio/${id}`, {
+  const response = await apiFetch(`${prefix}/${id}`, {
     method: "DELETE",
   });
 
@@ -39,8 +42,9 @@ export async function deleteAudioFile(id) {
   return response.json();
 }
 
+// get all audio files (admin only)
 export async function fetchAllAudioFiles() {
-  const response = await apiFetch("/admin/audio");
+  const response = await apiFetch(`${prefix}/all`);
   if (!response.ok) {
     throw new Error("Failed to fetch audio files");
   }

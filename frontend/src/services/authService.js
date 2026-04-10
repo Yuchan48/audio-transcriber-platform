@@ -6,9 +6,12 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // For production
 // const API_BASE_URL = "/api";
 
+const prefix = "/auth";
+
+// login user
 export async function login(email, password) {
   // Call the login API with the provided email and password
-  const response = await apiFetch("/auth/login", {
+  const response = await apiFetch(`${prefix}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,15 +27,17 @@ export async function login(email, password) {
   return data;
 }
 
+// logout user
 export function logout() {
-  return fetch(`${API_BASE_URL}/auth/logout`, {
+  return apiFetch(`${prefix}/logout`, {
     method: "POST",
     credentials: "include",
   });
 }
 
+// register new user
 export async function register(email, password) {
-  const response = await apiFetch("/auth/register", {
+  const response = await apiFetch(`${prefix}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -12,11 +12,18 @@ class User(Base):
     role = Column(String, default="user")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    audio_files = relationship(
+        "AudioFile",
+        backref="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
+
 class AudioFile(Base):
     __tablename__ = "audio_files"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     filename = Column(String, nullable=False)
     file_path = Column(String, nullable=False)
     file_size = Column(Integer)

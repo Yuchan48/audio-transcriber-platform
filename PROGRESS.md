@@ -195,10 +195,44 @@ Implemented the main **Dashboard** for users, including audio file management an
     - React Strict Mode creating double connection attempts.
   - Resolved by including router, installing required package, and disabling Strict Mode in frontend development.
 
+# Day 5 – Role-Based Access, UI Refactor, and Upload Improvements
+
+## Summary
+
+Improved backend security and frontend UX by introducing strict role-based access control, automatic admin initialization, and a full UI refactor. Enhanced file upload experience with drag-and-drop support and improved mobile responsiveness across the dashboard.
+
+## Development Implementation
+
+- **Backend Security & Roles**
+  - Added `init_admin_if_not_exist` on server startup to ensure a single system admin.
+  - Strengthened role-based access control across all endpoints.
+  - Refactored API structure:
+    - `/api/auth.py` – register, login, logout
+    - `/api/user.py` – current user, admin user list, delete user (self/admin rules)
+    - `/api/audio.py` – user audio CRUD + admin global access
+  - Added cascading deletes between users, audio files, and transcriptions.
+
+- **Frontend Improvements**
+  - Implemented drag-and-drop audio upload with manual fallback.
+  - Refactored dashboard for better UX and mobile responsiveness.
+  - Added sidebar navigation with role-based rendering (user/admin views).
+  - Navbar displays user email and logout action.
+
+- **Dashboard Features**
+  - My Files: upload + audio list + delete
+  - Admin Users: user list with restricted delete
+  - Admin Audio: global audio overview with user email + status
+
+## Issues Encountered
+
+- Required strict backend validation for admin-only routes.
+- Adjusted cascade delete logic to prevent unintended data loss.
+- Iterative UI fixes for mobile sidebar responsiveness.
+
 ## Next Steps
 
-- Implement **instant UI update** when transcription completes via WebSocket.
-- Build **audio upload form** on the Dashboard.
-- Style **UI components** using TailwindCSS for a polished, user-friendly interface.
+- Add audio playback for transcribed files.
+- Implement real-time transcription updates via WebSocket.
+- Improve UI polish (loading states, empty states, animations).
+- Add pagination for admin views.
 - Ensure **per-user WebSocket handling** for multi-user environment.
-- Add additional features such as pagination, admin dashboard UI, and demo user reset functionality.

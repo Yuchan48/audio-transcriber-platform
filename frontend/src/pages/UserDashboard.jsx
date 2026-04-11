@@ -9,6 +9,7 @@ import {
 } from "../services/audioService";
 
 // import UI components
+import RecordAudio from "../components/audio/RecordAudio";
 import AudioList from "../components/audio/AudioList";
 import UploadBox from "../components/audio/UploadBox";
 
@@ -97,6 +98,9 @@ const UserDashboard = () => {
         fetchAudioFiles={fetchAudioFiles}
         handleUploadAudio={handleUploadAudio}
       />
+
+      {/* Record Audio */}
+      <RecordAudio onUploadSuccess={fetchAudioFiles} setError={setError} />
 
       {/* Audio list */}
       <div>

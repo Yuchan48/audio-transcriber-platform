@@ -5,6 +5,7 @@ import { fetchAllAudioFiles } from "../services/audioService";
 import { deleteAudioFile } from "../services/audioService";
 
 // import UI components
+import AdminAudioItem from "../components/audio/AdminAudioItem";
 import StatusBadge from "../components/audio/StatusBadge";
 import DeleteButton from "../components/buttons/DeleteButton";
 
@@ -59,28 +60,11 @@ const AdminAudio = () => {
           </p>
         ) : (
           audioFiles.map((file) => (
-            <div
+            <AdminAudioItem
               key={file.id}
-              className="grid grid-cols-[1fr_80px_70px] items-center gap-3 p-3 items-center hover:bg-gray-50 transition"
-            >
-              {/* Filename and user email */}
-              <div className="truncate">
-                <p className="text-sm text-gray-800 truncate flex-1">
-                  {file.filename}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {file.user_email}
-                </p>
-              </div>
-
-              {/* Status */}
-              <div className="w-full flex justify-center">
-                <StatusBadge status={file.status} />
-              </div>
-
-              {/* Delete button */}
-              <DeleteButton onClick={() => handleDeleteAudio(file.id)} />
-            </div>
+              audioFile={file}
+              onDelete={handleDeleteAudio}
+            />
           ))
         )}
       </div>

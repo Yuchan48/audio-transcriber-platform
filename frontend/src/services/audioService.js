@@ -42,6 +42,24 @@ export async function deleteAudioFile(id) {
   return response.json();
 }
 
+// fetch audio file by id (for downloading)
+export async function fetchAudioFile(id) {
+  const response = await apiFetch(`${prefix}/${id}/file`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch audio file");
+  }
+  return response.blob();
+}
+
+// fetch audio transcription by audio id
+export async function fetchAudioTranscript(audioId) {
+  const response = await apiFetch(`${prefix}/${audioId}/transcription`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch audio transcription");
+  }
+  return response.json();
+}
+
 // get all audio files (admin only)
 export async function fetchAllAudioFiles() {
   const response = await apiFetch(`${prefix}/all`);

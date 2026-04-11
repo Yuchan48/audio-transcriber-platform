@@ -229,10 +229,52 @@ Improved backend security and frontend UX by introducing strict role-based acces
 - Adjusted cascade delete logic to prevent unintended data loss.
 - Iterative UI fixes for mobile sidebar responsiveness.
 
+# Day 6 – WebSocket Stabilization, Audio Playback, and UX Improvements
+
+## Summary
+
+Improved real-time transcription reliability by fixing WebSocket async/thread handling using AnyIO, enabling stable per-user updates. Enhanced user experience by adding audio playback + transcription viewing, in-app audio recording, and UI interaction fixes for expandable audio items. The platform is now significantly more demo-ready for recruiter evaluation.
+
+## Development Implementation
+
+- **WebSocket Stability Fix**
+  - Resolved issue where backend updates were not reaching the frontend.
+  - Root cause was incorrect async event loop handling between background threads and FastAPI WebSocket.
+  - Replaced `asyncio.run_coroutine_threadsafe` approach with `anyio.from_thread.run`, ensuring correct event loop execution.
+  - Confirmed stable per-user WebSocket handling for multi-user environment.
+
+- **Audio Playback & Transcription View**
+  - Added endpoints:
+    - `GET /audio/{audio_id}/file`
+    - `GET /audio/{audio_id}/transcription`
+  - Implemented expandable UI in both user and admin dashboards.
+  - Audio details (player + transcript) are only accessible when status is `completed`.
+
+- **Audio Recording Feature**
+  - Integrated browser `MediaRecorder API`.
+  - Added record button with 30-second limit for quick testing.
+  - Enables recruiters to test transcription flow without uploading external files.
+
+- **Frontend UX Improvements**
+  - Added toggle expand/collapse for each audio item.
+  - Fixed interaction bug where delete button triggered parent click event.
+  - Resolved using `e.stopPropagation()` to isolate delete action.
+  - Improved usability for audio list interaction.
+
+- **File Handling Improvements**
+  - Implemented UUID-based filenames to prevent collisions in uploads.
+  - Ensures safe multi-user file storage without overwriting conflicts.
+
+## Issues Encountered
+
+- WebSocket updates initially failed due to incorrect event loop usage in background tasks.
+- Expandable UI bug caused unintended API calls when deleting audio items.
+- Duplicate filename issue resolved using UUID-based naming strategy.
+
 ## Next Steps
 
-- Add audio playback for transcribed files.
-- Implement real-time transcription updates via WebSocket.
-- Improve UI polish (loading states, empty states, animations).
-- Add pagination for admin views.
-- Ensure **per-user WebSocket handling** for multi-user environment.
+- Improve real-time UX (progress indicator during transcription)
+- Enhance UI/UX polish (loading states, skeleton UI, responsiveness)
+- Optional: add WebSocket-based live transcription progress updates
+- Prepare deployment configuration (Nginx + VPS setup)
+- Polish admin dashboard for portfolio presentation

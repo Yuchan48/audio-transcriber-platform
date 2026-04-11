@@ -31,13 +31,13 @@ class AudioFile(Base):
     error_message = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    transcriptions = relationship("Transcription", back_populates="audio_file", cascade="all, delete-orphan")
+    transcriptions = relationship("Transcription", back_populates="audio_file", cascade="all, delete-orphan", passive_deletes=True)
 
 class Transcription(Base):
     __tablename__ = "transcriptions"
 
     id = Column(Integer, primary_key=True, index=True)
-    audio_file_id = Column(Integer, ForeignKey("audio_files.id"), nullable=False)
+    audio_file_id = Column(Integer, ForeignKey("audio_files.id",  ondelete="CASCADE"), nullable=False)
     text = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

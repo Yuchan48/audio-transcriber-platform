@@ -1,7 +1,7 @@
 import { useAudioExpand } from "../../hooks/useAudioExpand";
 
 // import UI components
-import StatusBadge from "./StatusBadge";
+import StatusBadge from "../icons/StatusBadge";
 import DeleteButton from "../buttons/DeleteButton";
 
 const AudioItem = ({ audioFile, onDelete }) => {

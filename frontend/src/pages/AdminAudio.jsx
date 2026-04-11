@@ -6,7 +6,7 @@ import { deleteAudioFile } from "../services/audioService";
 
 // import UI components
 import AdminAudioItem from "../components/audio/AdminAudioItem";
-import StatusBadge from "../components/audio/StatusBadge";
+import StatusBadge from "../components/icons/StatusBadge";
 import DeleteButton from "../components/buttons/DeleteButton";
 
 const AdminAudio = () => {

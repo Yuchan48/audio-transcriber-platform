@@ -55,7 +55,13 @@ const UserDashboard = () => {
 
     setAudioFiles((prev) =>
       prev.map((file) =>
-        file.id === wsUpdate.id ? { ...file, status: wsUpdate.status } : file,
+        file.id === wsUpdate.audio_id
+          ? {
+              ...file,
+              status: wsUpdate.status,
+              transcript: wsUpdate.transcript || file.transcription,
+            }
+          : file,
       ),
     );
   }, [wsUpdate]);

@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 
+import { toast } from "react-hot-toast";
+
 // import functions
 import { uploadAudioFile } from "../../services/audioService";
 
@@ -72,6 +74,9 @@ const RecordAudio = ({ onUploadSuccess, setError }) => {
 
       // refresh list
       onUploadSuccess();
+      toast.success(
+        `Recorded audio with filename "${file.name}" uploaded successfully`,
+      );
     } catch (error) {
       setError("Error stopping recording: " + error.message);
     } finally {

@@ -30,7 +30,7 @@ const AdminAudioItem = ({ audioFile, onDelete }) => {
         </div>
 
         {/* Delete button */}
-        <DeleteButton onClick={() => onDelete(audioFile.id)} />
+        <DeleteButton onClick={() => onDelete(audioFile)} />
       </div>
       {/* Expand content*/}
       {open && (

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useWebSocket from "../../hooks/useWebSocket";
 
+import { toast } from "react-hot-toast";
+
 // import functions
 import {
   getAudioFiles,
@@ -41,10 +43,21 @@ const UserDashboard = () => {
   }, []);
 
   // delete audio file
-  const handleDeleteAudio = async (id) => {
+  const handleDeleteAudio = async (audioFile) => {
+    setError("");
+    // ask if the user is sure
+    if (
+      !window.confirm(
+        `Are you sure you want to delete the audio file "${audioFile.filename}"?`,
+      )
+    ) {
+      return;
+    }
     try {
-      await deleteAudioFile(id);
-      setAudioFiles((prev) => prev.filter((file) => file.id !== id));
+      await deleteAudioFile(audioFile.id);
+
+      setAudioFiles((prev) => prev.filter((file) => file.id !== audioFile.id));
+      toast.success(`Audio file "${audioFile.filename}" deleted successfully`);
     } catch (error) {
       setError("Error deleting audio file: " + error.message);
     }
@@ -76,6 +89,7 @@ const UserDashboard = () => {
       setError("");
       await uploadAudioFile(file);
 
+      toast.success(`Audio file "${file.name}" uploaded successfully`);
       // Refresh audio list after successful upload
       fetchAudioFiles();
     } catch (error) {

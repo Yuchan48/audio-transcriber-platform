@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { toast } from "react-hot-toast";
+
 // import functions
 import { fetchAllUsers } from "../../services/userService";
 import { deleteUserAccount } from "../../services/userService";
@@ -36,14 +38,19 @@ const AdminUsers = () => {
     return <p className="text-red-500">{error}</p>;
   }
 
-  const onDeleteUser = async (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await deleteUserAccount(userId);
-        setUsers((prev) => prev.filter((user) => user.id !== userId));
-      } catch (error) {
-        setError("Error deleting user: " + error.message);
-      }
+  const onDeleteUser = async (user) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete the user "${user.email}"?`,
+      )
+    )
+      return;
+    try {
+      await deleteUserAccount(user.id);
+      setUsers((prev) => prev.filter((u) => u.id !== user.id));
+      toast.success(`User "${user.email}" deleted successfully`);
+    } catch (error) {
+      setError("Error deleting user: " + error.message);
     }
   };
 
@@ -68,7 +75,7 @@ const AdminUsers = () => {
               </div>
 
               {u.role !== "admin" && (
-                <DeleteButton onClick={() => onDeleteUser(u.id)} />
+                <DeleteButton onClick={() => onDeleteUser(u)} />
               )}
             </div>
           ))}

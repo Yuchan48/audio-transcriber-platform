@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 // import functions
 import { deleteUserAccount } from "../../services/userService";
@@ -19,7 +19,7 @@ export default function Sidebar() {
     ) {
       try {
         await deleteUserAccount();
-        alert("Account deleted. Redirecting to login page.");
+        toast.success("Account deleted. Redirecting to login page.");
         navigate("/login");
       } catch (error) {
         alert("Error deleting account: " + error.message);

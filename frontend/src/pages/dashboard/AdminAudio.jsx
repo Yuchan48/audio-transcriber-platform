@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { toast } from "react-hot-toast";
+
 // import functions
 import { fetchAllAudioFiles } from "../../services/audioService";
 import { deleteAudioFile } from "../../services/audioService";
@@ -29,11 +31,21 @@ const AdminAudio = () => {
     fetchAudioFiles();
   }, []);
 
-  const handleDeleteAudio = async (id) => {
-    if (window.confirm("Are you sure you want to delete this audio file?")) {
+  const handleDeleteAudio = async (audioFile) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the audio file "${audioFile.filename}"?`,
+      )
+    ) {
       try {
-        await deleteAudioFile(id);
-        setAudioFiles((prev) => prev.filter((file) => file.id !== id));
+        await deleteAudioFile(audioFile.id);
+
+        setAudioFiles((prev) =>
+          prev.filter((file) => file.id !== audioFile.id),
+        );
+        toast.success(
+          `Audio file "${audioFile.filename}" deleted successfully`,
+        );
       } catch (error) {
         setError("Error deleting audio file: " + error.message);
       }

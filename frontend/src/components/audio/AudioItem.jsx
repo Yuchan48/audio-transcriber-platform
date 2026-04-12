@@ -26,7 +26,7 @@ const AudioItem = ({ audioFile, onDelete }) => {
         </div>
 
         {/* Delete button */}
-        <DeleteButton onClick={() => onDelete(audioFile.id)} />
+        <DeleteButton onClick={() => onDelete(audioFile)} />
       </div>
 
       {/* Expanded content */}

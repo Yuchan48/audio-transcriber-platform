@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 // import functions
 import { logout, register } from "../services/authService";
@@ -12,6 +13,8 @@ import Spinner from "../components/icons/Spinner";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+
+  const { setUser } = useAuth();
 
   // input values
   const [email, setEmail] = useState("");
@@ -54,13 +57,11 @@ const RegisterPage = () => {
 
     try {
       setIsLoading(true);
-      await register(email, password);
+      // Attempt to register the user
+      const registeredUser = await register(email, password);
 
-      // on successful registration, log out any existing session and redirect to login page
-      await logout();
-      navigate("/login", {
-        state: { message: "Registration successful. Please log in." },
-      });
+      setUser(registeredUser);
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     } finally {

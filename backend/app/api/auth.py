@@ -20,7 +20,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 # User Registration
 @router.post("/register", response_model=UserOut)
-def register(user: UserRegister, db: Session = Depends(get_db)):
+def register(user: UserRegister, response: Response, db: Session = Depends(get_db)):
     # Check if user already exists
     existing_user = db.query(User).filter(User.email == user.email).first()
     if existing_user:
@@ -36,6 +36,9 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to register user: {str(e)}")
+    # Create JWT token and set it as a cookie
+    access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
+    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax")
     return new_user
 
 # User Login

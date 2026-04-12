@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 
 // import functions
-import { fetchAllAudioFiles } from "../services/audioService";
-import { deleteAudioFile } from "../services/audioService";
+import { fetchAllAudioFiles } from "../../services/audioService";
+import { deleteAudioFile } from "../../services/audioService";
 
 // import UI components
-import AdminAudioItem from "../components/audio/AdminAudioItem";
-import StatusBadge from "../components/icons/StatusBadge";
-import DeleteButton from "../components/buttons/DeleteButton";
+import AdminAudioItem from "../../components/audio/AdminAudioItem";
 
 const AdminAudio = () => {
   const [audioFiles, setAudioFiles] = useState([]);

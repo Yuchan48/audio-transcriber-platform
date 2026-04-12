@@ -1,49 +1,14 @@
-import { useState, useEffect } from "react";
-
-// import functions
-import { fetchCurrentUser } from "../services/userService";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 // import UI components
-import UserDashboard from "./UserDashboard";
-import AdminUsers from "./AdminUsers";
-import AdminAudio from "./AdminAudio";
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 
 const Dashboard = () => {
   const [error, setError] = useState("");
 
-  const [user, setUser] = useState(null);
-  const [userLoading, setUserLoading] = useState(true);
-  const [view, setView] = useState("dashboard");
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // fetch current user
-  const fetchUser = async () => {
-    try {
-      setUserLoading(true);
-      setError("");
-      const userData = await fetchCurrentUser();
-      setUser(userData);
-    } catch (error) {
-      setError("Error fetching user: " + error.message);
-    } finally {
-      setUserLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  if (userLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div className="flex h-screen w-full  bg-gray-50">
@@ -65,23 +30,15 @@ const Dashboard = () => {
           md:translate-x-0
         `}
       >
-        <Sidebar
-          user={user}
-          setView={(v) => {
-            setView(v);
-            setSidebarOpen(false);
-          }}
-        />
+        <Sidebar />
       </div>
 
       {/* Main */}
       <div className="flex-1 flex flex-col">
-        <Navbar user={user} onMenuClick={() => setSidebarOpen(true)} />
+        <Navbar onMenuClick={() => setSidebarOpen(true)} />
 
         <div className="p-6 overflow-auto">
-          {view === "dashboard" && <UserDashboard />}
-          {view === "users" && user.role === "admin" && <AdminUsers />}
-          {view === "all-audio" && user.role === "admin" && <AdminAudio />}
+          <Outlet />
         </div>
       </div>
     </div>

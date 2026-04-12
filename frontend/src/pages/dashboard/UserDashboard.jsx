@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import useWebSocket from "../hooks/useWebSocket";
+import useWebSocket from "../../hooks/useWebSocket";
 
 // import functions
 import {
   getAudioFiles,
   deleteAudioFile,
   uploadAudioFile,
-} from "../services/audioService";
+} from "../../services/audioService";
 
 // import UI components
-import RecordAudio from "../components/audio/RecordAudio";
-import AudioList from "../components/audio/AudioList";
-import UploadBox from "../components/audio/UploadBox";
+import RecordAudio from "../../components/audio/RecordAudio";
+import AudioList from "../../components/audio/AudioList";
+import UploadBox from "../../components/audio/UploadBox";
 
 const UserDashboard = () => {
   const [audioLoading, setAudioLoading] = useState(true);

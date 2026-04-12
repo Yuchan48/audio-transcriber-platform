@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 // import functions
-import { fetchAllUsers } from "../services/userService";
-import { deleteUserAccount } from "../services/userService";
+import { fetchAllUsers } from "../../services/userService";
+import { deleteUserAccount } from "../../services/userService";
 
 // import UI components
-import DeleteButton from "../components/buttons/DeleteButton";
+import DeleteButton from "../../components/buttons/DeleteButton";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);

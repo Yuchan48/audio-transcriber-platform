@@ -1,9 +1,17 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+
+// import functions
 import { logout } from "../../services/authService";
 
-export default function Navbar({ user, onMenuClick }) {
+export default function Navbar({ onMenuClick }) {
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     await logout();
-    window.location.href = "/login";
+    setUser(null);
+    navigate("/login", { replace: true });
   };
 
   return (

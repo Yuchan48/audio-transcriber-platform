@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../context/AuthContext";
+
+// import functions
 import { deleteUserAccount } from "../../services/userService";
 
-export default function Sidebar({ user, setView }) {
+export default function Sidebar() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const btnClass =
     "block w-full text-left py-2 px-3 rounded hover:bg-gray-800 transition";
@@ -28,17 +33,23 @@ export default function Sidebar({ user, setView }) {
       <div>
         <h1 className="text-xl font-bold mb-6">Audio Transcriber</h1>
 
-        <button className={btnClass} onClick={() => setView("dashboard")}>
+        <button className={btnClass} onClick={() => navigate("/dashboard")}>
           My Files
         </button>
 
         {user?.role === "admin" && (
           <>
-            <button className={btnClass} onClick={() => setView("users")}>
+            <button
+              className={btnClass}
+              onClick={() => navigate("/dashboard/users")}
+            >
               Users
             </button>
 
-            <button className={btnClass} onClick={() => setView("all-audio")}>
+            <button
+              className={btnClass}
+              onClick={() => navigate("/dashboard/all-audio")}
+            >
               All Audio
             </button>
           </>
@@ -46,17 +57,17 @@ export default function Sidebar({ user, setView }) {
       </div>
 
       {/* Bottom */}
-      {user?.role === "user" /* &&
-        user?.email !== import.meta.env.VITE_DEMO_EMAIL */ && (
-        <div className="mt-6 border-t border-gray-700 pt-4">
-          <button
-            onClick={onDeleteAccount}
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition"
-          >
-            Delete Account
-          </button>
-        </div>
-      )}
+      {user?.role === "user" &&
+        user?.email !== import.meta.env.VITE_DEMO_EMAIL && (
+          <div className="mt-6 border-t border-gray-700 pt-4">
+            <button
+              onClick={onDeleteAccount}
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition"
+            >
+              Delete Account
+            </button>
+          </div>
+        )}
     </div>
   );
 }

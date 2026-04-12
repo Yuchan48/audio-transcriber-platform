@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../context/AuthContext";
+
 // import functions
 import { login } from "../services/authService";
 
@@ -11,6 +13,7 @@ import Spinner from "../components/icons/Spinner";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   // input values
   const [email, setEmail] = useState("");
@@ -34,7 +37,8 @@ const LoginPage = () => {
 
     try {
       setIsLoading(true);
-      await login(email, password);
+      const user = await login(email, password);
+      setUser(user);
       navigate("/dashboard");
     } catch (error) {
       console.error(error);

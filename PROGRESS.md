@@ -271,10 +271,58 @@ Improved real-time transcription reliability by fixing WebSocket async/thread ha
 - Expandable UI bug caused unintended API calls when deleting audio items.
 - Duplicate filename issue resolved using UUID-based naming strategy.
 
+# Day 7 – Auth Flow Stabilization, Role-Based Routing, and System Cleanup
+
+## Summary
+
+Improved authentication flow reliability, introduced role-based routing guards, and enhanced global auth state management using React Context. Fixed critical session handling issue that caused false “token expired” errors on logout. Added UI feedback system using toast notifications and improved backend cleanup for file storage consistency.
+
+## Development Implementation
+
+- **Auth Architecture Refactor**
+  - Introduced `AuthContext` for global user state management.
+  - Reduced redundant API calls by storing user data at login.
+  - `fetchCurrentUser` is now only used inside `ProtectedRoute` on page refresh.
+
+- **Route Protection System**
+  - Implemented `ProtectedRoute` for authenticated users (`/dashboard`).
+  - Implemented `AdminRoute` for admin-only pages:
+    - `/dashboard/users`
+    - `/dashboard/all-audio`
+  - Enforced role-based access control on frontend routing layer.
+
+- **Session Handling Fix**
+  - Fixed issue where logout triggered unintended `/auth/me` requests.
+  - Added `skipAuthCheck` flag to distinguish logout vs session expiration.
+  - Prevented false “Token expired” errors after logout.
+  - Ensured correct auth validation only occurs on real session restoration.
+
+- **User Experience Improvements**
+  - Integrated `react-hot-toast` for feedback notifications:
+    - Upload success
+    - Delete audio/user/account success
+  - Improved perceived responsiveness and UX clarity.
+
+- **Auth Flow Optimization**
+  - Updated register flow to auto-login users after successful registration.
+  - Backend modified to return JWT cookie on registration.
+  - Removed extra login step for smoother onboarding experience.
+
+- **Backend File System Cleanup**
+  - Fixed issue where deleted users left orphaned audio files on disk.
+  - Implemented explicit filesystem cleanup using `pathlib.Path.unlink()`.
+  - Ensured database cascade deletion + filesystem consistency.
+  - Added separate cleanup script and resolved import path issues via `sys.path` fix.
+
+## Issues Encountered
+
+- Unintended `/auth/me` calls triggered after logout due to auth re-validation logic.
+- Orphaned audio files remained after user deletion due to missing filesystem cleanup.
+- Minor routing inconsistencies before introducing role-based route guards.
+
 ## Next Steps
 
-- Improve real-time UX (progress indicator during transcription)
-- Enhance UI/UX polish (loading states, skeleton UI, responsiveness)
-- Optional: add WebSocket-based live transcription progress updates
-- Prepare deployment configuration (Nginx + VPS setup)
-- Polish admin dashboard for portfolio presentation
+- Final UI/UX polish (loading states, skeletons, empty states)
+- Improve dashboard responsiveness and layout consistency
+- Prepare production deployment (Nginx + FastAPI + React build)
+- Final system testing for multi-user/admin flows

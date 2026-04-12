@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
+from pathlib import Path
 import os
 
 from sqlalchemy.orm import Session
@@ -34,7 +35,7 @@ def get_current_user_detail(request: Request, db: Session = Depends(get_db)):
     return user
 
 # Delete user - admin can delete any user, regular users can only delete their own account
-@router.delete("/")
+@router.delete("")
 def delete_user_account(request: Request, db: Session = Depends(get_db)):
     user = get_current_user(request, db)
 
@@ -57,6 +58,13 @@ def delete_user_account(request: Request, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.id == target_user_id).first()
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
+
+    for audio in db_user.audio_files:
+        try:
+            Path(audio.file_path).unlink(missing_ok=True)
+        except Exception as e:
+            print(f"Failed to delete file {audio.file_path}: {e}")
+            pass
 
     try:
         db.delete(db_user)

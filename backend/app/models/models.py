@@ -15,8 +15,7 @@ class User(Base):
     audio_files = relationship(
         "AudioFile",
         backref="user",
-        cascade="all, delete-orphan",
-        passive_deletes=True
+        cascade="all, delete-orphan"
     )
 
 class AudioFile(Base):
@@ -31,7 +30,7 @@ class AudioFile(Base):
     error_message = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    transcriptions = relationship("Transcription", back_populates="audio_file", cascade="all, delete-orphan", passive_deletes=True)
+    transcriptions = relationship("Transcription", back_populates="audio_file", cascade="all, delete-orphan")
 
 class Transcription(Base):
     __tablename__ = "transcriptions"

@@ -14,7 +14,7 @@ export async function fetchCurrentUser() {
 // delete user account - admin can delete any account except themselves, user can delete their own account
 export async function deleteUserAccount(userId) {
   // For admin, add userId query param to specify which user to delete. If not provided, it will delete the current user's account
-  const url = userId ? `${prefix}?userId=${userId}` : `${prefix}`;
+  const url = userId ? `${prefix}?user_id=${userId}` : `${prefix}`;
   const response = await apiFetch(url, {
     method: "DELETE",
   });

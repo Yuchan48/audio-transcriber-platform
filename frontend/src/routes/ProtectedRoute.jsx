@@ -1,22 +1,25 @@
 import { useState, useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // import UI components
 import Spinner from "../components/icons/Spinner";
 
 function ProtectedRoute({ children }) {
-  const { user, loadUser } = useAuth();
+  const { user, loadUser, skipAuthCheck } = useAuth();
+  const [sessionExpired, setSessionExpired] = useState(false);
   const [checking, setChecking] = useState(true);
-  const location = useLocation();
 
   useEffect(() => {
     const checkUser = async () => {
-      if (!user) await loadUser();
+      if (!user && !skipAuthCheck) {
+        const success = await loadUser();
+        if (!success) setSessionExpired(true);
+      }
       setChecking(false);
     };
     checkUser();
-  }, []);
+  }, [loadUser, user, skipAuthCheck]);
 
   if (checking)
     return (
@@ -27,7 +30,17 @@ function ProtectedRoute({ children }) {
     );
 
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={
+          sessionExpired
+            ? { message: "Session expired. Please log in again." }
+            : {}
+        }
+      />
+    );
   }
 
   return children;

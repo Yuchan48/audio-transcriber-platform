@@ -5,13 +5,16 @@ import { useAuth } from "../../context/AuthContext";
 import { logout } from "../../services/authService";
 
 export default function Navbar({ onMenuClick }) {
-  const { user, setUser } = useAuth();
+  const { user, setUser, setSkipAuthCheck } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
+    setSkipAuthCheck(true);
     setUser(null);
-    navigate("/login", { replace: true });
+    navigate("/login", {
+      replace: true,
+    });
   };
 
   return (

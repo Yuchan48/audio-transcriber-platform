@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -13,7 +13,8 @@ import Spinner from "../components/icons/Spinner";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const location = useLocation();
+  const { setUser, setSkipAuthCheck } = useAuth();
 
   // input values
   const [email, setEmail] = useState("");
@@ -25,6 +26,14 @@ const LoginPage = () => {
 
   // show/hide password
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    // reset skipAuthCheck on mount
+    setSkipAuthCheck(false);
+    if (location.state?.message) {
+      setError(location.state.message);
+    }
+  }, [location, setSkipAuthCheck]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -49,8 +58,9 @@ const LoginPage = () => {
   };
 
   const handleDemoLogin = () => {
-    setEmail("demo@example.com");
-    setPassword("demopassword");
+    setEmail(import.meta.env.VITE_DEMO_EMAIL || "demo@example.com");
+    setPassword(import.meta.env.VITE_DEMO_PASSWORD || "demopassword");
+    setError("");
   };
 
   const handleGoToRegister = () => {

@@ -6,8 +6,6 @@ import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 
 const Dashboard = () => {
-  const [error, setError] = useState("");
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

@@ -9,7 +9,7 @@ import uuid
 from app.models.models import AudioFile, Transcription
 from app.db.session import get_db
 from app.services.transcription import transcribe_audio
-from app.utils.file_validation import validate_file_count, validate_file_size
+from app.utils.file_validation import validate_file_count, validate_file_size, validate_file_type
 
 from sqlalchemy.orm import Session
 from app.core.jwt import decode_access_token
@@ -53,6 +53,9 @@ def upload_audio(
     user_id, _ = user
 
     try:
+        # Validate file type
+        validate_file_type(file)
+
         # Validate file count
         validate_file_count(db, user_id)
 

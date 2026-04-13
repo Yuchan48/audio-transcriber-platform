@@ -3,9 +3,10 @@ import { useAudioExpand } from "../../hooks/useAudioExpand";
 // import UI components
 import StatusBadge from "../icons/StatusBadge";
 import DeleteButton from "../buttons/DeleteButton";
+import Spinner from "../icons/Spinner";
 
 const AudioItem = ({ audioFile, onDelete }) => {
-  const { open, toggleExpand, audioUrl, transcript, loading, error } =
+  const { open, toggleExpand, audioUrl, transcript, loading, fetchAudioError } =
     useAudioExpand(audioFile);
 
   return (
@@ -32,8 +33,16 @@ const AudioItem = ({ audioFile, onDelete }) => {
       {/* Expanded content */}
       {open && (
         <div className="p-4 bg-gray-50 space-y-3">
-          {loading ? (
-            <p className="text-sm text-gray-500">Loading...</p>
+          {fetchAudioError ? (
+            <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 px-3 py-2 rounded text-sm">
+              <span>⚠️</span>
+              <span>{fetchAudioError}</span>
+            </div>
+          ) : loading ? (
+            <div className="flex items-center justify-center">
+              <Spinner className="h-6 w-6 mr-2" />
+              <p className="text-sm text-gray-500">Loading...</p>
+            </div>
           ) : (
             <>
               {/* Audio Player */}

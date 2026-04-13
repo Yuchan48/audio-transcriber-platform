@@ -8,6 +8,7 @@ import { deleteUserAccount } from "../../services/userService";
 
 // import UI components
 import DeleteButton from "../../components/buttons/DeleteButton";
+import Spinner from "../../components/icons/Spinner";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -31,13 +32,6 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  if (loading) {
-    return <p>Loading users...</p>;
-  }
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
-
   const onDeleteUser = async (user) => {
     if (
       !window.confirm(
@@ -58,19 +52,35 @@ const AdminUsers = () => {
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">All Users</h2>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {/* Error */}
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 px-3 py-2 rounded text-sm">
+          <span>⚠️</span>
+          <span>{error}</span>
+        </div>
+      )}
 
-      {users.length === 0 ? (
-        <p className="text-gray-500 text-center">No users found.</p>
+      {/* Loading */}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] py-10 text-gray-500">
+          <Spinner className="h-6 w-6 mb-2" />
+          <p className="text-sm">Loading users...</p>
+        </div>
+      ) : users.length === 0 ? (
+        /* When no users are found */
+        <div className="flex flex-col items-center justify-center text-center py-10 text-gray-500 text-lg min-h-[80vh]">
+          No users found.
+        </div>
       ) : (
+        /* User table */
         <div className="bg-white border rounded divide-y">
           {users.map((u) => (
             <div
               key={u.id}
               className="flex justify-between items-center p-3 hover:bg-gray-50 transition"
             >
-              <div>
-                <p>{u.email}</p>
+              <div className="min-w-0">
+                <p className="truncate">{u.email}</p>
                 <p className="text-xs text-gray-500">{u.role}</p>
               </div>
 

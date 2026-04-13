@@ -14,6 +14,7 @@ import {
 import RecordAudio from "../../components/audio/RecordAudio";
 import AudioList from "../../components/audio/AudioList";
 import UploadBox from "../../components/audio/UploadBox";
+import Spinner from "../../components/icons/Spinner";
 
 const UserDashboard = () => {
   const [audioLoading, setAudioLoading] = useState(true);
@@ -119,7 +120,10 @@ const UserDashboard = () => {
       {/* Audio list */}
       <div>
         {audioLoading ? (
-          <p className="p-4">Loading...</p>
+          <div className="flex flex-col items-center justify-center py-10 text-gray-500 pt-10">
+            <Spinner className="h-6 w-6 mb-2" />
+            <p className="text-sm">Loading audio files...</p>
+          </div>
         ) : (
           <AudioList audioFiles={audioFiles} onDelete={handleDeleteAudio} />
         )}

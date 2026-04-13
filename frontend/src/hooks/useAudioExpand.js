@@ -7,7 +7,7 @@ export function useAudioExpand(audioFile) {
   const [audioUrl, setAudioUrl] = useState(null);
   const [transcript, setTranscript] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [fetchAudioError, setFetchAudioError] = useState("");
 
   const toggleExpand = async () => {
     // open only when the status is completed
@@ -19,7 +19,7 @@ export function useAudioExpand(audioFile) {
     if (next && !audioUrl) {
       try {
         setLoading(true);
-        setError("");
+        setFetchAudioError("");
 
         // load audio file
         const blob = await fetchAudioFile(audioFile.id);
@@ -30,12 +30,12 @@ export function useAudioExpand(audioFile) {
         const transcriptData = await fetchAudioTranscript(audioFile.id);
         setTranscript(transcriptData.transcription);
       } catch (error) {
-        setError("Error loading audio details: " + error.message);
+        setFetchAudioError("Error loading audio details: " + error.message);
       } finally {
         setLoading(false);
       }
     }
   };
 
-  return { open, toggleExpand, audioUrl, transcript, loading, error };
+  return { open, toggleExpand, audioUrl, transcript, loading, fetchAudioError };
 }

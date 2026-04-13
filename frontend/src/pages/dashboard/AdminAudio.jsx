@@ -8,6 +8,7 @@ import { deleteAudioFile } from "../../services/audioService";
 
 // import UI components
 import AdminAudioItem from "../../components/audio/AdminAudioItem";
+import Spinner from "../../components/icons/Spinner";
 
 const AdminAudio = () => {
   const [audioFiles, setAudioFiles] = useState([]);
@@ -52,32 +53,35 @@ const AdminAudio = () => {
     }
   };
 
-  if (loading) {
-    return <p>Loading audio files...</p>;
-  }
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
-
   return (
     <div className="space-y-3">
       <h2 className="text-xl font-semibold">All Audio Files</h2>
 
-      <div className="bg-white border rounded divide-y">
-        {audioFiles.length === 0 ? (
-          <p className="p-4 text-gray-500 text-center">
-            No audio files available.
-          </p>
-        ) : (
-          audioFiles.map((file) => (
+      {loading ? (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] py-10 text-gray-500">
+          <Spinner className="h-6 w-6 mb-2" />
+          <p className="text-sm">Loading audio files...</p>
+        </div>
+      ) : error ? (
+        <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 px-3 py-2 rounded text-sm">
+          <span>⚠️</span>
+          <span>{error}</span>
+        </div>
+      ) : audioFiles.length === 0 ? (
+        <p className="flex items-center justify-center min-h-[80vh] p-4 text-gray-500 text-lg">
+          No audio files available.
+        </p>
+      ) : (
+        <div className="bg-white border rounded divide-y">
+          {audioFiles.map((file) => (
             <AdminAudioItem
               key={file.id}
               audioFile={file}
               onDelete={handleDeleteAudio}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

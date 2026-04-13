@@ -5,6 +5,9 @@ import { toast } from "react-hot-toast";
 // import functions
 import { uploadAudioFile } from "../../services/audioService";
 
+// import UI components
+import Spinner from "../icons/Spinner";
+
 const RecordAudio = ({ onUploadSuccess, setError }) => {
   const [recording, setRecording] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -87,7 +90,12 @@ const RecordAudio = ({ onUploadSuccess, setError }) => {
   return (
     <div className="border rounded p-4 bg-white flex flex-col items-center gap-3">
       {/* Button */}
-      {!recording ? (
+      {loading ? (
+        <div className="flex items-center justify-center">
+          <Spinner className="h-6 w-6 mr-2" />
+          <p className="text-sm text-gray-500">Uploading...</p>
+        </div>
+      ) : !recording ? (
         <button
           onClick={startRecording}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -105,11 +113,9 @@ const RecordAudio = ({ onUploadSuccess, setError }) => {
       )}
 
       {/* Status */}
-      {recording && (
+      {recording && !loading && (
         <p className="text-sm text-gray-600">Recording... speak now</p>
       )}
-
-      {loading && <p className="text-sm text-blue-500">Uploading...</p>}
     </div>
   );
 };

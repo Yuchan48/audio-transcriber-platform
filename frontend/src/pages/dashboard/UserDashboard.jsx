@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useWebSocket from "../../hooks/useWebSocket";
+import { useAuth } from "../../context/AuthContext";
 
 import { toast } from "react-hot-toast";
 
@@ -17,6 +18,7 @@ import UploadBox from "../../components/audio/UploadBox";
 import Spinner from "../../components/icons/Spinner";
 
 const UserDashboard = () => {
+  const { user } = useAuth();
   const [audioLoading, setAudioLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -103,6 +105,14 @@ const UserDashboard = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <h1 className="text-2xl font-semibold">Dashboard</h1>
+
+      {/* Display message for demo user */}
+      {user?.email === import.meta.env.VITE_DEMO_EMAIL && (
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded text-sm">
+          ⚠️ You are using a demo account. All uploaded audio will be deleted
+          when you log out.
+        </div>
+      )}
 
       {/* Upload */}
       <UploadBox

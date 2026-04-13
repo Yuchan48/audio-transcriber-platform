@@ -33,6 +33,10 @@ const App = () => {
             borderRadius: "10px",
             padding: "12px 20px",
             boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+            maxWidth: "420px",
+            width: "auto",
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
           },
           success: {
             duration: 6000, // longer duration for success

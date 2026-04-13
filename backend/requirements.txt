@@ -11,6 +11,7 @@ ecdsa==0.19.2
 email-validator==2.3.0
 fastapi==0.135.3
 h11==0.16.0
+httptools==0.7.1
 idna==3.11
 Mako==1.3.10
 MarkupSafe==3.0.3
@@ -22,6 +23,7 @@ pydantic_core==2.41.5
 python-dotenv==1.2.2
 python-jose==3.5.0
 python-multipart==0.0.22
+PyYAML==6.0.3
 requests==2.33.1
 rsa==4.9.1
 six==1.17.0
@@ -31,3 +33,6 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.6.3
 uvicorn==0.43.0
+uvloop==0.22.1
+watchfiles==1.1.1
+websockets==16.0

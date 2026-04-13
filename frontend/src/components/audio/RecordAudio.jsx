@@ -8,7 +8,7 @@ import { uploadAudioFile } from "../../services/audioService";
 // import UI components
 import Spinner from "../icons/Spinner";
 
-const RecordAudio = ({ onUploadSuccess, setError }) => {
+const RecordAudio = ({ onUploadSuccess, setError, disabled }) => {
   const [recording, setRecording] = useState(false);
   const [loading, setLoading] = useState(false);
   const mediaRecorderRef = useRef(null);
@@ -18,6 +18,7 @@ const RecordAudio = ({ onUploadSuccess, setError }) => {
   const startRecording = async () => {
     try {
       setError("");
+      if (disabled) return;
       // request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -98,8 +99,8 @@ const RecordAudio = ({ onUploadSuccess, setError }) => {
       ) : !recording ? (
         <button
           onClick={startRecording}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          disabled={loading}
+          className={` text-white px-4 py-2 rounded  ${disabled || loading ? "cursor-not-allowed opacity-50 bg-gray-500" : "hover:bg-blue-600 bg-blue-500"}`}
+          disabled={loading || disabled}
         >
           Start Recording
         </button>

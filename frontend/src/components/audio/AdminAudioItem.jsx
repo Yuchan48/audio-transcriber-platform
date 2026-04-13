@@ -51,7 +51,7 @@ const AdminAudioItem = ({ audioFile, onDelete }) => {
               {audioUrl && <audio controls src={audioUrl} className="w-full" />}
 
               <div className="mt-3 bg-white border p-3 text-sm whitespace-pre-wrap">
-                {transcript}
+                {transcript ? transcript : "No transcript available"}
               </div>
             </>
           )}

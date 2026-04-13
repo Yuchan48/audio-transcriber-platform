@@ -114,18 +114,29 @@ const UserDashboard = () => {
         </div>
       )}
 
+      {/* Display message if audio limit is reached */}
+      {!audioLoading && audioFiles.length >= 20 && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
+          ⚠️ You have reached the maximum limit of 20 audio files. Please delete
+          some files to upload new ones.
+        </div>
+      )}
+
       {/* Upload */}
       <UploadBox
         uploading={uploading}
-        setUploading={setUploading}
         error={error}
         setError={setError}
-        fetchAudioFiles={fetchAudioFiles}
         handleUploadAudio={handleUploadAudio}
+        disabled={!audioLoading && audioFiles.length >= 20} // Disable if there are already 20 audio files
       />
 
       {/* Record Audio */}
-      <RecordAudio onUploadSuccess={fetchAudioFiles} setError={setError} />
+      <RecordAudio
+        onUploadSuccess={fetchAudioFiles}
+        setError={setError}
+        disabled={!audioLoading && audioFiles.length >= 20}
+      />
 
       {/* Audio list */}
       <div>

@@ -20,7 +20,7 @@ export async function deleteUserAccount(userId) {
   });
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || "Failed to delete user account");
+    throw new Error(errorData.detail || "Failed to delete user account");
   }
   return response.json();
 }

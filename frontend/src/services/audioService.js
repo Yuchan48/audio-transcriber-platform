@@ -24,7 +24,7 @@ export async function uploadAudioFile(file) {
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || "Failed to upload audio file");
+    throw new Error(errorData.detail || "Failed to upload audio file");
   }
   return response.json();
 }
@@ -37,7 +37,7 @@ export async function deleteAudioFile(id) {
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || "Failed to delete audio file");
+    throw new Error(errorData.detail || "Failed to delete audio file");
   }
   return response.json();
 }

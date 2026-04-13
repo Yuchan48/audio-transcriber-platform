@@ -22,7 +22,7 @@ export async function login(email, password) {
   // Parse the response JSON and check for errors
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || "Login failed");
+    throw new Error(data.detail || "Login failed");
   }
   return data;
 }
@@ -47,7 +47,7 @@ export async function register(email, password) {
 
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || "Registration failed");
+    throw new Error(data.detail || "Registration failed");
   }
   return data;
 }

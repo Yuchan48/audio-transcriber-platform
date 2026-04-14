@@ -29,5 +29,6 @@ frontend/.env.test.local
 frontend/.env.production
 frontend/memo.txt
 
+.env
 memo.txt
 roadmap.txt

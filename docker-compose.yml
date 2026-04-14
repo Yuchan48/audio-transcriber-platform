@@ -6,15 +6,15 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_USER: yutos
-      POSTGRES_PASSWORD: yutos_password
-      POSTGRES_DB: audio_transcriber
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U yutos -d audio_transcriber"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -27,7 +27,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://yutos:yutos_password@db:5432/audio_transcriber
+      DATABASE_URL: ${DATABASE_URL}
     volumes:
       - ./backend:/app
       - ./backend/uploads:/app/uploads

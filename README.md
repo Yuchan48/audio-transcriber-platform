@@ -2,15 +2,14 @@
 
 ### 🔑 Demo Access
 
-🚀 [Live Demo](https://your-demo-url.com)
+🚀 [Live Demo](http://audio-transcriber.duckdns.org)
 
 Recruiters can log in using a demo account directly from the app.
 
 - Upload audio files and see real-time transcription progress.
+- Record audio directly in the browser (up to 30 seconds).
 - View completed transcriptions in the dashboard.
-- Admin-level functionality is described in this README.
 
-<img width="500" alt="dashboard" src="" />
 <br><br>
 
 A full-stack, self-hosted audio transcription platform. This project demonstrates **user-centric SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
@@ -20,12 +19,13 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 ## ✨ Key Highlights
 
 - 🔐 JWT authentication with HTTP-only cookies
-- 🎵 Upload, delete, and manage multiple audio files
+- 🎵 Upload, record, delete, and manage audio files
+- ⚡ Real-time transcription updates via WebSocket
 - 🗄 PostgreSQL database for users, audio files, and transcriptions
-- ⚡ Background transcription tasks using FastAPI `BackgroundTasks`
-- 🌐 Real-time transcription status updates via WebSocket
-- 👥 Admin role to view all users and audio files
-- 📦 Supports multiple audio formats: **MP3, WAV, FLAC**
+- 👥 Admin dashboard with full system visibility
+- 📦 Supports audio formats: **MP3, WAV, M4A, MP4, WEBM**
+- ⏱ File limits: **max 5MB per file, max 20 files per user**
+- 🎙 Built-in audio recorder (up to 30 seconds per clip)
 
 ---
 
@@ -33,103 +33,112 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 
 ### Authentication & Roles
 
-| Role      | Permissions                                                                                                                           |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **User**  | - Register & log in<br>- Upload audio files<br>- View & delete own files<br>- See transcription status and text                       |
-| **Admin** | - All user permissions<br>- View all users and audio files<br>- Delete any audio file<br>- Monitor system-wide transcription progress |
+| Role      | Permissions                                                                                                                                       |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **User**  | - Register & log in<br>- Upload/record audio<br>- View & delete own files<br>- See transcription status and text                                  |
+| **Admin** | - All user permissions<br>- View all users and all audio files<br>- Delete any audio file or user<br>- Monitor system-wide transcription progress |
 
 ---
 
 ### Audio Management
 
-- **Upload files:** MP3, WAV, FLAC (up to allowed size limit, default 5 MB for demo)
+- **Upload & Record:** Supports file upload + in-browser recording (MediaRecorder API)
+- **Supported formats:** MP3, WAV, M4A, MP4, WEBM
+- **Limits:** max 5MB per file, max 20 files per user
 - **Delete files:** Users can delete their own files; admins can delete any file
-- **Transcription:** Background task sends audio to DeepGram API and updates status in real-time via WebSocket
-- **Dashboard:** Displays file list with filename, status (`uploaded`, `processing`, `completed`, `failed`), audio player, and transcription text
+- **Transcription:** Background task sends audio to DeepGram API and updates status in real time
+- **Playback:** Completed files include built-in audio player + transcript viewer
 
-> ⚠️ Note: For large files, transcription may fail depending on API limits. Demo users should upload short audio clips (30–60 seconds) for reliable results.
+> ⚠️ Note: For best demo experience, use short audio clips (≤30 seconds). Large files may fail depending on API limits.
 
 ---
 
 ### Dashboard & Real-Time Updates
 
-- Audio file table shows:
+- File list displays:
   - Filename
   - Status (`uploaded`, `processing`, `completed`, `failed`)
-  - Audio player
-  - Transcription text (if completed)
-- Real-time updates powered by **FastAPI WebSockets**. Users only see their own file updates.
-- Admin dashboard shows all users and audio files in a single view.
+  - Audio playback (only when completed)
+  - Transcription text (toggle expand view)
+- Real-time updates powered by **FastAPI WebSockets**
+- Users receive only their own updates
+- Admin dashboard aggregates all users and files
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer            | Technology & Purpose                                                                     |
-| ---------------- | ---------------------------------------------------------------------------------------- |
-| **Frontend**     | React + Vite, responsive dashboard UI                                                    |
-| **Backend**      | FastAPI, BackgroundTasks for async processing, JWT auth, WebSocket for real-time updates |
-| **Database**     | PostgreSQL, SQLAlchemy ORM, Alembic migrations                                           |
-| **External API** | DeepGram API for transcription                                                           |
-| **Deployment**   | Linux VPS, Nginx (reverse proxy), Uvicorn/Gunicorn, SSL via Certbot                      |
+| Layer            | Technology                                    |
+| ---------------- | --------------------------------------------- |
+| **Frontend**     | React + Vite + TailwindCSS                    |
+| **Backend**      | FastAPI, BackgroundTasks, JWT auth, WebSocket |
+| **Database**     | PostgreSQL + SQLAlchemy + Alembic             |
+| **External API** | DeepGram API                                  |
+| **Deployment**   | Docker, Docker Compose, Nginx, Linux VPS      |
 
-**Why this stack?**
+### 🧠 Why this stack?
 
-- FastAPI provides fast, async-friendly backend.
-- React + Vite allows dynamic dashboard with minimal load time.
-- PostgreSQL ensures relational integrity for users, files, and transcriptions.
-- WebSocket enables real-time status updates without polling.
+Chosen to prioritize **speed of development, production readiness, and real-time capability**:
+
+- **React + Vite** → Fast, modern frontend with efficient builds
+- **FastAPI** → High-performance async backend with built-in WebSocket support
+- **PostgreSQL** → Reliable relational data model for users, files, and transcriptions
+- **Docker + Nginx** → Production-ready deployment with consistent environments
+- **DeepGram API** → Eliminates ML complexity and enables focus on product engineering
 
 ---
 
 ## ⚙️ Security Considerations
 
-- JWT stored in **HTTP-only cookies** to prevent XSS attacks
-- Role-based access control isolates user data
-- Admin routes protected and only accessible to users with `role="admin"`
-- Uploaded files stored securely on the server; no private keys or sensitive credentials in public storage
+- JWT stored in **HTTP-only cookies**
+- Role-based access control (user/admin separation)
+- Protected backend routes with dependency injection
+- Admin endpoints restricted server-side (not frontend-only)
+- File ownership enforced at database level
 
 ---
 
-## 🏗 Architectural Philosophy
+## 🏗 Architecture Notes
 
-- **Modular design:** clear separation between backend, frontend, and transcription service
-- **Async processing:** background tasks handle transcription without blocking API
-- **Real-time UX:** dashboard updates dynamically via WebSocket
-- **Production-ready deployment:** Nginx + Uvicorn/Gunicorn with SSL termination
+- Async transcription using FastAPI `BackgroundTasks`
+- WebSocket-based per-user real-time updates
+- File storage on server filesystem (`/uploads`)
+- PostgreSQL relational schema:
+  - users
+  - audio_files
+  - transcriptions
+- Nginx used as reverse proxy for API + frontend
 
 ---
 
 ## 📌 Known Limitations
 
-- Transcription depends on DeepGram API limits (rate & file size).
-- WebSocket connections are **per server instance** (in-memory) — for multi-instance deployments, a **Redis Pub/Sub** or message broker is required.
-- Demo audio files should be **short (<1 minute)** for reliable transcription.
+- WebSocket connections are in-memory (single-instance server)
+- For scaling, Redis Pub/Sub or message broker is required
+- DeepGram API limits apply for large or long audio files
+- Demo environment optimized for short clips (≤30s)
 
 ---
 
 ## 🛠 Skills Demonstrated
 
 - Full-stack development (React + FastAPI + PostgreSQL)
-- JWT authentication with HTTP-only cookies
-- Async background tasks and error handling
-- WebSocket implementation for real-time updates
-- Admin and user role-based access control
-- Production deployment on Linux with Nginx + Uvicorn/Gunicorn
-- External API integration (DeepGram) and dynamic MIME type handling
-- Writing maintainable, modular, and scalable code
+- JWT authentication with secure cookies
+- Real-time systems using WebSockets
+- Async background processing
+- File upload & media handling
+- Admin/user role-based system design
+- Dockerized production deployment
+- External API integration (DeepGram)
 
 ---
 
 ## 🔗 Live Demo
 
-- [Demo Dashboard](https://your-demo-url.com) – demo account available for recruiters
-  Explore file upload, transcription, and real-time status updates.
+- 🌐 [http://audio-transcriber.duckdns.org](http://audio-transcriber.duckdns.org)
+  - Demo login available for recruiters
+  - Try upload / record / transcription flow
 
 ---
 
 ## 📸 Screenshots
-
-<img width="400" alt="dashboard" src="" />
-<br>
-<img width="400" alt="admin view" src="" />

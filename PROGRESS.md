@@ -320,9 +320,63 @@ Improved authentication flow reliability, introduced role-based routing guards, 
 - Orphaned audio files remained after user deletion due to missing filesystem cleanup.
 - Minor routing inconsistencies before introducing role-based route guards.
 
+# Day 8 – Docker Production Stabilization & Full-Stack Deployment Readiness
+
+## Summary
+
+Completed full production readiness testing using Docker Compose. Resolved critical database migration issues with Alembic, stabilized backend startup order, and fixed frontend build problems inside containerized environment. Refactored architecture to a clean production setup with Nginx serving the frontend and backend API exposed via reverse proxy.
+
+## Development Implementation
+
+- **Database Migration Stabilization (Alembic)**
+  - Fixed broken migration history (`Can't locate revision` error).
+  - Reinitialized Alembic and cleaned migration history.
+  - Ensured `Base.metadata` correctly imported models for autogenerate.
+  - Verified migrations execute successfully inside Docker environment.
+
+- **Backend Startup Reliability**
+  - Fixed crash caused by missing database tables during startup (`relation "users" does not exist`).
+  - Adjusted initialization order so migrations run before `init_admin`.
+  - Temporarily safeguarded admin initialization to prevent startup failure.
+
+- **Docker Environment Consistency**
+  - Standardized execution environment to avoid host vs container DB mismatch.
+  - Ensured all database migrations are executed inside Docker:
+    - `docker-compose run --rm backend alembic upgrade head`
+
+- **Frontend Build System Fixes**
+  - Fixed npm dependency and build issues inside Docker:
+    - Replaced `npm ci` with `npm install`
+    - Resolved missing Rollup native dependency issues
+  - Removed problematic volume mount overriding `node_modules`
+  - Ensured stable Vite production build inside container
+
+- **Production Architecture Refactor**
+  - Simplified deployment architecture:
+    - Removed frontend runtime container
+    - React app built once and served via Nginx (`/dist`)
+    - Backend exposed via `/api` proxy
+  - Configured Nginx as single entry point for full-stack app
+
+## Issues Encountered
+
+- Alembic revision mismatch caused migration chain break.
+- Backend startup failure due to missing DB schema on first boot.
+- Docker volume conflicts overwriting frontend dependencies.
+- Node build instability due to incorrect dependency installation strategy.
+
+## Result
+
+✔ Database migrations fully stable inside Docker
+✔ Backend startup consistent and production-safe
+✔ Frontend builds successfully in isolated environment
+✔ Nginx serves React frontend correctly
+✔ Full-stack app runs via single Docker Compose command
+✔ Application accessible locally via production-like setup
+
 ## Next Steps
 
-- Final UI/UX polish (loading states, skeletons, empty states)
-- Improve dashboard responsiveness and layout consistency
-- Prepare production deployment (Nginx + FastAPI + React build)
-- Final system testing for multi-user/admin flows
+- Deploy to VPS (:contentReference[oaicite:0]{index=0})
+- Configure domain via :contentReference[oaicite:1]{index=1}
+- Add HTTPS (Certbot + Nginx)
+- Final production hardening (logging, env separation, security headers)

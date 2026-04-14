@@ -2,7 +2,7 @@
 
 ### 🔑 Demo Access
 
-🚀 [Live Demo](http://audio-transcriber.duckdns.org)
+🚀 [Live Demo](https://audio-transcriber.duckdns.org)
 
 Recruiters can log in using a demo account directly from the app.
 
@@ -10,6 +10,7 @@ Recruiters can log in using a demo account directly from the app.
 - Record audio directly in the browser (up to 30 seconds).
 - View completed transcriptions in the dashboard.
 
+<img width="500" alt="dashboard my files audio" src="https://github.com/user-attachments/assets/d02db83e-e168-48c7-875d-c05a15ff9863" />
 <br><br>
 
 A full-stack, self-hosted audio transcription platform. This project demonstrates **user-centric SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
@@ -98,7 +99,7 @@ Chosen to prioritize **speed of development, production readiness, and real-time
 
 ---
 
-## 🏗 Architecture Notes
+## 🏗 Architecture Philosophy
 
 - Async transcription using FastAPI `BackgroundTasks`
 - WebSocket-based per-user real-time updates
@@ -111,10 +112,8 @@ Chosen to prioritize **speed of development, production readiness, and real-time
 
 ---
 
-## 📌 Known Limitations
+## 📌 Known Downsides
 
-- WebSocket connections are in-memory (single-instance server)
-- For scaling, Redis Pub/Sub or message broker is required
 - DeepGram API limits apply for large or long audio files
 - Demo environment optimized for short clips (≤30s)
 
@@ -135,10 +134,40 @@ Chosen to prioritize **speed of development, production readiness, and real-time
 
 ## 🔗 Live Demo
 
-- 🌐 [http://audio-transcriber.duckdns.org](http://audio-transcriber.duckdns.org)
+- 🌐 [https://audio-transcriber.duckdns.org](https://audio-transcriber.duckdns.org)
   - Demo login available for recruiters
   - Try upload / record / transcription flow
 
 ---
 
 ## 📸 Screenshots
+
+<img width="450" alt="audio demo account" src="https://github.com/user-attachments/assets/4f42e740-e9b6-406c-9a8b-14139cbac425" />
+
+<br>
+
+<img width="300" alt="all users mobile" src="https://github.com/user-attachments/assets/90ead604-f58a-4b08-a347-f2c10c5172f2" />
+
+<br>
+
+<img width="300" alt="record audio mobile" src="https://github.com/user-attachments/assets/2b5bd7aa-5570-4f14-8d39-214e75681a9c" />
+
+<br>
+
+<img width="450" alt="All audio" src="https://github.com/user-attachments/assets/f0c48857-1941-4451-b0f9-41d549f0bd39" />
+
+<br>
+
+<img width="450" alt="audio demo account" src="https://github.com/user-attachments/assets/1a123f58-d5b2-42d2-8993-088f66fb309d" />
+
+<br>
+
+<img width="450" alt="audio login" src="https://github.com/user-attachments/assets/66f49788-1228-49ea-8a5c-d20980a48d26" />
+
+<br>
+
+<img width="450" alt="audio register" src="https://github.com/user-attachments/assets/e685c26d-08f8-455d-8e5b-2def0c7aeb18" />
+
+
+
+

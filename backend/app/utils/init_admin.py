@@ -14,6 +14,10 @@ def init_admin_if_not_exists(db: Session):
     try:
         existing_admin = db.query(User).filter(User.email == ADMIN_EMAIL).first()
 
+        if existing_admin:
+            print(f"Admin user already exists with email: {ADMIN_EMAIL}")
+            return
+
     except ProgrammingError as e:
         print(f"Tables not ready yet, skipping admin init: {str(e)}")
         return

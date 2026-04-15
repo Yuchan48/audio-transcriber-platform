@@ -1,7 +1,7 @@
 import os
 import asyncio
 from fastapi import FastAPI
-from starlette.middleware.proxy_headers import ProxyHeadersMiddleware
+
 from app.routers import ws
 from app.db.session import Base, engine, SessionLocal
 from contextlib import asynccontextmanager
@@ -14,7 +14,6 @@ load_dotenv()  # Load environment variables from .env file
 
 app = FastAPI(title="Audio Transcriber Platform")
 app.router.redirect_slashes = False
-app.add_middleware(ProxyHeadersMiddleware)
 
 from fastapi.middleware.cors import CORSMiddleware
 

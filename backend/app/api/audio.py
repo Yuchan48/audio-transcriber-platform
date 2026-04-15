@@ -14,7 +14,7 @@ from app.utils.file_validation import validate_file_count, validate_file_size, v
 from sqlalchemy.orm import Session
 from app.core.jwt import decode_access_token
 
-router = APIRouter(prefix="/audio", tags=["audio"])
+router = APIRouter(prefix="/api/audio", tags=["audio"])
 
 BASE_DIR = Path("uploads").resolve()
 BASE_DIR.mkdir(parents=True, exist_ok=True)

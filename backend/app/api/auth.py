@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 # User Registration
 @router.post("/register", response_model=UserOut)

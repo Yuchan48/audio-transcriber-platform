@@ -12,7 +12,7 @@ from app.core.jwt import decode_access_token
 from dotenv import load_dotenv
 load_dotenv()
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="/api/user", tags=["user"])
 
 # Get current user from cookie
 def get_current_user(request: Request, db: Session = Depends(get_db)):

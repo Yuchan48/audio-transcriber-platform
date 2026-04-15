@@ -6,8 +6,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN apt-get update \
+ && apt-get install -y postgresql-client \
+ && rm -rf /var/lib/apt/lists/*
+
 COPY . .
 
-RUN apt-get update && apt-get install -y postgresql-client
-
-CMD ["sh", "entrypoint.sh"]
+ENTRYPOINT ["sh", "entrypoint.sh"]

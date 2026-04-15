@@ -17,6 +17,8 @@ import AudioList from "../../components/audio/AudioList";
 import UploadBox from "../../components/audio/UploadBox";
 import Spinner from "../../components/icons/Spinner";
 
+const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL || "demo@example.com";
+
 const UserDashboard = () => {
   const { user } = useAuth();
   const [audioLoading, setAudioLoading] = useState(true);
@@ -107,7 +109,7 @@ const UserDashboard = () => {
       <h1 className="text-2xl font-semibold">Dashboard</h1>
 
       {/* Display message for demo user */}
-      {user?.email === import.meta.env.VITE_DEMO_EMAIL && (
+      {user?.email === DEMO_EMAIL && (
         <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded text-sm">
           ⚠️ You are using a demo account. All uploaded audio will be deleted
           when you log out.

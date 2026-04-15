@@ -5,6 +5,8 @@ import { toast } from "react-hot-toast";
 // import functions
 import { deleteUserAccount } from "../../services/userService";
 
+const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL || "demo@example.com";
+
 export default function Sidebar() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ export default function Sidebar() {
 
       {/* Bottom */}
       {user?.role === "user" &&
-        user?.email !== import.meta.env.VITE_DEMO_EMAIL && (
+        user?.email !== DEMO_EMAIL && (
           <div className="mt-6 border-t border-gray-700 pt-4">
             <button
               onClick={onDeleteAccount}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "/ws";
 
 export default function useWebSocket() {
   const [data, setData] = useState(null);

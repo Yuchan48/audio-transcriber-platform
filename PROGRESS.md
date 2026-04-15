@@ -374,9 +374,62 @@ Completed full production readiness testing using Docker Compose. Resolved criti
 ✔ Full-stack app runs via single Docker Compose command
 ✔ Application accessible locally via production-like setup
 
+# Day 9 – Production Deployment & Full System Stabilization
+
+## Summary
+
+Successfully deployed the full-stack Audio Transcriber Platform to a production VPS using Hetzner. Configured Nginx, Docker, and SSL (Let's Encrypt) with a custom domain via DuckDNS. Resolved multiple deployment issues including port conflicts, Nginx configuration errors, and frontend static build serving. The application is now fully accessible and functional in production.
+
+---
+
+## Deployment & Infrastructure
+
+- Configured VPS environment on Hetzner Linux server
+- Set up Docker Compose for backend, PostgreSQL, and build pipeline
+- Removed conflicting Docker Nginx container and standardized on host Nginx
+- Fixed port conflicts between host Nginx and Docker services
+- Served React frontend as static build via Nginx
+- Configured reverse proxy routing:
+  - `/` → React frontend
+  - `/api` → FastAPI backend
+  - `/ws` → WebSocket connections
+
+---
+
+## Domain & SSL
+
+- Connected domain via DuckDNS: `audio-transcriber.duckdns.org`
+- Installed and configured Let's Encrypt SSL via Certbot
+- Enabled HTTPS with automatic redirection from HTTP
+- Fixed Nginx binding issues and certificate configuration errors
+
+---
+
+## Issues Encountered
+
+- Fixed Docker port conflict with host Nginx (80/443)
+- Resolved Nginx 500 Internal Server Error caused by incorrect static file path
+- Fixed frontend build serving issues inside production Nginx
+- Corrected reverse proxy configuration for API and WebSocket routes
+- Ensured stable Docker startup order (Postgres → Backend → Build)
+
+---
+
+## Final Result
+
+✔ Full-stack app deployed on VPS
+✔ HTTPS enabled with valid SSL certificate
+✔ React frontend served via Nginx
+✔ FastAPI backend running in Docker
+✔ WebSocket real-time transcription working in production
+✔ Audio upload, playback, and transcription fully functional
+
+---
+
 ## Next Steps
 
-- Deploy to VPS (:contentReference[oaicite:0]{index=0})
-- Configure domain via :contentReference[oaicite:1]{index=1}
-- Add HTTPS (Certbot + Nginx)
-- Final production hardening (logging, env separation, security headers)
+- Final performance testing and optimization
+- Add monitoring/logging (optional)
+- Polish UI/UX for portfolio presentation
+- Prepare final README with screenshots and live demo link
+- Optional: CI/CD pipeline for automated deployment

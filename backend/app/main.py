@@ -12,6 +12,7 @@ from app.api import auth, audio, user
 load_dotenv()  # Load environment variables from .env file
 
 app = FastAPI(title="Audio Transcriber Platform")
+app.router.redirect_slashes = False
 
 from fastapi.middleware.cors import CORSMiddleware
 

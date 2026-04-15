@@ -1,13 +1,7 @@
 import { useState } from "react";
 const allowedTypes = ["audio/mpeg", "audio/wav", "audio/mp4", "video/webm"];
 
-const UploadBox = ({
-  uploading,
-  error,
-  handleUploadAudio,
-  setError,
-  disabled,
-}) => {
+const UploadBox = ({ uploading, handleUploadAudio, setError, disabled }) => {
   const [dragging, setDragging] = useState(false);
 
   // file drag & drop handler
@@ -85,8 +79,6 @@ const UploadBox = ({
       </p>
 
       {uploading && <p className="text-blue-500 mt-3">Uploading...</p>}
-
-      {error && <p className="text-red-500 mt-3 text-sm">{error}</p>}
     </div>
   );
 };

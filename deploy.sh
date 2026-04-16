@@ -3,6 +3,8 @@ set -e
 
 cd ~/audio-transcriber-platform
 
+bash deploy.sh
+
 echo "[CD] Pulling latest code..."
 git pull origin main
 

@@ -380,8 +380,6 @@ Completed full production readiness testing using Docker Compose. Resolved criti
 
 Successfully deployed the full-stack Audio Transcriber Platform to a production VPS using Hetzner. Configured Nginx, Docker, and SSL (Let's Encrypt) with a custom domain via DuckDNS. Resolved multiple deployment issues including port conflicts, Nginx configuration errors, and frontend static build serving. The application is now fully accessible and functional in production.
 
----
-
 ## Deployment & Infrastructure
 
 - Configured VPS environment on Hetzner Linux server
@@ -394,16 +392,12 @@ Successfully deployed the full-stack Audio Transcriber Platform to a production 
   - `/api` → FastAPI backend
   - `/ws` → WebSocket connections
 
----
-
 ## Domain & SSL
 
 - Connected domain via DuckDNS: `audio-transcriber.duckdns.org`
 - Installed and configured Let's Encrypt SSL via Certbot
 - Enabled HTTPS with automatic redirection from HTTP
 - Fixed Nginx binding issues and certificate configuration errors
-
----
 
 ## Issues Encountered
 
@@ -413,9 +407,7 @@ Successfully deployed the full-stack Audio Transcriber Platform to a production 
 - Corrected reverse proxy configuration for API and WebSocket routes
 - Ensured stable Docker startup order (Postgres → Backend → Build)
 
----
-
-## Final Result
+## Result
 
 ✔ Full-stack app deployed on VPS
 ✔ HTTPS enabled with valid SSL certificate
@@ -423,3 +415,39 @@ Successfully deployed the full-stack Audio Transcriber Platform to a production 
 ✔ FastAPI backend running in Docker
 ✔ WebSocket real-time transcription working in production
 ✔ Audio upload, playback, and transcription fully functional
+
+# Day 10 – CI/CD Experiment & Deployment Stabilization
+
+## Summary
+
+Attempted to implement CI/CD using GitHub Actions to automate testing and deployment of the Audio Transcriber Platform. The pipeline successfully ran builds and tests but introduced deployment instability due to environment mismatches between GitHub Actions and the production Docker environment.
+
+After debugging issues related to Nginx routing, backend environment variables, and Docker Compose behavior, the system was restored to a stable state by reverting to a simpler Docker Compose-based deployment workflow.
+
+## CI/CD Implementation
+
+- Added GitHub Actions workflow for frontend and backend checks
+- Configured SSH-based deployment trigger to VPS
+- Used automated build and basic health checks
+
+## Issues Encountered
+
+- Missing environment variables in CI causing backend startup failures
+- SSH key authentication and deploy script permission issues
+- 502 Bad Gateway errors during automated deployments
+- Nginx reverse proxy instability after redeployments
+- Environment mismatch between CI runner and production Docker setup
+
+## Result
+
+- Removed CI/CD from deployment pipeline
+- Reverted to direct Docker Compose deployment on VPS
+- Restored stable Nginx routing for `/api` and `/ws`
+- Confirmed backend and frontend stability in production
+
+## Final Result
+
+✔ Stable production deployment restored
+✔ Nginx + Docker Compose working correctly
+✔ API and WebSocket routing fixed
+✔ Simplified deployment improved reliability

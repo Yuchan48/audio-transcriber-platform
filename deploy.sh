@@ -1,57 +1,38 @@
 #!/bin/bash
-
 set -e
 
-APP_DIR=~/audio-transcriber-platform
-cd $APP_DIR
+cd ~/audio-transcriber-platform
 
 echo "[CD] Pulling latest code..."
-git fetch origin main
-git reset --hard origin/main
+git pull origin main
 
-CURRENT_COMMIT=$(git rev-parse HEAD)
-echo "[CD] Deploying commit: $CURRENT_COMMIT"
+echo "[CD] Stopping containers..."
+docker compose down
 
-echo "[CD] Building containers..."
-docker compose up -d --build
+echo "[CD] Rebuilding images..."
+docker compose build --no-cache
 
-echo "[CD] Waiting for backend..."
+echo "[CD] Starting containers..."
+docker compose up -d
+
+echo "[CD] Waiting for backend startup..."
 sleep 10
 
-
 echo "[CD] Health check..."
+
 if curl -f http://localhost:8000/docs > /dev/null; then
-  echo "[CD] App is healthy"
-
-  # Save last good commit
-  echo $CURRENT_COMMIT > .last_good_commit
-  echo "[CD] Saved last good commit"
-
+  echo "[CD] Backend is healthy"
 else
-  echo "[CD] Health check failed"
+  echo "[CD] Backend failed — rolling back"
 
-  if [ -f .last_good_commit ]; then
-    LAST_GOOD=$(cat .last_good_commit)
-    echo "[CD] Rolling back to: $LAST_GOOD"
+  git reset --hard HEAD~1 || true
+  docker compose down
+  docker compose up -d --build
 
-    git reset --hard $LAST_GOOD
-    docker compose up -d --build
-
-    sleep 5
-
-    if curl -f http://localhost:8000/docs > /dev/null; then
-      echo "[CD] Rollback successful"
-    else
-      echo "[CD] Rollback also failed — manual intervention needed"
-      exit 1
-    fi
-  else
-    echo "[CD] No rollback commit found"
-    exit 1
-  fi
+  exit 1
 fi
 
 echo "[CD] Cleaning unused images..."
 docker image prune -f
 
-echo "[CD] Deployment complete"
+echo "[CD] Deployment complete successfully"

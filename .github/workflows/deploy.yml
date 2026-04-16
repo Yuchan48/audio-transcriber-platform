@@ -34,6 +34,8 @@ jobs:
           python-version: "3.11"
 
       - name: Backend check
+        env:
+          DATABASE_URL: "sqlite:///./test.db"
         run: |
           cd backend
           pip install -r requirements.txt

@@ -426,10 +426,63 @@ Successfully deployed the full-stack Audio Transcriber Platform to a production 
 
 ---
 
-## Next Steps
+# Day 10 – CI/CD Pipeline Introduction, Docker-Based Deployment, and Initial GitHub Actions Integration
 
-- Final performance testing and optimization
-- Add monitoring/logging (optional)
-- Polish UI/UX for portfolio presentation
-- Prepare final README with screenshots and live demo link
-- Optional: CI/CD pipeline for automated deployment
+## Summary
+
+Introduced a basic CI/CD pipeline using GitHub Actions to automate build, test, and deployment workflows. Migrated deployment steps into a `deploy.sh` script executed on the production server via SSH. Fixed multiple deployment issues related to environment variables, Docker networking, and backend startup failures. Established the foundation for automated delivery from GitHub to production server.
+
+---
+
+## Development Implementation
+
+- **CI/CD Pipeline Setup (GitHub Actions)**
+  - Created `.github/workflows/deploy.yml` with two-stage pipeline:
+    - **CI stage:** frontend build + backend startup validation
+    - **CD stage:** SSH-based deployment to production server
+  - Added automated frontend build using Node.js 20
+  - Added backend smoke test using FastAPI + Uvicorn health check
+
+- **Server Deployment Automation**
+  - Created `deploy.sh` on production server
+  - Implemented automated workflow:
+    - `git pull origin main`
+    - `docker compose up -d --build`
+    - health check via `/docs` endpoint
+  - Added basic rollback mechanism for failed deployments
+
+- **Docker-Based Deployment Standardization**
+  - Standardized all services under `docker compose`
+    - backend (FastAPI)
+    - frontend (Nginx-based build container)
+    - nginx reverse proxy (fully containerized)
+    - PostgreSQL database
+  - Removed manual frontend copy steps from host system
+  - Centralized routing through Docker network
+
+- **Reverse Proxy & API Routing Fixes**
+  - Fixed `/api/*` routing inconsistencies caused by nginx migration into Docker
+  - Corrected proxy behavior to ensure backend access via container DNS (`backend:8000`)
+  - Resolved HTTPS mixed-content issues caused by incorrect redirects and proxy forwarding
+
+- **Production Stability Improvements**
+  - Fixed FastAPI startup crash caused by missing `DATABASE_URL` in CI environment
+  - Fixed SQLAlchemy initialization failure during GitHub Actions test run
+  - Improved container restart reliability during deployment
+
+---
+
+## Issues Encountered
+
+- CI pipeline failed due to missing environment variables (`DATABASE_URL`) in GitHub Actions runtime
+- Initial SSH deployment failed due to missing `deploy.sh` on server during first run
+- Nginx misconfiguration caused 502 errors and incorrect `/api` routing after containerization
+- Mixed content errors appeared due to HTTP redirects inside backend responses instead of HTTPS-aware proxy headers
+
+---
+
+## Outcome
+
+- Established working end-to-end CI/CD pipeline (GitHub → Server → Docker Compose deployment)
+- Reduced manual deployment steps significantly
+- Created reproducible deployment process suitable for portfolio-grade DevOps workflow

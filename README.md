@@ -69,13 +69,13 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 
 ## 🛠 Tech Stack
 
-| Layer            | Technology                                    |
-| ---------------- | --------------------------------------------- |
-| **Frontend**     | React + Vite + TailwindCSS                    |
-| **Backend**      | FastAPI, BackgroundTasks, JWT auth, WebSocket |
-| **Database**     | PostgreSQL + SQLAlchemy + Alembic             |
-| **External API** | DeepGram API                                  |
-| **Deployment**   | Docker, Docker Compose, Nginx, Linux VPS      |
+| Layer            | Technology                                                       |
+| ---------------- | ---------------------------------------------------------------- |
+| **Frontend**     | React + Vite + TailwindCSS                                       |
+| **Backend**      | FastAPI, BackgroundTasks, JWT auth, WebSocket                    |
+| **Database**     | PostgreSQL + SQLAlchemy + Alembic                                |
+| **External API** | DeepGram API                                                     |
+| **Deployment**   | Docker, Docker Compose, Nginx, Linux VPS, GitHub Actions (CI/CD) |
 
 ### 🧠 Why this stack?
 
@@ -167,7 +167,3 @@ Chosen to prioritize **speed of development, production readiness, and real-time
 <br>
 
 <img width="450" alt="audio register" src="https://github.com/user-attachments/assets/e685c26d-08f8-455d-8e5b-2def0c7aeb18" />
-
-
-
-

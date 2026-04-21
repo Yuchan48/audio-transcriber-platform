@@ -451,3 +451,35 @@ After debugging issues related to Nginx routing, backend environment variables, 
 ✔ Nginx + Docker Compose working correctly
 ✔ API and WebSocket routing fixed
 ✔ Simplified deployment improved reliability
+
+# Day 11 – CI/CD Fix & Environment Configuration Stabilization
+
+## Summary
+
+Revisited the CI/CD pipeline and resolved deployment instability caused by missing backend environment variables during runtime. The issue was traced to the backend not correctly loading `.env` values inside the Docker Compose environment.
+
+The problem caused authentication and API routing failures, including intermittent CORS-related issues and backend misconfiguration during automated deployments.
+
+---
+
+## Root Cause
+
+- Backend was not explicitly loading environment variables inside Docker runtime
+- CI/CD deployment worked in some cases but failed when `.env` was not correctly passed
+- Inconsistent environment between local Docker runs and GitHub Actions deployment
+
+---
+
+## Fix Implemented
+
+- Explicitly defined environment file in `docker-compose.yml`:
+
+  ```yaml
+  backend:
+    env_file:
+      - ./backend/.env
+  ```
+
+## Final Result
+
+✔ CI/CD stabilized with proper environment variable injection via Docker Compose, restoring consistent backend behavior and fully reliable deployments.

@@ -6,14 +6,14 @@
 
 Recruiters can log in using a demo account directly from the app.
 
-- Upload audio files and see real-time transcription progress.
-- Record audio directly in the browser (up to 30 seconds).
+- Upload audio files and view real-time transcription progress.
+- Record audio directly in the browser (up to 30 seconds per recording).
 - View completed transcriptions in the dashboard.
 
 <img width="500" alt="dashboard my files audio" src="https://github.com/user-attachments/assets/d02db83e-e168-48c7-875d-c05a15ff9863" />
 <br><br>
 
-A full-stack, self-hosted audio transcription platform. This project demonstrates **user-centric SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
+A full-stack, self-hosted audio transcription platform. This project demonstrates **user-focused SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
 
 ---
 
@@ -25,7 +25,7 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 - 🗄 PostgreSQL database for users, audio files, and transcriptions
 - 👥 Admin dashboard with full system visibility
 - 📦 Supports audio formats: **MP3, WAV, M4A, MP4, WEBM**
-- ⏱ File limits: **max 5MB per file, max 20 files per user**
+- ⏱ File limits: **Maximum 5MB per file, up to 20 files per user**
 - 🎙 Built-in audio recorder (up to 30 seconds per clip)
 
 ---
@@ -79,10 +79,10 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 
 ### 🧠 Why this stack?
 
-Chosen to prioritize **speed of development, production readiness, and real-time capability**:
+Chosen to prioritize **development speed, production readiness, and real-time capability**:
 
 - **React + Vite** → Fast, modern frontend with efficient builds
-- **FastAPI** → High-performance async backend with built-in WebSocket support
+- **FastAPI** → High-performance async backend with native WebSocket support
 - **PostgreSQL** → Reliable relational data model for users, files, and transcriptions
 - **Docker + Nginx** → Production-ready deployment with consistent environments
 - **DeepGram API** → Eliminates ML complexity and enables focus on product engineering

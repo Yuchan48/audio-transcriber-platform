@@ -438,14 +438,14 @@ After debugging issues related to Nginx routing, backend environment variables, 
 - Nginx reverse proxy instability after redeployments
 - Environment mismatch between CI runner and production Docker setup
 
-## Result
+## Rollback
 
 - Removed CI/CD from deployment pipeline
 - Reverted to direct Docker Compose deployment on VPS
 - Restored stable Nginx routing for `/api` and `/ws`
 - Confirmed backend and frontend stability in production
 
-## Final Result
+## Result
 
 ✔ Stable production deployment restored
 ✔ Nginx + Docker Compose working correctly
@@ -470,7 +470,7 @@ The problem caused authentication and API routing failures, including intermitte
 
 ---
 
-## Fix Implemented
+## Changes
 
 - Explicitly defined environment file in `docker-compose.yml`:
 
@@ -483,3 +483,35 @@ The problem caused authentication and API routing failures, including intermitte
 ## Final Result
 
 ✔ CI/CD stabilized with proper environment variable injection via Docker Compose, restoring consistent backend behavior and fully reliable deployments.
+
+# Day 12 – TypeScript Migration & License Setup
+
+## Summary
+
+Migrated the frontend from JavaScript (JS/JSX) to TypeScript (TS/TSX) and added an MIT License to the repository. The migration was done in a development branch to ensure stability and smooth CI/CD operation.
+
+---
+
+## Changes Implemented
+
+- Migrated frontend from JavaScript to TypeScript (JS → TS / JSX → TSX)
+- Added TypeScript types to core areas (API, Auth, WebSocket, Audio flow)
+- Added MIT License to repository
+- Updated project structure for TypeScript compatibility
+
+---
+
+## Notes
+
+- No runtime issues encountered during migration
+- CI/CD pipeline remained stable throughout
+- Development workflow preserved using `development` branch before merge
+
+---
+
+## Final Result
+
+✔ Frontend fully migrated to TypeScript with improved type safety
+✔ MIT License added for open-source readiness
+✔ CI/CD pipeline remains stable and unaffected
+✔ Codebase is now more maintainable and scalable

@@ -1,4 +1,4 @@
-const Spinner = ({ className }) => {
+const Spinner = ({ className }: { className?: string }) => {
   return (
     <svg
       className={`animate-spin ${className}`}

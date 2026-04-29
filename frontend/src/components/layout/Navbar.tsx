@@ -4,7 +4,11 @@ import { useAuth } from "../../context/AuthContext";
 // import functions
 import { logout } from "../../services/authService";
 
-export default function Navbar({ onMenuClick }) {
+type Props = {
+  onMenuClick: () => void;
+};
+
+export default function Navbar({ onMenuClick }: Props) {
   const { user, setUser, setSkipAuthCheck } = useAuth();
   const navigate = useNavigate();
 

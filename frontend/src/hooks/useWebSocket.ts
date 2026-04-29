@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 
+// import types
+import type { WebSocketUpdate } from "../types";
+
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "/ws";
 
 export default function useWebSocket() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<WebSocketUpdate | null>(null);
 
   useEffect(() => {
     const ws = new WebSocket(`${SOCKET_URL}/transcriptions`);

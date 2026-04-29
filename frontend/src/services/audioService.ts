@@ -12,7 +12,7 @@ export async function getAudioFiles() {
 }
 
 // upload audio file
-export async function uploadAudioFile(file) {
+export async function uploadAudioFile(file: File) {
   // Create FormData and append the file
   const formData = new FormData();
   formData.append("file", file);
@@ -30,7 +30,7 @@ export async function uploadAudioFile(file) {
 }
 
 // delete audio file by id
-export async function deleteAudioFile(id) {
+export async function deleteAudioFile(id: string) {
   const response = await apiFetch(`${prefix}/${id}`, {
     method: "DELETE",
   });
@@ -43,7 +43,7 @@ export async function deleteAudioFile(id) {
 }
 
 // fetch audio file by id (for downloading)
-export async function fetchAudioFile(id) {
+export async function fetchAudioFile(id: string) {
   const response = await apiFetch(`${prefix}/${id}/file`);
   if (!response.ok) {
     throw new Error("Failed to fetch audio file");
@@ -52,7 +52,7 @@ export async function fetchAudioFile(id) {
 }
 
 // fetch audio transcription by audio id
-export async function fetchAudioTranscript(audioId) {
+export async function fetchAudioTranscript(audioId: string) {
   const response = await apiFetch(`${prefix}/${audioId}/transcription`);
   if (!response.ok) {
     throw new Error("Failed to fetch audio transcription");

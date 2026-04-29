@@ -1,12 +1,25 @@
 import { useState } from "react";
+import type React from "react";
 const allowedTypes = ["audio/mpeg", "audio/wav", "audio/mp4", "video/webm"];
 
-const UploadBox = ({ uploading, handleUploadAudio, setError, disabled }) => {
+type Props = {
+  uploading: boolean;
+  handleUploadAudio: (file: File) => Promise<void>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  disabled?: boolean;
+};
+
+const UploadBox = ({
+  uploading,
+  handleUploadAudio,
+  setError,
+  disabled,
+}: Props) => {
   const [dragging, setDragging] = useState(false);
 
   // file drag & drop handler
-  const handleDrop = (e) => {
-    setError(null);
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    setError("");
     e.preventDefault();
     setDragging(false);
     const file = e.dataTransfer.files[0];
@@ -15,20 +28,20 @@ const UploadBox = ({ uploading, handleUploadAudio, setError, disabled }) => {
         setError("Unsupported file type. Please upload an audio file.");
         return;
       }
-      handleUploadAudio(file);
+      await handleUploadAudio(file);
     }
   };
 
   // file input change handler
-  const handleFileChange = (e) => {
-    setError(null);
-    const file = e.target.files[0];
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError("");
+    const file = e.target.files?.[0];
     if (file) {
       if (!allowedTypes.includes(file.type)) {
         setError("Unsupported file type. Please upload an audio file.");
         return;
       }
-      handleUploadAudio(file);
+      await handleUploadAudio(file);
     }
   };
 
@@ -43,7 +56,7 @@ const UploadBox = ({ uploading, handleUploadAudio, setError, disabled }) => {
         if (uploading || disabled) return;
         setDragging(false);
       }}
-      onDrop={(e) => {
+      onDrop={async (e) => {
         if (uploading || disabled) return;
         handleDrop(e);
       }}

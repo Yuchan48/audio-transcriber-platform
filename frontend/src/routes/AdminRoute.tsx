@@ -4,7 +4,12 @@ import { useAuth } from "../context/AuthContext";
 // import UI components
 import Spinner from "../components/icons/Spinner";
 
-const AdminRoute = ({ children }) => {
+// define types
+type Props = {
+  children: React.ReactNode;
+};
+
+const AdminRoute = ({ children }: Props) => {
   const { user, loading } = useAuth();
 
   if (loading)

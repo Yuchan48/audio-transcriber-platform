@@ -23,8 +23,11 @@ export default function Sidebar() {
         await deleteUserAccount();
         toast.success("Account deleted. Redirecting to login page.");
         navigate("/login");
-      } catch (error) {
-        alert("Error deleting account: " + error.message);
+      } catch (err) {
+        alert(
+          "Error deleting account: " +
+            (err instanceof Error ? err.message : "Unknown error"),
+        );
       }
     }
   };
@@ -59,17 +62,16 @@ export default function Sidebar() {
       </div>
 
       {/* Bottom */}
-      {user?.role === "user" &&
-        user?.email !== DEMO_EMAIL && (
-          <div className="mt-6 border-t border-gray-700 pt-4">
-            <button
-              onClick={onDeleteAccount}
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition"
-            >
-              Delete Account
-            </button>
-          </div>
-        )}
+      {user?.role === "user" && user?.email !== DEMO_EMAIL && (
+        <div className="mt-6 border-t border-gray-700 pt-4">
+          <button
+            onClick={onDeleteAccount}
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition"
+          >
+            Delete Account
+          </button>
+        </div>
+      )}
     </div>
   );
 }

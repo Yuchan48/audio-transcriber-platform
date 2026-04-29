@@ -1,4 +1,4 @@
-export function validateEmail(email) {
+export function validateEmail(email: string) {
   if (email.length < 3) {
     return "Email must be at least 3 characters long.";
   }
@@ -11,7 +11,7 @@ export function validateEmail(email) {
   return null; // No errors
 }
 
-export function validatePassword(password) {
+export function validatePassword(password: string) {
   if (password.length < 8) {
     return "Password must be at least 8 characters long.";
   }

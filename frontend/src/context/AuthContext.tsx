@@ -1,12 +1,20 @@
 import { createContext, useContext, useState } from "react";
 
+// types
+import type { User, AuthContextType } from "../types";
+
 // import functions
 import { fetchCurrentUser } from "../services/userService";
 
-const AuthContext = createContext();
+const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+// define types
+type Props = {
+  children: React.ReactNode;
+};
+
+export function AuthProvider({ children }: Props) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [skipAuthCheck, setSkipAuthCheck] = useState(false);
 
@@ -43,4 +51,10 @@ export function AuthProvider({ children }) {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

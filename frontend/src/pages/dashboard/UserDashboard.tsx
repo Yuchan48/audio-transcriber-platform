@@ -17,6 +17,9 @@ import AudioList from "../../components/audio/AudioList";
 import UploadBox from "../../components/audio/UploadBox";
 import Spinner from "../../components/icons/Spinner";
 
+// import types
+import type { AudioFile } from "../../types";
+
 const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL || "demo@example.com";
 
 const UserDashboard = () => {
@@ -25,7 +28,7 @@ const UserDashboard = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
-  const [audioFiles, setAudioFiles] = useState([]);
+  const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
 
   const wsUpdate = useWebSocket();
 
@@ -35,8 +38,12 @@ const UserDashboard = () => {
       setAudioLoading(true);
       const data = await getAudioFiles();
       setAudioFiles(data);
-    } catch (error) {
-      setError("Error fetching audio files: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error fetching audio files: " + err.message);
+      } else {
+        setError("An unknown error occurred while fetching audio files.");
+      }
     } finally {
       setAudioLoading(false);
     }
@@ -48,7 +55,7 @@ const UserDashboard = () => {
   }, []);
 
   // delete audio file
-  const handleDeleteAudio = async (audioFile) => {
+  const handleDeleteAudio = async (audioFile: AudioFile) => {
     setError("");
     // ask if the user is sure
     if (
@@ -63,8 +70,12 @@ const UserDashboard = () => {
 
       setAudioFiles((prev) => prev.filter((file) => file.id !== audioFile.id));
       toast.success(`Audio file "${audioFile.filename}" deleted successfully`);
-    } catch (error) {
-      setError("Error deleting audio file: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error deleting audio file: " + err.message);
+      } else {
+        setError("An unknown error occurred while deleting the audio file.");
+      }
     }
   };
 
@@ -78,7 +89,7 @@ const UserDashboard = () => {
           ? {
               ...file,
               status: wsUpdate.status,
-              transcript: wsUpdate.transcript || file.transcription,
+              transcript: wsUpdate.transcript ?? file.transcription,
             }
           : file,
       ),
@@ -86,7 +97,7 @@ const UserDashboard = () => {
   }, [wsUpdate]);
 
   // upload audio file
-  const handleUploadAudio = async (file) => {
+  const handleUploadAudio = async (file: File) => {
     if (!file) return;
 
     try {
@@ -97,8 +108,12 @@ const UserDashboard = () => {
       toast.success(`Audio file "${file.name}" uploaded successfully`);
       // Refresh audio list after successful upload
       fetchAudioFiles();
-    } catch (error) {
-      setError("Error uploading audio file: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error uploading audio file: " + err.message);
+      } else {
+        setError("An unknown error occurred while uploading the audio file.");
+      }
     } finally {
       setUploading(false);
     }
@@ -133,7 +148,6 @@ const UserDashboard = () => {
       {/* Upload */}
       <UploadBox
         uploading={uploading}
-        error={error}
         setError={setError}
         handleUploadAudio={handleUploadAudio}
         disabled={!audioLoading && audioFiles.length >= 20} // Disable if there are already 20 audio files

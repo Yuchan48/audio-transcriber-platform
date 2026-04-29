@@ -10,8 +10,11 @@ import { deleteAudioFile } from "../../services/audioService";
 import AdminAudioItem from "../../components/audio/AdminAudioItem";
 import Spinner from "../../components/icons/Spinner";
 
+// import types
+import type { AudioFile } from "../../types";
+
 const AdminAudio = () => {
-  const [audioFiles, setAudioFiles] = useState([]);
+  const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,8 +24,12 @@ const AdminAudio = () => {
       setError("");
       const data = await fetchAllAudioFiles();
       setAudioFiles(data);
-    } catch (error) {
-      setError("Error fetching audio files: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error fetching audio files: " + err.message);
+      } else {
+        setError("An unknown error occurred while fetching audio files.");
+      }
     } finally {
       setLoading(false);
     }
@@ -32,7 +39,7 @@ const AdminAudio = () => {
     fetchAudioFiles();
   }, []);
 
-  const handleDeleteAudio = async (audioFile) => {
+  const handleDeleteAudio = async (audioFile: AudioFile) => {
     if (
       window.confirm(
         `Are you sure you want to delete the audio file "${audioFile.filename}"?`,
@@ -47,8 +54,12 @@ const AdminAudio = () => {
         toast.success(
           `Audio file "${audioFile.filename}" deleted successfully`,
         );
-      } catch (error) {
-        setError("Error deleting audio file: " + error.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError("Error deleting audio file: " + err.message);
+        } else {
+          setError("An unknown error occurred while deleting the audio file.");
+        }
       }
     }
   };

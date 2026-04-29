@@ -35,7 +35,7 @@ const LoginPage = () => {
     }
   }, [location, setSkipAuthCheck]);
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 

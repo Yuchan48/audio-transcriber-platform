@@ -5,7 +5,12 @@ import { useAuth } from "../context/AuthContext";
 // import UI components
 import Spinner from "../components/icons/Spinner";
 
-function ProtectedRoute({ children }) {
+// define types
+type Props = {
+  children: React.ReactNode;
+};
+
+function ProtectedRoute({ children }: Props) {
   const { user, loadUser, skipAuthCheck } = useAuth();
   const [sessionExpired, setSessionExpired] = useState(false);
   const [checking, setChecking] = useState(true);

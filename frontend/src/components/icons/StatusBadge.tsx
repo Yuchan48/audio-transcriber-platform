@@ -1,5 +1,5 @@
-const StatusBadge = ({ status }) => {
-  const statusColors = {
+const StatusBadge = ({ status }: { status: string }) => {
+  const statusColors: { [key: string]: string } = {
     uploaded: "bg-yellow-100 text-yellow-800",
     processing: "bg-blue-100 text-blue-800",
     completed: "bg-green-100 text-green-800",

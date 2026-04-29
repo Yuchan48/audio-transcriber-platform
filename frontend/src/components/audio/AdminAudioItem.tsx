@@ -5,7 +5,15 @@ import StatusBadge from "../icons/StatusBadge";
 import DeleteButton from "../buttons/DeleteButton";
 import Spinner from "../icons/Spinner";
 
-const AdminAudioItem = ({ audioFile, onDelete }) => {
+// import types
+import type { AudioFile } from "../../types";
+
+type Props = {
+  audioFile: AudioFile;
+  onDelete: (audioFile: AudioFile) => void;
+};
+
+const AdminAudioItem = ({ audioFile, onDelete }: Props) => {
   const { open, toggleExpand, audioUrl, transcript, loading, fetchAudioError } =
     useAudioExpand(audioFile);
   return (
@@ -31,7 +39,7 @@ const AdminAudioItem = ({ audioFile, onDelete }) => {
         </div>
 
         {/* Delete button */}
-        <DeleteButton onClick={() => onDelete(audioFile)} />
+        <DeleteButton onClick={() => onDelete(audioFile)} disabled={loading} />
       </div>
       {/* Expand content*/}
       {open && (

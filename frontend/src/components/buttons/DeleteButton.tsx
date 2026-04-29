@@ -1,4 +1,9 @@
-const DeleteButton = ({ onClick, disabled }) => {
+type Props = {
+  onClick: () => void;
+  disabled: boolean;
+};
+
+const DeleteButton = ({ onClick, disabled }: Props) => {
   return (
     <button
       onClick={(e) => {

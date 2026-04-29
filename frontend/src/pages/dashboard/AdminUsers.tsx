@@ -10,8 +10,11 @@ import { deleteUserAccount } from "../../services/userService";
 import DeleteButton from "../../components/buttons/DeleteButton";
 import Spinner from "../../components/icons/Spinner";
 
+// import types
+import type { User } from "../../types";
+
 const AdminUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,8 +24,12 @@ const AdminUsers = () => {
       setError("");
       const data = await fetchAllUsers();
       setUsers(data);
-    } catch (error) {
-      setError("Error fetching users: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error fetching users: " + err.message);
+      } else {
+        setError("An unknown error occurred while fetching users.");
+      }
     } finally {
       setLoading(false);
     }
@@ -32,7 +39,7 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  const onDeleteUser = async (user) => {
+  const onDeleteUser = async (user: User) => {
     if (
       !window.confirm(
         `Are you sure you want to delete the user "${user.email}"?`,
@@ -43,8 +50,12 @@ const AdminUsers = () => {
       await deleteUserAccount(user.id);
       setUsers((prev) => prev.filter((u) => u.id !== user.id));
       toast.success(`User "${user.email}" deleted successfully`);
-    } catch (error) {
-      setError("Error deleting user: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error deleting user: " + err.message);
+      } else {
+        setError("An unknown error occurred while deleting the user.");
+      }
     }
   };
 
@@ -85,7 +96,10 @@ const AdminUsers = () => {
               </div>
 
               {u.role !== "admin" && (
-                <DeleteButton onClick={() => onDeleteUser(u)} />
+                <DeleteButton
+                  onClick={() => onDeleteUser(u)}
+                  disabled={loading}
+                />
               )}
             </div>
           ))}

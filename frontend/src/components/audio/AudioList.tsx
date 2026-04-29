@@ -1,6 +1,14 @@
 import AudioItem from "./AudioItem";
 
-const AudioList = ({ audioFiles, onDelete }) => {
+// import types
+import type { AudioFile } from "../../types";
+
+type Props = {
+  audioFiles: AudioFile[];
+  onDelete: (audioFile: AudioFile) => void;
+};
+
+const AudioList = ({ audioFiles, onDelete }: Props) => {
   return (
     <>
       {!audioFiles || audioFiles.length === 0 ? (

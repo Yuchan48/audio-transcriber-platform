@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import type React from "react";
 
 import { toast } from "react-hot-toast";
 
@@ -8,11 +9,17 @@ import { uploadAudioFile } from "../../services/audioService";
 // import UI components
 import Spinner from "../icons/Spinner";
 
-const RecordAudio = ({ onUploadSuccess, setError, disabled }) => {
+type Props = {
+  onUploadSuccess: () => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  disabled?: boolean;
+};
+
+const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
   const [recording, setRecording] = useState(false);
   const [loading, setLoading] = useState(false);
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   // start recording
   const startRecording = async () => {
@@ -49,13 +56,19 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }) => {
           setRecording(false);
         }
       }, 30000);
-    } catch (error) {
-      setError("Error accessing microphone: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error accessing microphone: " + err.message);
+      } else {
+        setError("Error accessing microphone");
+      }
     }
   };
 
   // stop recording
   const stopRecording = () => {
+    if (!mediaRecorderRef.current) return;
+
     // stop the media recorder, which will trigger the onstop event
     mediaRecorderRef.current.stop();
     setRecording(false);
@@ -81,8 +94,12 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }) => {
       toast.success(
         `Recorded audio with filename "${file.name}" uploaded successfully`,
       );
-    } catch (error) {
-      setError("Error stopping recording: " + error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError("Error uploading audio: " + err.message);
+      } else {
+        setError("Error uploading recording: ");
+      }
     } finally {
       setLoading(false);
     }

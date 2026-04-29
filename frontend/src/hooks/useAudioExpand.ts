@@ -2,12 +2,15 @@ import { useState } from "react";
 
 import { fetchAudioFile, fetchAudioTranscript } from "../services/audioService";
 
-export function useAudioExpand(audioFile) {
+// import types
+import type { AudioFile } from "../types";
+
+export function useAudioExpand(audioFile: AudioFile) {
   const [open, setOpen] = useState(false);
-  const [audioUrl, setAudioUrl] = useState(null);
-  const [transcript, setTranscript] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [fetchAudioError, setFetchAudioError] = useState("");
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [transcript, setTranscript] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [fetchAudioError, setFetchAudioError] = useState<string>("");
 
   const toggleExpand = async () => {
     // open only when the status is completed
@@ -29,8 +32,14 @@ export function useAudioExpand(audioFile) {
         // load transcript
         const transcriptData = await fetchAudioTranscript(audioFile.id);
         setTranscript(transcriptData.transcription);
-      } catch (error) {
-        setFetchAudioError("Error loading audio details: " + error.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setFetchAudioError("Error loading audio details: " + err.message);
+        } else {
+          setFetchAudioError(
+            "An unknown error occurred while loading audio details.",
+          );
+        }
       } finally {
         setLoading(false);
       }

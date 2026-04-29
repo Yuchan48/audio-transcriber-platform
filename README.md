@@ -71,7 +71,7 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 
 | Layer            | Technology                                                       |
 | ---------------- | ---------------------------------------------------------------- |
-| **Frontend**     | React + Vite + TailwindCSS                                       |
+| **Frontend**     | React + TypeScript + Vite + TailwindCSS                          |
 | **Backend**      | FastAPI, BackgroundTasks, JWT auth, WebSocket                    |
 | **Database**     | PostgreSQL + SQLAlchemy + Alembic                                |
 | **External API** | DeepGram API                                                     |
@@ -81,7 +81,7 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 
 Chosen to prioritize **development speed, production readiness, and real-time capability**:
 
-- **React + Vite** → Fast, modern frontend with efficient builds
+- **React + TypeScript + Vite** → Fast, modern frontend with type-safe development and efficient builds
 - **FastAPI** → High-performance async backend with native WebSocket support
 - **PostgreSQL** → Reliable relational data model for users, files, and transcriptions
 - **Docker + Nginx** → Production-ready deployment with consistent environments

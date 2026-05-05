@@ -1,10 +1,10 @@
-# 🔊 Audio Transcriber Platform (Full-Stack SaaS)
+# 🔊 AI-Driven Audio Transcriber Platform (Full-Stack SaaS)
 
 ### 🔑 Demo Access
 
 🚀 [Live Demo](https://audio-transcriber.duckdns.org)
 
-Recruiters can log in using a demo account directly from the app.
+Use the demo account to explore:
 
 - Upload audio files and view real-time transcription progress.
 - Record audio directly in the browser (up to 30 seconds per recording).
@@ -13,20 +13,7 @@ Recruiters can log in using a demo account directly from the app.
 <img width="500" alt="dashboard my files audio" src="https://github.com/user-attachments/assets/d02db83e-e168-48c7-875d-c05a15ff9863" />
 <br><br>
 
-A full-stack, self-hosted audio transcription platform. This project demonstrates **user-focused SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
-
----
-
-## ✨ Key Highlights
-
-- 🔐 JWT authentication with HTTP-only cookies
-- 🎵 Upload, record, delete, and manage audio files
-- ⚡ Real-time transcription updates via WebSocket
-- 🗄 PostgreSQL database for users, audio files, and transcriptions
-- 👥 Admin dashboard with full system visibility
-- 📦 Supports audio formats: **MP3, WAV, M4A, MP4, WEBM**
-- ⏱ File limits: **Maximum 5MB per file, up to 20 files per user**
-- 🎙 Built-in audio recorder (up to 30 seconds per clip)
+A full-stack, self-hosted platform for **real-time AI transcription**. This project demonstrates **user-focused SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
 
 ---
 
@@ -54,19 +41,6 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 
 ---
 
-### Dashboard & Real-Time Updates
-
-- File list displays:
-  - Filename
-  - Status (`uploaded`, `processing`, `completed`, `failed`)
-  - Audio playback (only when completed)
-  - Transcription text (toggle expand view)
-- Real-time updates powered by **FastAPI WebSockets**
-- Users receive only their own updates
-- Admin dashboard aggregates all users and files
-
----
-
 ## 🛠 Tech Stack
 
 | Layer            | Technology                                                       |
@@ -76,16 +50,6 @@ A full-stack, self-hosted audio transcription platform. This project demonstrate
 | **Database**     | PostgreSQL + SQLAlchemy + Alembic                                |
 | **External API** | DeepGram API                                                     |
 | **Deployment**   | Docker, Docker Compose, Nginx, Linux VPS, GitHub Actions (CI/CD) |
-
-### 🧠 Why this stack?
-
-Chosen to prioritize **development speed, production readiness, and real-time capability**:
-
-- **React + TypeScript + Vite** → Fast, modern frontend with type-safe development and efficient builds
-- **FastAPI** → High-performance async backend with native WebSocket support
-- **PostgreSQL** → Reliable relational data model for users, files, and transcriptions
-- **Docker + Nginx** → Production-ready deployment with consistent environments
-- **DeepGram API** → Eliminates ML complexity and enables focus on product engineering
 
 ---
 
@@ -101,8 +65,8 @@ Chosen to prioritize **development speed, production readiness, and real-time ca
 
 ## 🏗 Architecture Philosophy
 
-- Async transcription using FastAPI `BackgroundTasks`
-- WebSocket-based per-user real-time updates
+- Synchronous transcription managed via FastAPI `BackgroundTasks` to ensure non-blocking user sessions
+- WebSocket-based per-user real-time updates and transcription delivery
 - File storage on server filesystem (`/uploads`)
 - PostgreSQL relational schema:
   - users
@@ -112,23 +76,17 @@ Chosen to prioritize **development speed, production readiness, and real-time ca
 
 ---
 
-## 📌 Known Downsides
-
-- DeepGram API limits apply for large or long audio files
-- Demo environment optimized for short clips (≤30s)
-
----
-
 ## 🛠 Skills Demonstrated
 
 - Full-stack development (React + FastAPI + PostgreSQL)
 - JWT authentication with secure cookies
 - Real-time systems using WebSockets
-- Async background processing
+- Synchronous background processing for AI workloads
 - File upload & media handling
 - Admin/user role-based system design
 - Dockerized production deployment
-- External API integration (DeepGram)
+- End-to-end AI integration (Deepgram API)
+- Automated CI/CD workflows (GitHub Actions)
 
 ---
 

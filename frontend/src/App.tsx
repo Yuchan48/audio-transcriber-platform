@@ -18,6 +18,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AdminUsers from "./pages/dashboard/AdminUsers";
 import AdminAudio from "./pages/dashboard/AdminAudio";
 import UserDashboard from "./pages/dashboard/UserDashboard";
+import Impressum from "./pages/Impressum";
 
 const App = () => {
   return (
@@ -40,14 +41,14 @@ const App = () => {
           },
           success: {
             duration: 6000, // longer duration for success
-            theme: {
+            iconTheme: {
               primary: "green",
               secondary: "white",
             },
           },
           error: {
             duration: 8000, // longer duration for errors
-            theme: {
+            iconTheme: {
               primary: "red",
               secondary: "white",
             },
@@ -89,6 +90,7 @@ const App = () => {
             />
           </Route>
 
+          <Route path="/impressum" element={<Impressum />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>

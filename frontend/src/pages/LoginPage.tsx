@@ -174,6 +174,15 @@ const LoginPage = () => {
           </button>
         </div>
       </div>
+
+      <a
+        href="/impressum"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 text-center text-sm text-gray-500 hover:underline absolute bottom-4"
+      >
+        Impressum
+      </a>
     </div>
   );
 };

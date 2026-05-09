@@ -10,9 +10,7 @@ echo "Stopping existing containers..."
 docker compose down
 
 echo "Rebuilding containers..."
-# docker compose up -d --build
-docker compose build --no-cache
-docker compose up -d
+docker compose up -d --build
 
 echo "Waiting for app..."
 sleep 5

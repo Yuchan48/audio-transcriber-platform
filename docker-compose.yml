@@ -33,22 +33,14 @@ services:
     ports:
       - "8000:8000"
 
-  #frontend:
-  # build: ./frontend
-  #container_name: frontend
-  #volumes:
-  # - ./frontend/dist:/dist
-
   nginx:
     build: ./frontend
-    #image: nginx:alpine
     container_name: nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      # - ./frontend/dist:/usr/share/nginx/html:ro
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     depends_on:

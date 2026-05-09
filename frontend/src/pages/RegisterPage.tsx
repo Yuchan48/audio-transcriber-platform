@@ -78,7 +78,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-300">
+    <div className="flex items-center justify-center h-screen bg-gray-300 w-full max-w-screen">
       <div className="w-80 p-6 bg-white rounded-2xl shadow-lg">
         {/* Title & Error */}
         <h1 className="text-2xl font-semibold text-center text-gray-800">

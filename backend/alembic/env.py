@@ -15,11 +15,12 @@ from app.db.session import Base
 
 
 def get_metadata():
-    # 🔥 CRITICAL: force import inside function
+    # Force import inside function
     import importlib
+
     importlib.import_module("app.models.models")
 
-    print("METADATA TABLES:", Base.metadata.tables.keys())  # DEBUG
+    # print("METADATA TABLES:", Base.metadata.tables.keys())
 
     return Base.metadata
 

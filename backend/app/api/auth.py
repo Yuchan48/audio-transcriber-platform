@@ -13,10 +13,12 @@ from app.core.jwt import create_access_token, decode_access_token
 import os
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
 
 # User Registration
 @router.post("/register", response_model=UserOut)
@@ -35,20 +37,29 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
         db.refresh(new_user)
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to register user: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to register user: {str(e)}"
+        )
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none")
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+    )
     return new_user
 
+
 # User Login
-@router.post("/login")
+@router.post("/login", response_model=UserOut)
 def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     # get user from the database
     db_user = db.query(User).filter(User.email == user.email).first()
 
     # verify password
-    if not db_user or not verify_password(user.password, db_user.hashed_password): # type: ignore
+    if not db_user or not verify_password(user.password, db_user.hashed_password):  # type: ignore
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # If the user is the demo user, reset their data on login
@@ -57,8 +68,15 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
 
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(db_user.id), "role": db_user.role})
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none")
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+    )
     return db_user
+
 
 # User Logout
 @router.post("/logout")

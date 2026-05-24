@@ -3,6 +3,9 @@ cd ~/audio-transcriber-platform
 
 set -e
 
+echo “Saving current commit…”
+PREVIOUS_COMMIT=$(git rev-parse HEAD)
+
 echo "Pulling latest code..."
 git pull origin main
 
@@ -17,14 +20,17 @@ sleep 5
 
 echo "Health check..."
 if curl -f http://localhost:8000/docs > /dev/null; then
-  echo "✅ App is healthy"
+  echo "App is healthy"
 else
-  echo "❌ App failed! Rolling back..."
+  echo "App failed! Rolling back..."
 
-  git reset --hard HEAD~1
+  git reset --hard $PREVIOUS_COMMIT
+
+  docker compose down
+
   docker compose up -d --build
 
-  echo "🔁 Rolled back to previous version"
+  echo "Rolled back to previous version"
   exit 1
 fi
 

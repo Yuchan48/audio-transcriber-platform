@@ -37,9 +37,8 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
         db.refresh(new_user)
     except Exception as e:
         db.rollback()
-        raise HTTPException(
-            status_code=500, detail=f"Failed to register user: {str(e)}"
-        )
+        print(e)
+        raise HTTPException(status_code=500, detail="Failed to register user")
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
     response.set_cookie(

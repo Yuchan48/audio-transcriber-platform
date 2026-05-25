@@ -4,12 +4,18 @@ from app.core.security import hash_password
 from sqlalchemy.orm import Session
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
+
 def init_admin_if_not_exists(db: Session):
+    if ADMIN_PASSWORD is None or ADMIN_EMAIL is None:
+        raise ValueError(
+            "ADMIN_EMAIL or ADMIN_PASSWORD is not set in environment variables"
+        )
 
     try:
         existing_admin = db.query(User).filter(User.email == ADMIN_EMAIL).first()
@@ -26,7 +32,7 @@ def init_admin_if_not_exists(db: Session):
         admin_user = User(
             email=ADMIN_EMAIL,
             hashed_password=hash_password(ADMIN_PASSWORD),
-            role="admin"
+            role="admin",
         )
         db.add(admin_user)
         db.commit()

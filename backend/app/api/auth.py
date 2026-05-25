@@ -19,6 +19,12 @@ load_dotenv()
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
+COOKIE_SETTINGS = {
+    "httponly": True,
+    "secure": True,
+    "samesite": "none",
+}
+
 
 # User Registration
 @router.post("/register", response_model=UserOut)
@@ -70,9 +76,7 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     response.set_cookie(
         key="access_token",
         value=access_token,
-        httponly=True,
-        secure=True,
-        samesite="none",
+        **COOKIE_SETTINGS,
     )
     return db_user
 
@@ -81,5 +85,8 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
 @router.post("/logout")
 def logout(response: Response):
     # Clear the access token cookie
-    response.delete_cookie(key="access_token")
+    response.delete_cookie(
+        key="access_token",
+        **COOKIE_SETTINGS,
+    )
     return {"message": "Logout successful"}

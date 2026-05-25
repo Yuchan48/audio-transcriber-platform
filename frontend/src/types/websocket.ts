@@ -1,6 +1,6 @@
 export type WebSocketUpdate = {
   status: string;
-  audio_id: string;
+  audio_id: number;
   transcript?: string;
 };
 

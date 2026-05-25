@@ -1,5 +1,5 @@
 export type AudioFile = {
-  id: string;
+  id: number;
   filename: string;
   transcription?: string;
   user_email?: string;

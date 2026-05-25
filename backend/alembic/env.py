@@ -6,6 +6,9 @@ from alembic import context
 config = context.config
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL is None:
+
+    raise ValueError("DATABASE_URL environment variable is not set")
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 if config.config_file_name is not None:
@@ -26,8 +29,12 @@ def get_metadata():
 
 
 def run_migrations_online():
+    section = config.get_section(config.config_ini_section)
+
+    if section is None:
+        raise ValueError("Database URL not found in config file")
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
+        section,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

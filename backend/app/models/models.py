@@ -17,7 +17,7 @@ class User(Base):
     )
 
     audio_files: Mapped[list["AudioFile"]] = relationship(
-        back_populates="user", cascade="all, delete-orphan"
+        "AudioFile", backref="user", cascade="all, delete-orphan"
     )
 
 
@@ -26,7 +26,7 @@ class AudioFile(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
     )
     filename: Mapped[str] = mapped_column(String, nullable=False)
     file_path: Mapped[str] = mapped_column(String, nullable=False)
@@ -40,7 +40,7 @@ class AudioFile(Base):
     )
 
     transcriptions: Mapped[list["Transcription"]] = relationship(
-        back_populates="audio_file", cascade="all, delete-orphan"
+        "Transcription", back_populates="audio_file", cascade="all, delete-orphan"
     )
 
 
@@ -49,7 +49,10 @@ class Transcription(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     audio_file_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("audio_files.id", ondelete="CASCADE"), nullable=False
+        Integer,
+        ForeignKey("audio_files.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
     )
     text: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
@@ -60,5 +63,5 @@ class Transcription(Base):
     )
 
     audio_file: Mapped["AudioFile"] = relationship(
-         back_populates="transcriptions"
+        "AudioFile", back_populates="transcriptions"
     )

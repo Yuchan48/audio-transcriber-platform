@@ -1,13 +1,16 @@
 import os
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
+
 from alembic import context
 
 config = context.config
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL is None:
-
     raise ValueError("DATABASE_URL environment variable is not set")
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 

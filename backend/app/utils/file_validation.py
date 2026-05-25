@@ -36,7 +36,6 @@ ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".mp4", ".webm"}
 
 def validate_file_type(file: UploadFile):
     if not file.filename:
-
         raise HTTPException(
             status_code=400,
             detail="Filename is missing",

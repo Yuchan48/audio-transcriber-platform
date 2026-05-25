@@ -46,7 +46,6 @@ def get_current_user(request: Request):
         raise HTTPException(status_code=401, detail="Invalid token")
 
     # return user id and role
-
     return int(payload["sub"]), payload.get("role")
 
 
@@ -108,13 +107,15 @@ def upload_audio(
             filename=unique_filename,
             file_path=file_path,
             status="uploaded",
+            file_size=len(contents),
         )
         db.add(audio_file)
         db.commit()
         db.refresh(audio_file)
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail="Failed to upload file")
+        print(e)
+        raise HTTPException(status_code=500, detail="Failed to upload file.")
 
     # Trigger background task to transcribe the audio
     background_tasks.add_task(transcribe_audio, audio_file.id)
@@ -191,7 +192,7 @@ def get_audio_file(audio_id: int, request: Request, db: Session = Depends(get_db
     )
 
 
-# get trasncription text for an audio file
+# get transcription text for an audio file
 @router.get("/{audio_id}/transcription")
 def get_transcription(audio_id: int, request: Request, db: Session = Depends(get_db)):
     user_id, role = get_current_user(request)

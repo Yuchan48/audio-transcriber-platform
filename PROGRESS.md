@@ -515,3 +515,68 @@ Migrated the frontend from JavaScript (JS/JSX) to TypeScript (TS/TSX) and added 
 ✔ MIT License added for open-source readiness
 ✔ CI/CD pipeline remains stable and unaffected
 ✔ Codebase is now more maintainable and scalable
+
+# Day 13 – Code Review Improvements & Production Hardening
+
+## Summary
+
+Reviewed the project using Copilot code review feedback and improved multiple areas related to type safety, API consistency, authentication handling, database relationships, WebSocket stability, and overall production readiness.
+
+The goal was to strengthen the project as a realistic mid-level full-stack portfolio application while keeping the architecture practical and maintainable.
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Added `response_model` schemas to API endpoints
+- Improved JWT error handling with specific exception handling
+- Improved environment variable validation and typing safety
+- Replaced broad exception handling in upload flow
+- Fixed cookie logout behavior with matching cookie attributes
+- Removed duplicate `FastAPI()` initialization
+- Migrated SQLAlchemy models to typed `Mapped[...]` + `mapped_column`
+- Replaced `backref` with explicit `back_populates`
+- Added database indexes for:
+  - `audio_files.user_id`
+  - `transcriptions.audio_file_id`
+
+### Frontend
+
+- Added WebSocket reconnect strategy with exponential backoff
+- Fixed object URL cleanup to prevent browser memory leaks
+- Improved TypeScript type consistency between frontend and backend
+
+### Infrastructure & Tooling
+
+- Improved Alembic environment variable loading
+- Improved Pylance type compliance across backend code
+
+---
+
+## Notes
+
+- File uploads are intentionally limited to 5MB
+- Uploads currently use in-memory reads for simplicity and readability
+- Background processing currently uses FastAPI `BackgroundTasks`
+- WebSocket connections are currently managed in-memory for single-instance deployment
+
+---
+
+## Future Considerations
+
+- Add CSRF protection for cookie-based authentication
+- Use Redis for scalable WebSocket and background task handling
+- Stream uploads in chunks for larger file support
+
+---
+
+## Final Result
+
+✔ Improved backend type safety and API consistency
+✔ Improved authentication and cookie handling
+✔ Improved WebSocket reliability on frontend reconnects
+✔ Improved SQLAlchemy relationship clarity and indexing
+✔ Improved production-readiness and maintainability
+✔ Project remains intentionally lightweight and practical for portfolio scope

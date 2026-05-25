@@ -1,5 +1,4 @@
 import os
-import asyncio
 from fastapi import FastAPI
 
 from app.routers import ws
@@ -12,8 +11,6 @@ from app.api import auth, audio, user
 
 load_dotenv(override=True)  # Load environment variables from .env file
 
-app = FastAPI(title="Audio Transcriber Platform")
-app.router.redirect_slashes = False
 
 from fastapi.middleware.cors import CORSMiddleware
 

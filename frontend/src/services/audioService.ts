@@ -30,7 +30,7 @@ export async function uploadAudioFile(file: File) {
 }
 
 // delete audio file by id
-export async function deleteAudioFile(id: string) {
+export async function deleteAudioFile(id: number) {
   const response = await apiFetch(`${prefix}/${id}`, {
     method: "DELETE",
   });
@@ -43,7 +43,7 @@ export async function deleteAudioFile(id: string) {
 }
 
 // fetch audio file by id (for downloading)
-export async function fetchAudioFile(id: string) {
+export async function fetchAudioFile(id: number) {
   const response = await apiFetch(`${prefix}/${id}/file`);
   if (!response.ok) {
     throw new Error("Failed to fetch audio file");
@@ -52,7 +52,7 @@ export async function fetchAudioFile(id: string) {
 }
 
 // fetch audio transcription by audio id
-export async function fetchAudioTranscript(audioId: string) {
+export async function fetchAudioTranscript(audioId: number) {
   const response = await apiFetch(`${prefix}/${audioId}/transcription`);
   if (!response.ok) {
     throw new Error("Failed to fetch audio transcription");

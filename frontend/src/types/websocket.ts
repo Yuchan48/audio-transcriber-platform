@@ -3,3 +3,5 @@ export type WebSocketUpdate = {
   audio_id: string;
   transcript?: string;
 };
+
+export type ConnectionStatus = "connecting" | "connected" | "disconnected";

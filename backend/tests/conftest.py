@@ -144,7 +144,9 @@ def client(app_with_overrides, test_client_cls):
 
 @pytest.fixture()
 def register_user(client: Any) -> Callable[[str, str], dict]:
-    def _register(email: str = "user@example.com", password: str = "password123") -> dict:
+    def _register(
+        email: str = "user@example.com", password: str = "password123"
+    ) -> dict:
         response = client.post(
             "/api/auth/register",
             json={"email": email, "password": password},

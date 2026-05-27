@@ -95,11 +95,8 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
         `Recorded audio with filename "${file.name}" uploaded successfully`,
       );
     } catch (err) {
-      if (err instanceof Error) {
-        setError("Error uploading audio: " + err.message);
-      } else {
-        setError("Error uploading recording: ");
-      }
+      console.error("Error uploading audio file:", err);
+      setError("Error uploading audio");
     } finally {
       setLoading(false);
     }

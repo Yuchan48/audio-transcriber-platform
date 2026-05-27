@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ~/audio-transcriber-platform
 
-# set -e
+set -e
 
 echo "Saving current commit…"
 PREVIOUS_COMMIT=$(git rev-parse HEAD)
@@ -40,11 +40,7 @@ if [ $SUCCESS -eq 1 ]; then
   echo "Deployment successful"
 else
   # Rollback to previous commit and restart containers
-  # echo "App failed to start within 60 seconds! Rolling back..."
-  echo "App failed to start within 60 seconds! Printing backend logs for details:"
-  echo "------------------- BACKEND LOGS -------------------"
-  docker compose logs backend
-  echo "----------------------------------------------------"
+  echo "App failed to start within 60 seconds! Rolling back..."
 
   git reset --hard "$PREVIOUS_COMMIT"
   docker compose down

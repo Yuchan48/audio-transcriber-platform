@@ -19,7 +19,7 @@ echo "Waiting for app..."
 sleep 5
 
 echo "Health check..."
-if curl -f http://localhost:8000/docs > /dev/null; then
+if curl -f http://localhost/docs > /dev/null; then
   echo "App is healthy"
 else
   echo "App failed! Rolling back..."

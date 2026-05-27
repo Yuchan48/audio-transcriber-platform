@@ -20,7 +20,15 @@ def get_current_user_ws(websocket: WebSocket):
     payload = decode_access_token(token)
     if not payload:
         return None
-    return int(payload.get("sub"))
+
+    sub = payload.get("sub")
+    if sub is None:
+        return None
+    try:
+        return int(sub)
+    except (ValueError, TypeError):
+        return None
+
 
 @router.websocket("/transcriptions")
 async def websocket_transcriptions(websocket: WebSocket):
@@ -40,5 +48,9 @@ async def websocket_transcriptions(websocket: WebSocket):
             # Keep the connection alive by waiting for messages
             await websocket.receive_text()
     except WebSocketDisconnect:
+        print(f"WebSocket disconnected: user {user_id}")
         active_connections.pop(user_id, None)
 
+    except Exception as e:
+        print(f"WebSocket error: {e}")
+        active_connections.pop(user_id, None)

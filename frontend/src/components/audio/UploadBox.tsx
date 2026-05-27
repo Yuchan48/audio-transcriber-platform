@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+
 import type React from "react";
 const allowedTypes = ["audio/mpeg", "audio/wav", "audio/mp4", "video/webm"];
 
@@ -7,7 +7,6 @@ type Props = {
   uploading: boolean;
   handleUploadAudio: (file: File) => Promise<void>;
   setError: React.Dispatch<React.SetStateAction<string>>;
-  onUploadSuccess: () => void;
   disabled?: boolean;
 };
 
@@ -15,7 +14,6 @@ const UploadBox = ({
   uploading,
   handleUploadAudio,
   setError,
-  onUploadSuccess,
   disabled,
 }: Props) => {
   const [dragging, setDragging] = useState(false);
@@ -25,23 +23,14 @@ const UploadBox = ({
     setError("");
     e.preventDefault();
     setDragging(false);
-    try {
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        if (!allowedTypes.includes(file.type)) {
-          setError("Unsupported file type. Please upload an audio file.");
-          return;
-        }
-        await handleUploadAudio(file);
-        // refresh list
-        onUploadSuccess();
-        toast.success(
-          `Recorded audio with filename "${file.name}" uploaded successfully`,
-        );
+
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      if (!allowedTypes.includes(file.type)) {
+        setError("Unsupported file type. Please upload an audio file.");
+        return;
       }
-    } catch (err) {
-      console.error("Error uploading audio file:", err);
-      setError("Error occurred while uploading the audio file.");
+      await handleUploadAudio(file);
     }
   };
 
@@ -49,23 +38,13 @@ const UploadBox = ({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
 
-    try {
-      const file = e.target.files?.[0];
-      if (file) {
-        if (!allowedTypes.includes(file.type)) {
-          setError("Unsupported file type. Please upload an audio file.");
-          return;
-        }
-        await handleUploadAudio(file);
-        // refresh list
-        onUploadSuccess();
-        toast.success(
-          `Recorded audio with filename "${file.name}" uploaded successfully`,
-        );
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!allowedTypes.includes(file.type)) {
+        setError("Unsupported file type. Please upload an audio file.");
+        return;
       }
-    } catch (err) {
-      console.error("Error uploading audio file:", err);
-      setError("Error occurred while uploading the audio file.");
+      await handleUploadAudio(file);
     }
   };
 

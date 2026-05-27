@@ -111,10 +111,8 @@ const UserDashboard = () => {
       setUploading(true);
       setError("");
       await uploadAudioFile(file);
-
+      fetchAudioFiles();
       toast.success(`Audio file "${file.name}" uploaded successfully`);
-      // Refresh audio list after successful upload
-      // fetchAudioFiles();
     } catch (err) {
       if (err instanceof Error) {
         setError("Error uploading audio file: " + err.message);
@@ -163,7 +161,6 @@ const UserDashboard = () => {
         uploading={uploading}
         setError={setError}
         handleUploadAudio={handleUploadAudio}
-        onUploadSuccess={fetchAudioFiles}
         disabled={!audioLoading && audioFiles.length >= 20} // Disable if there are already 20 audio files
       />
 

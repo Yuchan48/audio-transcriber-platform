@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class AudioFileCreate(BaseModel):
     message: str
-    audio_file_id: str
+    audio_file_id: int
 
 
 class AudioFileMetadata(BaseModel):

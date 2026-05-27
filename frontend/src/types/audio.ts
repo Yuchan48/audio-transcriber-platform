@@ -3,5 +3,5 @@ export type AudioFile = {
   filename: string;
   transcription?: string;
   user_email?: string;
-  status?: string;
+  status: string;
 };

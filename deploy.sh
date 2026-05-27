@@ -3,7 +3,7 @@ cd ~/audio-transcriber-platform
 
 set -e
 
-echo “Saving current commit…”
+echo "Saving current commit…"
 PREVIOUS_COMMIT=$(git rev-parse HEAD)
 
 echo "Pulling latest code..."

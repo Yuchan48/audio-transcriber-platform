@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from app.db.session import get_db
 from app.models.models import User
 from app.schemas.auth import UserRegister, UserLogin
@@ -41,10 +42,14 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-    except Exception as e:
+
+    except SQLAlchemyError:
         db.rollback()
-        print(e)
+        raise HTTPException(status_code=500, detail="Database error")
+    except Exception:
+        db.rollback()
         raise HTTPException(status_code=500, detail="Failed to register user")
+
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
     response.set_cookie(

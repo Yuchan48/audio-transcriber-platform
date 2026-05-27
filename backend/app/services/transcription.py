@@ -6,6 +6,7 @@ from app.db.session import SessionLocal
 from app.services.deepgram_service import transcribe_file
 from app.routers.ws import active_connections
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 
 
 async def send_ws_update(user_id: int, data: dict):
@@ -57,15 +58,29 @@ async def transcribe_audio(audio_file_id: int):
             user_id,
             {"audio_id": audio_file_id, "status": "completed", "transcript": text},
         )
-    except Exception as e:
+
+    except SQLAlchemyError:
         db.rollback()
-        print(f"Transcription failed for id {audio_file_id}: {str(e)}")
+        audio_file.status = "failed"
+        db.commit()
+        await send_ws_update(
+            user_id,
+            {"audio_id": audio_file_id, "status": "failed", "error": "Database error"},
+        )
+
+    except Exception:
+        db.rollback()
 
         # update status to failed
         audio_file.status = "failed"
         db.commit()
         await send_ws_update(
-            user_id, {"audio_id": audio_file_id, "status": "failed", "error": str(e)}
+            user_id,
+            {
+                "audio_id": audio_file_id,
+                "status": "failed",
+                "error": "Transcription error",
+            },
         )
 
     finally:

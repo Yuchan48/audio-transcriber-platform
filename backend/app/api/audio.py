@@ -11,6 +11,7 @@ from fastapi import (
 import os
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import joinedload
+from sqlalchemy.exc import SQLAlchemyError
 import mimetypes
 from pathlib import Path
 import uuid
@@ -112,9 +113,18 @@ def upload_audio(
         db.add(audio_file)
         db.commit()
         db.refresh(audio_file)
-    except Exception as e:
+
+    except HTTPException:
+        raise
+    except OSError:
         db.rollback()
-        print(e)
+        raise HTTPException(status_code=500, detail="Failed to save file")
+    except SQLAlchemyError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Database error")
+
+    except Exception:
+        db.rollback()
         raise HTTPException(status_code=500, detail="Failed to upload file.")
 
     # Trigger background task to transcribe the audio

@@ -67,6 +67,7 @@ A full-stack, self-hosted platform for **real-time AI transcription**. This proj
 
 - Synchronous transcription managed via FastAPI `BackgroundTasks` to ensure non-blocking user sessions
 - WebSocket-based per-user real-time updates and transcription delivery
+- Deepgram transcription requests use timeout (30 seconds) + retry/backoff (3 times) handling to improve resilience against transient API/network failures
 - File storage on server filesystem (`/uploads`)
 - PostgreSQL relational schema:
   - users
@@ -87,6 +88,14 @@ A full-stack, self-hosted platform for **real-time AI transcription**. This proj
 - Dockerized production deployment
 - End-to-end AI integration (Deepgram API)
 - Automated CI/CD workflows (GitHub Actions)
+
+---
+
+## ⚠️ Current Limitations / Future Improvements
+
+- Background transcription currently uses FastAPI `BackgroundTasks`; Redis/Celery-style durable queues are planned for larger-scale deployments.
+- WebSocket connection state is currently process-local and not horizontally distributed.
+- CSRF protection is not yet implemented because the project is currently intended as a portfolio/demo deployment.
 
 ---
 

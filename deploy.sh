@@ -25,7 +25,7 @@ while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
   echo "Health check attempt $ATTEMPT/$MAX_ATTEMPTS..."
 
   # Check if the FastAPI docs endpoint returns a successful 200 OK status
-  if curl -s -f http://localhost:8000/docs > /dev/null; then
+  if curl -s -f http://localhost:8000/docs > /dev/null || false; then
     SUCCESS=1
     break
   fi
@@ -41,6 +41,9 @@ if [ $SUCCESS -eq 1 ]; then
 else
   # Rollback to previous commit and restart containers
   echo "App failed to start within 60 seconds! Rolling back..."
+
+  docker compose logs backend
+
   git reset --hard "$PREVIOUS_COMMIT"
   docker compose down
   docker compose up -d --build

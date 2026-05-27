@@ -25,7 +25,7 @@ while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
   echo "Health check attempt $ATTEMPT/$MAX_ATTEMPTS..."
 
   # Check if the FastAPI docs endpoint returns a successful 200 OK status
-  if curl -s -f http://localhost/docs > /dev/null; then
+  if curl -s -f http://localhost:8000/docs > /dev/null; then
     SUCCESS=1
     break
   fi

@@ -564,14 +564,6 @@ The goal was to strengthen the project as a realistic mid-level full-stack portf
 
 ---
 
-## Future Considerations
-
-- Add CSRF protection for cookie-based authentication
-- Use Redis for scalable WebSocket and background task handling
-- Stream uploads in chunks for larger file support
-
----
-
 ## Final Result
 
 ✔ Improved backend type safety and API consistency
@@ -580,3 +572,117 @@ The goal was to strengthen the project as a realistic mid-level full-stack portf
 ✔ Improved SQLAlchemy relationship clarity and indexing
 ✔ Improved production-readiness and maintainability
 ✔ Project remains intentionally lightweight and practical for portfolio scope
+
+# Day 14 – Production Hardening & CI/CD Improvements
+
+## Summary
+
+Focused on improving deployment reliability, dependency management, Docker stability, and production readiness after a second full project code review.
+
+The project was tested through:
+
+- Local production Docker builds
+- VPS deployment verification
+- CI/CD pipeline validation
+- Deployment rollback scenarios
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Improved upload and transcription exception handling
+- Added timeout and retry logic for Deepgram API requests
+- Added deployment health-check endpoint
+- Fixed Pydantic v2 compatibility warnings
+- Improved API validation error semantics
+
+### Dependency Management
+
+- Migrated from `requirements.txt` to modern `uv` workflow
+- Added:
+  - `pyproject.toml`
+  - `uv.lock`
+- Pinned project to Python 3.11
+- Improved dependency reproducibility and compatibility
+
+### Docker & Infrastructure
+
+- Rebuilt backend Docker setup using `uv`
+- Fixed container virtual environment path issues
+- Improved PostgreSQL startup ordering and health checks
+- Removed unnecessary PostgreSQL host exposure
+- Improved nginx local/production configuration
+
+### CI/CD & Deployment
+
+- Updated GitHub Actions workflow to use `uv`
+- Improved deployment rollback behavior
+- Added deployment retry/wait loop for app startup
+- Improved deployment debugging visibility
+
+---
+
+## Notes
+
+- File uploads remain intentionally limited to 5MB
+- Background processing still uses FastAPI `BackgroundTasks`
+- WebSocket connections are currently managed in-memory for single-instance deployment
+- CSRF protection is intentionally deferred for current portfolio scope
+
+---
+
+## Future Considerations
+
+- Add CSRF protection for cookie-based authentication
+- Add Redis for scalable WebSocket and background task handling
+- Add automated backend/frontend/e2e tests
+
+---
+
+## Final Result
+
+✔ Improved Docker production reliability
+✔ Improved CI/CD deployment consistency
+✔ Improved dependency reproducibility with `uv`
+✔ Improved API resilience and deployment stability
+✔ Successfully validated full production deployment workflow
+✔ Project now presents as a strong mid-level full-stack portfolio application
+
+# Day 15 – Backend & Frontend Testing
+
+## Summary
+
+Added automated backend and frontend test coverage using Copilot Agent to improve project reliability and maintainability.
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Added pytest-based API tests
+- Added auth, authorization, and upload validation tests
+- Added isolated SQLite test setup and fixtures
+
+### Frontend
+
+- Added Vitest + React Testing Library setup
+- Added component and behavior-focused tests
+- Added mocked API and WebSocket testing setup
+
+---
+
+## Notes
+
+- Production application code was intentionally left unchanged
+- CI/CD deployment ignores test-only file changes
+
+---
+
+## Final Result
+
+✔ Added backend and frontend automated tests
+✔ Improved project reliability and maintainability
+✔ Improved portfolio-level engineering quality

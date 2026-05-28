@@ -1,3 +1,4 @@
+# This file sets up fixtures for testing the FastAPI backend application.
 import os
 import sys
 from pathlib import Path
@@ -16,12 +17,15 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 
+# The returned dict provides paths that tests can use for database and uploads.
 @pytest.fixture(scope="session")
 def setup_test_env(tmp_path_factory: pytest.TempPathFactory) -> dict[str, str]:
+    # Create temporary directories for the test database and uploads
     db_dir = tmp_path_factory.mktemp("db")
     uploads_dir = tmp_path_factory.mktemp("uploads")
     db_path = db_dir / "test.sqlite3"
 
+    # Set environment variables for the test database and app configuration.
     os.environ["DATABASE_URL"] = f"sqlite:///{db_path}"
     os.environ["SECRET_KEY"] = "test-secret-key"
     os.environ["ALGORITHM"] = "HS256"
@@ -38,6 +42,7 @@ def setup_test_env(tmp_path_factory: pytest.TempPathFactory) -> dict[str, str]:
     }
 
 
+# creates a fresh test database schema for the entire test session and provides access to db modules
 @pytest.fixture(scope="session")
 def db_modules(setup_test_env: dict[str, str]):
     import app.db.session as db_session_module
@@ -51,6 +56,7 @@ def db_modules(setup_test_env: dict[str, str]):
     db_session_module.Base.metadata.drop_all(bind=db_session_module.engine)
 
 
+# Provides a fresh database session for each test, ensuring proper cleanup after use.
 @pytest.fixture()
 def db_session(db_modules):
     db_session_module, models_module = db_modules
@@ -62,6 +68,7 @@ def db_session(db_modules):
         session.close()
 
 
+# Automatically clean database tables after each test to ensure test isolation.
 @pytest.fixture(autouse=True)
 def clean_db_per_test(db_modules):
     db_session_module, models_module = db_modules
@@ -77,6 +84,7 @@ def clean_db_per_test(db_modules):
         session.close()
 
 
+# Returns the FastAPI app instance
 @pytest.fixture(scope="session")
 def test_app(setup_test_env: dict[str, str], db_modules):
     import app.main as main_module
@@ -84,6 +92,7 @@ def test_app(setup_test_env: dict[str, str], db_modules):
     return main_module.app
 
 
+# Provides an app instance with overridden dependencies for testing
 @pytest.fixture()
 def app_with_overrides(test_app, db_modules, tmp_path, monkeypatch):
     db_session_module, _ = db_modules
@@ -102,11 +111,14 @@ def app_with_overrides(test_app, db_modules, tmp_path, monkeypatch):
     upload_dir.mkdir(parents=True, exist_ok=True)
     monkeypatch.setattr(audio_api, "BASE_DIR", upload_dir)
 
+    # Simulates the transcription function without making external API calls.
     async def _noop_transcribe(audio_file_id: int) -> None:
         return None
 
+    # Override the actual transcription function with the no-op version for testing.
     monkeypatch.setattr(audio_api, "transcribe_audio", _noop_transcribe)
 
+    # Override the get_db dependency to provide a session from the test database for all API routes.
     def override_get_db():
         test_db = db_session_module.SessionLocal()
         try:
@@ -126,6 +138,7 @@ def app_with_overrides(test_app, db_modules, tmp_path, monkeypatch):
         app.dependency_overrides.clear()
 
 
+# Provides a TestClient instance for making API requests in tests
 @pytest.fixture()
 def test_client_cls():
     # FastAPI TestClient requires httpx via starlette.testclient.
@@ -135,6 +148,7 @@ def test_client_cls():
     return TestClient
 
 
+# Provides an authenticated TestClient instance for testing protected routes
 @pytest.fixture()
 def client(app_with_overrides, test_client_cls):
     # Use https base URL so Secure cookies are sent by the test client.
@@ -142,6 +156,7 @@ def client(app_with_overrides, test_client_cls):
         yield c
 
 
+# Helper fixture to register a user and return their credentials for testing authentication.
 @pytest.fixture()
 def register_user(client: Any) -> Callable[[str, str], dict]:
     def _register(
@@ -157,6 +172,7 @@ def register_user(client: Any) -> Callable[[str, str], dict]:
     return _register
 
 
+# Provides an authenticated client by registering a user and logging in to obtain auth cookies.
 @pytest.fixture()
 def authenticated_client(client: Any, register_user) -> Any:
     register_user("auth-user@example.com", "password123")
@@ -168,6 +184,7 @@ def authenticated_client(client: Any, register_user) -> Any:
     return client
 
 
+# Provides an admin user in the database for testing admin-only routes.
 @pytest.fixture()
 def admin_user(db_session, db_modules) -> dict[str, str]:
     _, models_module = db_modules

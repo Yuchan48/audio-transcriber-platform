@@ -1,6 +1,7 @@
 from io import BytesIO
 
 
+# upload audio file without authentication should fail
 def test_upload_requires_auth(client):
     files = {"file": ("sample.mp3", BytesIO(b"fake-audio"), "audio/mpeg")}
 
@@ -10,6 +11,7 @@ def test_upload_requires_auth(client):
     assert response.json()["detail"] == "Not authenticated"
 
 
+# upload audio file with valid authentication should succeed
 def test_upload_success_for_authenticated_user(authenticated_client):
     files = {"file": ("sample.mp3", BytesIO(b"fake-audio-bytes"), "audio/mpeg")}
 
@@ -21,6 +23,7 @@ def test_upload_success_for_authenticated_user(authenticated_client):
     assert isinstance(payload["audio_file_id"], int)
 
 
+# upload file with unsupported extension should be rejected
 def test_upload_rejects_unsupported_extension(authenticated_client):
     files = {"file": ("malware.txt", BytesIO(b"not-audio"), "text/plain")}
 
@@ -30,6 +33,7 @@ def test_upload_rejects_unsupported_extension(authenticated_client):
     assert "Unsupported file type" in response.json()["detail"]
 
 
+# upload file that exceeds max size should be rejected
 def test_upload_rejects_file_too_large(authenticated_client, monkeypatch):
     import app.utils.file_validation as file_validation
 
@@ -43,6 +47,7 @@ def test_upload_rejects_file_too_large(authenticated_client, monkeypatch):
     assert response.status_code in {403, 500}
 
 
+# upload file when user has already reached max file count should be rejected
 def test_upload_respects_max_file_count(authenticated_client, monkeypatch):
     import app.utils.file_validation as file_validation
 

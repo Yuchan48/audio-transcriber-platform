@@ -1,3 +1,4 @@
+# after successful registration response should include a user info and set auth cookie
 def test_register_success_sets_auth_cookie(client):
     response = client.post(
         "/api/auth/register",
@@ -11,6 +12,7 @@ def test_register_success_sets_auth_cookie(client):
     assert "access_token" in response.cookies
 
 
+# registering with an email that already exists should return a 400 error
 def test_register_duplicate_email_returns_400(client, register_user):
     register_user("dup@example.com", "password123")
 
@@ -23,6 +25,7 @@ def test_register_duplicate_email_returns_400(client, register_user):
     assert response.json()["detail"] == "Email already registered"
 
 
+# after successful login response should include user info and set auth cookie
 def test_login_success_sets_auth_cookie(client, register_user):
     register_user("login-user@example.com", "password123")
 
@@ -36,6 +39,7 @@ def test_login_success_sets_auth_cookie(client, register_user):
     assert "access_token" in response.cookies
 
 
+# login with invalid credentials should return a 401 error
 def test_login_invalid_credentials_returns_401(client, register_user):
     register_user("invalid-login@example.com", "password123")
 
@@ -48,6 +52,7 @@ def test_login_invalid_credentials_returns_401(client, register_user):
     assert response.json()["detail"] == "Invalid email or password"
 
 
+# logout should clear the auth cookie and return a success message
 def test_logout_clears_cookie(client, register_user):
     register_user("logout-user@example.com", "password123")
     login_response = client.post(
@@ -61,3 +66,4 @@ def test_logout_clears_cookie(client, register_user):
 
     assert response.status_code == 200
     assert response.json()["message"] == "Logout successful"
+    assert "access_token" not in client.cookies

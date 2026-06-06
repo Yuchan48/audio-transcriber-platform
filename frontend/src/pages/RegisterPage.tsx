@@ -10,6 +10,9 @@ import { validateEmail, validatePassword } from "../utils/inputValidators";
 import EyeIcon from "../components/icons/EyeIcon";
 import EyeOffIcon from "../components/icons/EyeOffIcon";
 import Spinner from "../components/icons/Spinner";
+import GitHubIcon from "../components/icons/GitHubIcon";
+
+import loginBg from "../assets/login_bg.jpg";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -78,147 +81,196 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-300 w-full max-w-screen overflow-hidden">
-      <div className="w-80 p-6 bg-white rounded-2xl shadow-lg">
-        {/* Title & Error */}
-        <h1 className="text-2xl font-semibold text-center text-gray-800">
-          Register
-        </h1>
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col">
+      <div className="flex flex-1 flex-col lg:flex-row">
+        {/* Hero Section */}
+        <div className="relative lg:w-1/2 h-104 lg:h-screen lg:flex-row">
+          <img
+            src={loginBg}
+            alt="Audio Transcriber"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
 
-        <div className="h-5 mt-2 mb-4 text-sm text-red-600 text-center">
-          {error || "\u00A0"}
+          <div className="absolute inset-0 bg-black/50" />
+
+          <div className="relative z-10 flex h-full flex-col justify-center px-8 lg:px-16 text-white">
+            <h1 className="text-3xl lg:text-5xl font-bold">
+              AI Audio
+              <br />
+              Transcriber
+            </h1>
+
+            <p className="mt-4 text-base lg:text-lg text-gray-200">
+              Transform speech into text with AI-powered transcription.
+              <br />
+              Try the live demo with the Demo Account.
+            </p>
+
+            <a
+              href="https://github.com/Yuchan48/audio-transcriber-platform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-2 text-indigo-300 hover:text-indigo-200"
+            >
+              <GitHubIcon className="h-5 w-5" />
+              View Source on GitHub
+            </a>
+          </div>
         </div>
 
-        <form className="space-y-4 text-gray-900" onSubmit={handleRegister}>
-          {/* Email input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              required
-              disabled={isLoading}
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError("");
-              }}
-              autoComplete="email"
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm
-          focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-          disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </div>
+        {/* Right Side */}
+        <div className="flex flex-1 flex-col">
+          {/* Register Container */}
+          <div className="flex flex-1 items-center justify-center p-6 flex-col">
+            <div className="w-[340px] rounded-xl bg-white border border-gray-200 shadow-xl p-6">
+              {/* Title & Error */}
+              <h1 className="text-2xl font-semibold text-center text-gray-800">
+                Register
+              </h1>
 
-          {/* Password input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <div className="mt-1 relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                disabled={isLoading}
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setError("");
-                }}
-                autoComplete="new-password"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm shadow-sm
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-            disabled:bg-gray-100 disabled:cursor-not-allowed"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
-                onClick={() => setShowPassword(!showPassword)}
+              <div className="h-5 mt-2 mb-4 text-sm text-red-600 text-center">
+                {error || "\u00A0"}
+              </div>
+
+              <form
+                className="space-y-2 text-gray-900"
+                onSubmit={handleRegister}
               >
-                {showPassword ? (
-                  <EyeOffIcon className="h-5 w-5" />
-                ) : (
-                  <EyeIcon className="h-5 w-5" />
-                )}
+                {/* Email input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    disabled={isLoading}
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setError("");
+                    }}
+                    autoComplete="email"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+
+                {/* Password input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <div className="mt-1 relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      disabled={isLoading}
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setError("");
+                      }}
+                      autoComplete="new-password"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOffIcon className="h-5 w-5" />
+                      ) : (
+                        <EyeIcon className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Confirm Password input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Confirm Password
+                  </label>
+                  <div className="mt-1 relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      required
+                      disabled={isLoading}
+                      value={confirmPassword}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                        setError("");
+                      }}
+                      autoComplete="new-password"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOffIcon className="h-5 w-5" />
+                      ) : (
+                        <EyeIcon className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Register button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 mt-4 px-4 py-2 text-white font-medium hover:bg-indigo-700 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <>
+                      <Spinner className="h-5 w-5" />
+                      Registering...
+                    </>
+                  ) : (
+                    "Register"
+                  )}
+                </button>
+              </form>
+            </div>
+
+            {/* Login Link */}
+            <div className="mt-4 text-center text-sm text-gray-500">
+              Already have an account?{" "}
+              <button
+                onClick={handleGoToLogin}
+                className="text-indigo-600 hover:underline"
+              >
+                Login
               </button>
             </div>
           </div>
 
-          {/* Confirm Password input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Confirm Password
-            </label>
-            <div className="mt-1 relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                required
-                disabled={isLoading}
-                value={confirmPassword}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  setError("");
-                }}
-                autoComplete="new-password"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm shadow-sm
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-            disabled:bg-gray-100 disabled:cursor-not-allowed"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? (
-                  <EyeOffIcon className="h-5 w-5" />
-                ) : (
-                  <EyeIcon className="h-5 w-5" />
-                )}
-              </button>
-            </div>
+          {/* Impressum */}
+          <div className="pb-6 text-center">
+            <a
+              href="/impressum"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-gray-500 hover:underline"
+            >
+              Impressum
+            </a>
           </div>
-
-          {/* Register button */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-white font-medium
-        hover:bg-indigo-700 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <>
-                <Spinner className="h-5 w-5" />
-                Registering...
-              </>
-            ) : (
-              "Register"
-            )}
-          </button>
-        </form>
-
-        {/* Login link */}
-        <div className="mt-4 text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <button
-            onClick={handleGoToLogin}
-            className="text-indigo-600 hover:underline"
-          >
-            Login
-          </button>
         </div>
       </div>
-
-      <a
-        href="/impressum"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-4 text-center text-sm text-gray-500 hover:underline absolute bottom-4"
-      >
-        Impressum
-      </a>
     </div>
   );
 };
 
 export default RegisterPage;
+
+/*
+
+
+*/

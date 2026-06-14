@@ -52,17 +52,13 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
 
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
-
     response.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=False,
-        samesite="lax",
-        # secure=True,
-        # samesite="none",
+        secure=True,
+        samesite="none",
     )
-    
     return new_user
 
 

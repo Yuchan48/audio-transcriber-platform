@@ -38,7 +38,16 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
         raise HTTPException(status_code=500, detail=f"Failed to register user: {str(e)}")
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none")
+
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        # secure=True,
+        # samesite="none",
+    )
     return new_user
 
 # User Login

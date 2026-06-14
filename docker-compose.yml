@@ -47,18 +47,15 @@ services:
       - "443:443"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./frontend/dist:/usr/share/nginx/html:ro
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - backend
 
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
+#  certbot:
+#    image: certbot/certbot
+#    container_name: certbot
+#    volumes:
+#      - ./certbot/www:/var/www/certbot
+#      - ./certbot/conf:/etc/letsencrypt
 
 volumes:
   postgres_data:

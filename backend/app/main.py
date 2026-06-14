@@ -1,5 +1,4 @@
 import os
-import asyncio
 from fastapi import FastAPI
 
 from app.routers import ws
@@ -10,10 +9,8 @@ from app.utils.init_admin import init_admin_if_not_exists
 
 from app.api import auth, audio, user
 
-load_dotenv()  # Load environment variables from .env file
+load_dotenv(override=True)  # Load environment variables from .env file
 
-app = FastAPI(title="Audio Transcriber Platform")
-app.router.redirect_slashes = False
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -31,20 +28,22 @@ async def lifespan(app: FastAPI):
     db.close()
     yield
 
+
 app = FastAPI(title="Audio Transcriber Platform", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # allow frontend origin
-    allow_credentials=True,      # important for http-only cookie auth
-    allow_methods=["*"],         # OPTIONS, GET, POST, etc.
-    allow_headers=["*"],         # Content-Type, etc.
+    allow_origins=origins,  # allow frontend origin
+    allow_credentials=True,  # important for http-only cookie auth
+    allow_methods=["*"],  # OPTIONS, GET, POST, etc.
+    allow_headers=["*"],  # Content-Type, etc.
 )
 
 
 @app.get("/")
 def root():
     return {"message": "Welcome to the Audio Transcriber Platform API!"}
+
 
 # Include the authentication router
 app.include_router(auth.router)
@@ -54,4 +53,3 @@ app.include_router(audio.router)
 app.include_router(user.router)
 # Include the WebSocket router
 app.include_router(ws.router)
-

@@ -1,11 +1,17 @@
 import os
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
+
 from alembic import context
 
 config = context.config
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL is None:
+    raise ValueError("DATABASE_URL environment variable is not set")
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 if config.config_file_name is not None:
@@ -15,18 +21,23 @@ from app.db.session import Base
 
 
 def get_metadata():
-    # 🔥 CRITICAL: force import inside function
+    # Force import inside function
     import importlib
+
     importlib.import_module("app.models.models")
 
-    print("METADATA TABLES:", Base.metadata.tables.keys())  # DEBUG
+    # print("METADATA TABLES:", Base.metadata.tables.keys())
 
     return Base.metadata
 
 
 def run_migrations_online():
+    section = config.get_section(config.config_ini_section)
+
+    if section is None:
+        raise ValueError("Database URL not found in config file")
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
+        section,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

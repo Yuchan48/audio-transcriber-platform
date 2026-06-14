@@ -438,14 +438,14 @@ After debugging issues related to Nginx routing, backend environment variables, 
 - Nginx reverse proxy instability after redeployments
 - Environment mismatch between CI runner and production Docker setup
 
-## Result
+## Rollback
 
 - Removed CI/CD from deployment pipeline
 - Reverted to direct Docker Compose deployment on VPS
 - Restored stable Nginx routing for `/api` and `/ws`
 - Confirmed backend and frontend stability in production
 
-## Final Result
+## Result
 
 ✔ Stable production deployment restored
 ✔ Nginx + Docker Compose working correctly
@@ -470,7 +470,7 @@ The problem caused authentication and API routing failures, including intermitte
 
 ---
 
-## Fix Implemented
+## Changes
 
 - Explicitly defined environment file in `docker-compose.yml`:
 
@@ -483,3 +483,206 @@ The problem caused authentication and API routing failures, including intermitte
 ## Final Result
 
 ✔ CI/CD stabilized with proper environment variable injection via Docker Compose, restoring consistent backend behavior and fully reliable deployments.
+
+# Day 12 – TypeScript Migration & License Setup
+
+## Summary
+
+Migrated the frontend from JavaScript (JS/JSX) to TypeScript (TS/TSX) and added an MIT License to the repository. The migration was done in a development branch to ensure stability and smooth CI/CD operation.
+
+---
+
+## Changes Implemented
+
+- Migrated frontend from JavaScript to TypeScript (JS → TS / JSX → TSX)
+- Added TypeScript types to core areas (API, Auth, WebSocket, Audio flow)
+- Added MIT License to repository
+- Updated project structure for TypeScript compatibility
+
+---
+
+## Notes
+
+- No runtime issues encountered during migration
+- CI/CD pipeline remained stable throughout
+- Development workflow preserved using `development` branch before merge
+
+---
+
+## Final Result
+
+✔ Frontend fully migrated to TypeScript with improved type safety
+✔ MIT License added for open-source readiness
+✔ CI/CD pipeline remains stable and unaffected
+✔ Codebase is now more maintainable and scalable
+
+# Day 13 – Code Review Improvements & Production Hardening
+
+## Summary
+
+Reviewed the project using Copilot code review feedback and improved multiple areas related to type safety, API consistency, authentication handling, database relationships, WebSocket stability, and overall production readiness.
+
+The goal was to strengthen the project as a realistic mid-level full-stack portfolio application while keeping the architecture practical and maintainable.
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Added `response_model` schemas to API endpoints
+- Improved JWT error handling with specific exception handling
+- Improved environment variable validation and typing safety
+- Replaced broad exception handling in upload flow
+- Fixed cookie logout behavior with matching cookie attributes
+- Removed duplicate `FastAPI()` initialization
+- Migrated SQLAlchemy models to typed `Mapped[...]` + `mapped_column`
+- Replaced `backref` with explicit `back_populates`
+- Added database indexes for:
+  - `audio_files.user_id`
+  - `transcriptions.audio_file_id`
+
+### Frontend
+
+- Added WebSocket reconnect strategy with exponential backoff
+- Fixed object URL cleanup to prevent browser memory leaks
+- Improved TypeScript type consistency between frontend and backend
+
+### Infrastructure & Tooling
+
+- Improved Alembic environment variable loading
+- Improved Pylance type compliance across backend code
+
+---
+
+## Notes
+
+- File uploads are intentionally limited to 5MB
+- Uploads currently use in-memory reads for simplicity and readability
+- Background processing currently uses FastAPI `BackgroundTasks`
+- WebSocket connections are currently managed in-memory for single-instance deployment
+
+---
+
+## Final Result
+
+✔ Improved backend type safety and API consistency
+✔ Improved authentication and cookie handling
+✔ Improved WebSocket reliability on frontend reconnects
+✔ Improved SQLAlchemy relationship clarity and indexing
+✔ Improved production-readiness and maintainability
+✔ Project remains intentionally lightweight and practical for portfolio scope
+
+# Day 14 – Production Hardening & CI/CD Improvements
+
+## Summary
+
+Focused on improving deployment reliability, dependency management, Docker stability, and production readiness after a second full project code review.
+
+The project was tested through:
+
+- Local production Docker builds
+- VPS deployment verification
+- CI/CD pipeline validation
+- Deployment rollback scenarios
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Improved upload and transcription exception handling
+- Added timeout and retry logic for Deepgram API requests
+- Added deployment health-check endpoint
+- Fixed Pydantic v2 compatibility warnings
+- Improved API validation error semantics
+
+### Dependency Management
+
+- Migrated from `requirements.txt` to modern `uv` workflow
+- Added:
+  - `pyproject.toml`
+  - `uv.lock`
+- Pinned project to Python 3.11
+- Improved dependency reproducibility and compatibility
+
+### Docker & Infrastructure
+
+- Rebuilt backend Docker setup using `uv`
+- Fixed container virtual environment path issues
+- Improved PostgreSQL startup ordering and health checks
+- Removed unnecessary PostgreSQL host exposure
+- Improved nginx local/production configuration
+
+### CI/CD & Deployment
+
+- Updated GitHub Actions workflow to use `uv`
+- Improved deployment rollback behavior
+- Added deployment retry/wait loop for app startup
+- Improved deployment debugging visibility
+
+---
+
+## Notes
+
+- File uploads remain intentionally limited to 5MB
+- Background processing still uses FastAPI `BackgroundTasks`
+- WebSocket connections are currently managed in-memory for single-instance deployment
+- CSRF protection is intentionally deferred for current portfolio scope
+
+---
+
+## Future Considerations
+
+- Add CSRF protection for cookie-based authentication
+- Add Redis for scalable WebSocket and background task handling
+- Add automated backend/frontend/e2e tests
+
+---
+
+## Final Result
+
+✔ Improved Docker production reliability
+✔ Improved CI/CD deployment consistency
+✔ Improved dependency reproducibility with `uv`
+✔ Improved API resilience and deployment stability
+✔ Successfully validated full production deployment workflow
+✔ Project now presents as a strong mid-level full-stack portfolio application
+
+# Day 15 – Backend & Frontend Testing
+
+## Summary
+
+Added automated backend and frontend test coverage using Copilot Agent to improve project reliability and maintainability.
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Added pytest-based API tests
+- Added auth, authorization, and upload validation tests
+- Added isolated SQLite test setup and fixtures
+
+### Frontend
+
+- Added Vitest + React Testing Library setup
+- Added component and behavior-focused tests
+- Added mocked API and WebSocket testing setup
+
+---
+
+## Notes
+
+- Production application code was intentionally left unchanged
+- CI/CD deployment ignores test-only file changes
+
+---
+
+## Final Result
+
+✔ Added backend and frontend automated tests
+✔ Improved project reliability and maintainability
+✔ Improved portfolio-level engineering quality

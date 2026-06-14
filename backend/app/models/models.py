@@ -1,44 +1,67 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
-from sqlalchemy.orm import relationship
+from sqlalchemy import Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from datetime import datetime
 from sqlalchemy.sql import func
 from app.db.session import Base
+
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    role = Column(String, default="user")
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-
-    audio_files = relationship(
-        "AudioFile",
-        backref="user",
-        cascade="all, delete-orphan"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String, nullable=False)
+    role: Mapped[str] = mapped_column(String, default="user")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
     )
+
+    audio_files: Mapped[list["AudioFile"]] = relationship(
+        "AudioFile", backref="user", cascade="all, delete-orphan"
+    )
+
 
 class AudioFile(Base):
     __tablename__ = "audio_files"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    filename = Column(String, nullable=False)
-    file_path = Column(String, nullable=False)
-    file_size = Column(Integer)
-    status = Column(String, default="uploaded")  # uploaded, processing, completed, failed
-    error_message = Column(Text, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    filename: Mapped[str] = mapped_column(String, nullable=False)
+    file_path: Mapped[str] = mapped_column(String, nullable=False)
+    file_size: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(
+        String, default="uploaded"
+    )  # uploaded, processing, completed, failed
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
 
-    transcriptions = relationship("Transcription", back_populates="audio_file", cascade="all, delete-orphan")
+    transcriptions: Mapped[list["Transcription"]] = relationship(
+        "Transcription", back_populates="audio_file", cascade="all, delete-orphan"
+    )
+
 
 class Transcription(Base):
     __tablename__ = "transcriptions"
 
-    id = Column(Integer, primary_key=True, index=True)
-    audio_file_id = Column(Integer, ForeignKey("audio_files.id",  ondelete="CASCADE"), nullable=False)
-    text = Column(Text, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    audio_file_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("audio_files.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
+    )
+    text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
-    audio_file = relationship("AudioFile", back_populates="transcriptions")
+    audio_file: Mapped["AudioFile"] = relationship(
+        "AudioFile", back_populates="transcriptions"
+    )

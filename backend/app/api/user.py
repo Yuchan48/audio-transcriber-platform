@@ -71,7 +71,8 @@ def delete_user_account(request: Request, db: Session = Depends(get_db)):
         db.commit()
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to delete user: {str(e)}")
+        print(e)
+        raise HTTPException(status_code=500, detail="Failed to delete user")
 
     return {"message": "User deleted successfully"}
 

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from app.db.session import get_db
 from app.models.models import User
 from app.schemas.auth import UserRegister, UserLogin
@@ -13,10 +14,18 @@ from app.core.jwt import create_access_token, decode_access_token
 import os
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+COOKIE_SETTINGS = {
+    "httponly": True,
+    "secure": True,
+    "samesite": "none",
+}
+
 
 # User Registration
 @router.post("/register", response_model=UserOut)
@@ -33,9 +42,14 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-    except Exception as e:
+
+    except SQLAlchemyError:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to register user: {str(e)}")
+        raise HTTPException(status_code=500, detail="Database error")
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to register user")
+
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
 
@@ -48,16 +62,18 @@ def register(user: UserRegister, response: Response, db: Session = Depends(get_d
         # secure=True,
         # samesite="none",
     )
+    
     return new_user
 
+
 # User Login
-@router.post("/login")
+@router.post("/login", response_model=UserOut)
 def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     # get user from the database
     db_user = db.query(User).filter(User.email == user.email).first()
 
     # verify password
-    if not db_user or not verify_password(user.password, db_user.hashed_password): # type: ignore
+    if not db_user or not verify_password(user.password, db_user.hashed_password):  # type: ignore
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     # If the user is the demo user, reset their data on login
@@ -66,12 +82,20 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
 
     # Create JWT token and set it as a cookie
     access_token = create_access_token({"sub": str(db_user.id), "role": db_user.role})
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none")
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        **COOKIE_SETTINGS,
+    )
     return db_user
+
 
 # User Logout
 @router.post("/logout")
 def logout(response: Response):
     # Clear the access token cookie
-    response.delete_cookie(key="access_token")
+    response.delete_cookie(
+        key="access_token",
+        **COOKIE_SETTINGS,
+    )
     return {"message": "Logout successful"}

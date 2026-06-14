@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import type React from "react";
 const allowedTypes = ["audio/mpeg", "audio/wav", "audio/mp4", "video/webm"];
 
@@ -22,6 +23,7 @@ const UploadBox = ({
     setError("");
     e.preventDefault();
     setDragging(false);
+
     const file = e.dataTransfer.files[0];
     if (file) {
       if (!allowedTypes.includes(file.type)) {
@@ -35,6 +37,7 @@ const UploadBox = ({
   // file input change handler
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
+
     const file = e.target.files?.[0];
     if (file) {
       if (!allowedTypes.includes(file.type)) {

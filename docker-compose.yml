@@ -7,8 +7,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -24,8 +22,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
     env_file:
       - ./backend/.env
     volumes:
@@ -33,14 +29,8 @@ services:
     ports:
       - "8000:8000"
 
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    volumes:
-      - ./frontend/dist:/dist
-
   nginx:
-    image: nginx:alpine
+    build: ./frontend
     container_name: nginx
     ports:
       - "80:80"

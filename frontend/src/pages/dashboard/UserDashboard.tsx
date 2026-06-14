@@ -30,7 +30,7 @@ const UserDashboard = () => {
 
   const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
 
-  const wsUpdate = useWebSocket();
+  const { data: wsUpdate, status } = useWebSocket(!!user);
 
   // fetch files
   const fetchAudioFiles = async () => {
@@ -96,6 +96,13 @@ const UserDashboard = () => {
     );
   }, [wsUpdate]);
 
+  // websocket connection status effect
+  useEffect(() => {
+    if (status === "disconnected") {
+      console.warn("WebSocket disconnected, trying to reconnect...");
+    }
+  }, [status]);
+
   // upload audio file
   const handleUploadAudio = async (file: File) => {
     if (!file) return;
@@ -104,10 +111,8 @@ const UserDashboard = () => {
       setUploading(true);
       setError("");
       await uploadAudioFile(file);
-
-      toast.success(`Audio file "${file.name}" uploaded successfully`);
-      // Refresh audio list after successful upload
       fetchAudioFiles();
+      toast.success(`Audio file "${file.name}" uploaded successfully`);
     } catch (err) {
       if (err instanceof Error) {
         setError("Error uploading audio file: " + err.message);
@@ -136,6 +141,12 @@ const UserDashboard = () => {
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
           ⚠️ You have reached the maximum limit of 20 audio files. Please delete
           some files to upload new ones.
+        </div>
+      )}
+
+      {status !== "connected" && (
+        <div className="text-xs text-yellow-600">
+          {status === "connecting" ? "Connecting..." : "Reconnecting..."}
         </div>
       )}
 

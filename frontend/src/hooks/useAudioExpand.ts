@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { fetchAudioFile, fetchAudioTranscript } from "../services/audioService";
 
@@ -45,6 +45,15 @@ export function useAudioExpand(audioFile: AudioFile) {
       }
     }
   };
+
+  useEffect(() => {
+    // revoke object URL on unmount or when audioFile changes
+    return () => {
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
+    };
+  }, [audioUrl]);
 
   return { open, toggleExpand, audioUrl, transcript, loading, fetchAudioError };
 }

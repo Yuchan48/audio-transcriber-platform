@@ -90,6 +90,22 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     return db_user
 
 
+@router.post("/google", response_model=UserOut)
+async def google_login(
+    payload: GoogleLogin, response: Response, db: Session = Depends(get_db)
+):
+    credential = payload.credential
+    try:
+        user = authenticate_google_user(db, credential)
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail=str(e))
+
+    # set cookie
+    login_user(response, user)
+
+    return user
+
+
 # User Logout
 @router.post("/logout")
 def logout(response: Response):

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // import functions
-import { register } from "../services/authService";
+import { register, loginWithGoogle } from "../services/authService";
 import { validateEmail, validatePassword } from "../utils/inputValidators";
 
 // import UI components
@@ -11,6 +11,8 @@ import EyeIcon from "../components/icons/EyeIcon";
 import EyeOffIcon from "../components/icons/EyeOffIcon";
 import Spinner from "../components/icons/Spinner";
 import GitHubIcon from "../components/icons/GitHubIcon";
+
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 
 import loginBg from "../assets/login_bg.jpg";
 
@@ -78,6 +80,27 @@ const RegisterPage = () => {
 
   const handleGoToLogin = () => {
     navigate("/login");
+  };
+
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
+    setError("");
+    try {
+      setIsLoading(true);
+
+      // Send the Google credential to the backend for verification and login
+      const user = await loginWithGoogle(credentialResponse);
+
+      // If successful, set the user in context and navigate to dashboard
+      setUser(user);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setError("Google login failed");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -237,6 +260,14 @@ const RegisterPage = () => {
                   )}
                 </button>
               </form>
+
+              {/* Google login */}
+              <div className="mt-4 rounded-lg">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => setError("Google login failed")}
+                />
+              </div>
             </div>
 
             {/* Login Link */}
@@ -269,8 +300,3 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
-
-/*
-
-
-*/

@@ -226,8 +226,13 @@ const LoginPage = () => {
               </button>
 
               {/* Google login */}
-              <div className="mt-4">
+              <div className="mt-4 flex items-center justify-center">
                 <GoogleLogin
+                  width="292"
+                  theme="outline"
+                  size="large"
+                  text="continue_with"
+                  shape="rectangular"
                   onSuccess={handleGoogleSuccess}
                   onError={() => setError("Google login failed")}
                 />

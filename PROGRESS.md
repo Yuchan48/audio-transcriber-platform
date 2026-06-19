@@ -686,3 +686,46 @@ Added automated backend and frontend test coverage using Copilot Agent to improv
 ✔ Added backend and frontend automated tests
 ✔ Improved project reliability and maintainability
 ✔ Improved portfolio-level engineering quality
+
+# Day 16 – Google OAuth & Production Testing
+
+## Summary
+
+Added Google OAuth authentication and tested the application in a Docker + Nginx production environment.
+
+---
+
+## Changes Implemented
+
+### Backend
+
+- Added Google OAuth support
+- Added OAuth user fields to the database
+- Refactored authentication logic into services
+
+### Frontend
+
+- Added Google Login button to Login and Register pages
+- Integrated Google OAuth flow
+
+### Infrastructure
+
+- Tested Docker and Nginx setup
+- Verified API, WebSocket, and cookie authentication
+- Cleaned up Alembic migrations
+
+---
+
+## Notes
+
+- Existing email/password login was preserved
+- Google users are created automatically on first login
+
+---
+
+## Final Result
+
+✔ Added Google OAuth authentication
+✔ Preserved existing login flow
+✔ Verified Docker and Nginx production setup
+✔ Improved portfolio-level user experience

@@ -46,7 +46,7 @@ A full-stack, self-hosted platform for **real-time AI transcription**. This proj
 | Layer            | Technology                                                       |
 | ---------------- | ---------------------------------------------------------------- |
 | **Frontend**     | React + TypeScript + Vite + TailwindCSS                          |
-| **Backend**      | FastAPI, BackgroundTasks, JWT auth, WebSocket                    |
+| **Backend**      | FastAPI, JWT auth, Google OAuth, BackgroundTasks, WebSocket      |
 | **Database**     | PostgreSQL + SQLAlchemy + Alembic                                |
 | **External API** | DeepGram API                                                     |
 | **Deployment**   | Docker, Docker Compose, Nginx, Linux VPS, GitHub Actions (CI/CD) |
@@ -80,7 +80,8 @@ A full-stack, self-hosted platform for **real-time AI transcription**. This proj
 ## 🛠 Skills Demonstrated
 
 - Full-stack development (React + FastAPI + PostgreSQL)
-- JWT authentication with secure cookies
+- JWT authentication with secure HTTP-only cookies
+- Google OAuth integration
 - Real-time systems using WebSockets
 - Synchronous background processing for AI workloads
 - File upload & media handling

@@ -4,13 +4,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // import functions
-import { login } from "../services/authService";
+import { login, loginWithGoogle } from "../services/authService";
 
 // import UI components
 import EyeIcon from "../components/icons/EyeIcon";
 import EyeOffIcon from "../components/icons/EyeOffIcon";
 import Spinner from "../components/icons/Spinner";
 import GitHubIcon from "../components/icons/GitHubIcon";
+
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 
 // import assets
 import loginBg from "../assets/login_bg.jpg";
@@ -56,6 +58,27 @@ const LoginPage = () => {
     } catch (error) {
       console.error(error);
       setError("Login failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
+    setError("");
+    try {
+      setIsLoading(true);
+
+      // Send the Google credential to the backend for verification and login
+      const user = await loginWithGoogle(credentialResponse);
+
+      // If successful, set the user in context and navigate to dashboard
+      setUser(user);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setError("Google login failed");
     } finally {
       setIsLoading(false);
     }
@@ -201,6 +224,19 @@ const LoginPage = () => {
               >
                 Use Demo Account
               </button>
+
+              {/* Google login */}
+              <div className="mt-4 flex items-center justify-center">
+                <GoogleLogin
+                  width="292"
+                  theme="outline"
+                  size="large"
+                  text="continue_with"
+                  shape="rectangular"
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => setError("Google login failed")}
+                />
+              </div>
             </div>
             {/* Register link */}
             <div className="mt-4 text-center text-sm text-gray-500">

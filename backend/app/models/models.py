@@ -10,7 +10,11 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
-    hashed_password: Mapped[str] = mapped_column(String, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String, nullable=True)
+
+    auth_provider: Mapped[str] = mapped_column(String, default="local")
+    provider_user_id: Mapped[str] = mapped_column(String, nullable=True)
+
     role: Mapped[str] = mapped_column(String, default="user")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

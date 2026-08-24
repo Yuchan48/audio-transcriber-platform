@@ -1,6 +1,31 @@
+import { useNavigate, useLocation } from "react-router-dom";
+
+import LeftArrow from "../components/icons/LeftArrow";
+
+const path = ["/dashboard", "/login", "/register"];
+
 const Impressum = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from;
+
+  const backPath = path.includes(from) ? from : "/login";
+
+  const handleBack = () => {
+    navigate(backPath);
+  };
+
   return (
     <div className="min-h-screen w-full bg-white px-6 py-12">
+      <button
+        type="button"
+        onClick={handleBack}
+        className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-500 mb-6"
+      >
+        <LeftArrow className="h-4 w-4" />
+        Back
+      </button>
       <div className="mx-auto max-w-3xl text-gray-800">
         <h1 className="text-4xl font-bold mb-10">Impressum</h1>
 

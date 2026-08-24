@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 
 import { AuthProvider } from "./context/AuthContext";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const root = document.getElementById("root");
 
@@ -13,9 +12,7 @@ if (!root) {
 }
 
 createRoot(root).render(
-  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </GoogleOAuthProvider>,
+  <AuthProvider>
+    <App />
+  </AuthProvider>,
 );

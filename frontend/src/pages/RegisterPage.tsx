@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // import functions
@@ -18,6 +18,7 @@ import loginBg from "../assets/login_bg.jpg";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { setUser } = useAuth();
 
@@ -308,14 +309,13 @@ const RegisterPage = () => {
 
           {/* Impressum */}
           <div className="pb-6 text-center">
-            <a
-              href="/impressum"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-gray-600 hover:underline"
+            <Link
+              to="/impressum"
+              state={{ from: location.pathname }}
+              className="w-full text-center text-sm pb-4 text-gray-600 hover:underline"
             >
               Impressum
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ import GitHubIcon from "../components/icons/GitHubIcon";
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 
 // import assets
-import loginBg from "../assets/login_bg.jpg";
+import loginBg from "../assets/login_bg.webp";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -100,6 +100,7 @@ const LoginPage = () => {
           <img
             src={loginBg}
             alt="Audio Transcriber"
+            fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"
           />
 

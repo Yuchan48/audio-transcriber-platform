@@ -130,8 +130,5 @@ A full-stack, self-hosted platform for **real-time AI transcription**. This proj
 
 <br>
 
-<img width="450" alt="audio login" src="https://github.com/user-attachments/assets/66f49788-1228-49ea-8a5c-d20980a48d26" />
+<img width="450" alt="Login" src="https://github.com/user-attachments/assets/fa94ff60-26fe-4a26-9d70-2c03e3e1d3f0" />
 
-<br>
-
-<img width="450" alt="audio register" src="https://github.com/user-attachments/assets/e685c26d-08f8-455d-8e5b-2def0c7aeb18" />

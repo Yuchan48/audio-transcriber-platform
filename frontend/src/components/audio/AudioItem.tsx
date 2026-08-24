@@ -49,7 +49,7 @@ const AudioItem = ({ audioFile, onDelete }: Props) => {
           ) : loading ? (
             <div className="flex items-center justify-center">
               <Spinner className="h-6 w-6 mr-2" />
-              <p className="text-sm text-gray-500">Loading...</p>
+              <p className="text-sm text-gray-600">Loading...</p>
             </div>
           ) : (
             <>

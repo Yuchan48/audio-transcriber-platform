@@ -69,7 +69,7 @@ const AdminAudio = () => {
       <h2 className="text-xl font-semibold">All Audio Files</h2>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] py-10 text-gray-500">
+        <div className="flex flex-col items-center justify-center min-h-[80vh] py-10 text-gray-600">
           <Spinner className="h-6 w-6 mb-2" />
           <p className="text-sm">Loading audio files...</p>
         </div>
@@ -79,7 +79,7 @@ const AdminAudio = () => {
           <span>{error}</span>
         </div>
       ) : audioFiles.length === 0 ? (
-        <p className="flex items-center justify-center min-h-[80vh] p-4 text-gray-500 text-lg">
+        <p className="flex items-center justify-center min-h-[80vh] p-4 text-gray-600 text-lg">
           No audio files available.
         </p>
       ) : (

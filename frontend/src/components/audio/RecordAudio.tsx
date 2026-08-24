@@ -94,8 +94,7 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
       toast.success(
         `Recorded audio with filename "${file.name}" uploaded successfully`,
       );
-    } catch (err) {
-      console.error("Error uploading audio file:", err);
+    } catch {
       setError("Error uploading audio");
     } finally {
       setLoading(false);
@@ -108,12 +107,12 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
       {loading ? (
         <div className="flex items-center justify-center">
           <Spinner className="h-6 w-6 mr-2" />
-          <p className="text-sm text-gray-500">Uploading...</p>
+          <p className="text-sm text-gray-600">Uploading...</p>
         </div>
       ) : !recording ? (
         <button
           onClick={startRecording}
-          className={` text-white px-4 py-2 rounded  ${disabled || loading ? "cursor-not-allowed opacity-50 bg-gray-500" : "hover:bg-blue-600 bg-blue-500"}`}
+          className={` text-white px-4 py-2 rounded  ${disabled || loading ? "cursor-not-allowed opacity-50 bg-gray-600" : "hover:bg-blue-500 bg-blue-600"}`}
           disabled={loading || disabled}
         >
           Start Recording
@@ -121,7 +120,7 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
       ) : (
         <button
           onClick={stopRecording}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 animate-pulse"
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500 animate-pulse"
         >
           ⏹ Stop Recording
         </button>

@@ -174,7 +174,7 @@ const UserDashboard = () => {
       {/* Audio list */}
       <div>
         {audioLoading ? (
-          <div className="flex flex-col items-center justify-center py-10 text-gray-500 pt-10">
+          <div className="flex flex-col items-center justify-center py-10 text-gray-600 pt-10">
             <Spinner className="h-6 w-6 mb-2" />
             <p className="text-sm">Loading audio files...</p>
           </div>

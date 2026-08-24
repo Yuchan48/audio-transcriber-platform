@@ -25,8 +25,7 @@ export function AuthProvider({ children }: Props) {
       const currentUser = await fetchCurrentUser();
       setUser(currentUser);
       return true;
-    } catch (error) {
-      console.error("[AuthContext] Failed to fetch current user:", error);
+    } catch {
       setUser(null);
       return false;
     } finally {

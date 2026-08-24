@@ -28,7 +28,7 @@ const AdminAudioItem = ({ audioFile, onDelete }: Props) => {
           <p className="text-sm text-gray-800 truncate flex-1">
             {audioFile.filename}
           </p>
-          <p className="text-xs text-gray-500 truncate">
+          <p className="text-xs text-gray-600 truncate">
             {audioFile.user_email}
           </p>
         </div>
@@ -52,7 +52,7 @@ const AdminAudioItem = ({ audioFile, onDelete }: Props) => {
           ) : loading ? (
             <div className="flex items-center justify-center">
               <Spinner className="h-6 w-6 mr-2" />
-              <p className="text-sm text-gray-500">Loading...</p>
+              <p className="text-sm text-gray-600">Loading...</p>
             </div>
           ) : (
             <>

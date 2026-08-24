@@ -1,3 +1,5 @@
+import { lazy, Suspense } from "react";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,15 +12,18 @@ import { Toaster } from "react-hot-toast";
 // Import context and routes
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminRoute from "./routes/AdminRoute";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // Import pages
 import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
-import RegisterPage from "./pages/RegisterPage";
-import AdminUsers from "./pages/dashboard/AdminUsers";
-import AdminAudio from "./pages/dashboard/AdminAudio";
-import UserDashboard from "./pages/dashboard/UserDashboard";
-import Impressum from "./pages/Impressum";
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const AdminUsers = lazy(() => import("./pages/dashboard/AdminUsers"));
+const AdminAudio = lazy(() => import("./pages/dashboard/AdminAudio"));
+const UserDashboard = lazy(() => import("./pages/dashboard/UserDashboard"));
+const Impressum = lazy(() => import("./pages/Impressum"));
+
+import Spinner from "./components/icons/Spinner";
 
 const App = () => {
   return (
@@ -56,43 +61,70 @@ const App = () => {
         }}
       />
       <Router>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
-          {/* Protected Dashboard Layout */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          >
-            {/* User Dashboard */}
-            <Route index element={<UserDashboard />} />
-            {/* Admin Routes */}
+        <Suspense
+          fallback={
+            <div className="w-screen h-screen flex items-center justify-center">
+              Loading...
+              <Spinner className="ml-6 w-12 h-12" />
+            </div>
+          }
+        >
+          <Routes>
             <Route
-              path="users"
+              path="/login"
               element={
-                <AdminRoute>
-                  <AdminUsers />
-                </AdminRoute>
+                <GoogleOAuthProvider
+                  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                >
+                  <LoginPage />
+                </GoogleOAuthProvider>
               }
             />
             <Route
-              path="all-audio"
+              path="/register"
               element={
-                <AdminRoute>
-                  <AdminAudio />
-                </AdminRoute>
+                <GoogleOAuthProvider
+                  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                >
+                  <RegisterPage />
+                </GoogleOAuthProvider>
               }
             />
-          </Route>
 
-          <Route path="/impressum" element={<Impressum />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
+            {/* Protected Dashboard Layout */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            >
+              {/* User Dashboard */}
+              <Route index element={<UserDashboard />} />
+              {/* Admin Routes */}
+              <Route
+                path="users"
+                element={
+                  <AdminRoute>
+                    <AdminUsers />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="all-audio"
+                element={
+                  <AdminRoute>
+                    <AdminAudio />
+                  </AdminRoute>
+                }
+              />
+            </Route>
+
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </Suspense>
       </Router>
     </div>
   );

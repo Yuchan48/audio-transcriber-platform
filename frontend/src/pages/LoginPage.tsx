@@ -55,8 +55,7 @@ const LoginPage = () => {
       const user = await login(email, password);
       setUser(user);
       navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
+    } catch {
       setError("Login failed");
     } finally {
       setIsLoading(false);
@@ -76,8 +75,7 @@ const LoginPage = () => {
       // If successful, set the user in context and navigate to dashboard
       setUser(user);
       navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
+    } catch {
       setError("Google login failed");
     } finally {
       setIsLoading(false);
@@ -95,7 +93,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col">
+    <main className="min-h-screen w-full bg-gray-100 flex flex-col">
       <div className="flex flex-1 flex-col lg:flex-row">
         {/* Hero Section */}
         <div className="relative lg:w-1/2 h-104 lg:h-screen lg:flex-row">
@@ -148,10 +146,14 @@ const LoginPage = () => {
               <form className="space-y-4 text-gray-900" onSubmit={handleLogin}>
                 {/* Email input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email
                   </label>
                   <input
+                    id="email"
                     type="text"
                     required
                     disabled={isLoading}
@@ -167,12 +169,16 @@ const LoginPage = () => {
 
                 {/* Password input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Password
                   </label>
 
                   <div className="mt-1 relative">
                     <input
+                      id="password"
                       type={showPassword ? "text" : "password"}
                       required
                       disabled={isLoading}
@@ -187,8 +193,11 @@ const LoginPage = () => {
 
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
+                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition w-6"
                       onClick={() => setShowPassword(!showPassword)}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showPassword ? (
                         <EyeOffIcon className="h-5 w-5" />
@@ -204,6 +213,7 @@ const LoginPage = () => {
                   type="submit"
                   disabled={isLoading}
                   className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-white font-medium mt-3 hover:bg-indigo-700 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Sign in"
                 >
                   {isLoading ? (
                     <>
@@ -221,6 +231,7 @@ const LoginPage = () => {
                 onClick={handleDemoLogin}
                 disabled={isLoading}
                 className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 font-medium mt-3 hover:bg-gray-100 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Use Demo Account"
               >
                 Use Demo Account
               </button>
@@ -239,11 +250,12 @@ const LoginPage = () => {
               </div>
             </div>
             {/* Register link */}
-            <div className="mt-4 text-center text-sm text-gray-500">
+            <div className="mt-4 text-center text-sm text-gray-600">
               Don’t have an account?{" "}
               <button
                 onClick={handleGoToRegister}
                 className="text-indigo-600 hover:underline"
+                aria-label="Go to Register Page"
               >
                 Register
               </button>
@@ -256,14 +268,14 @@ const LoginPage = () => {
               href="/impressum"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-gray-500 hover:underline"
+              className="text-sm text-gray-600 hover:underline"
             >
               Impressum
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

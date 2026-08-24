@@ -45,7 +45,7 @@ const Dashboard = () => {
           href="/impressum"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full text-center text-sm pb-4 text-gray-500 hover:underline"
+          className="w-full text-center text-sm pb-4 text-gray-600 hover:underline"
         >
           Impressum
         </a>

@@ -65,12 +65,12 @@ const UploadBox = ({
       }}
       className={`
         border-2 border-dashed rounded p-6 text-center transition
-        ${dragging && !uploading && !disabled ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white"}
+        ${dragging && !uploading && !disabled ? "border-blue-600 bg-blue-50" : "border-gray-300 bg-white"}
       `}
     >
       <p className="text-gray-600 mb-2">Drag & drop audio here</p>
 
-      <p className="text-sm text-gray-400 mb-3">or</p>
+      <p className="text-sm text-gray-600 mb-3">or</p>
 
       {/* Hidden input */}
       <input
@@ -85,16 +85,16 @@ const UploadBox = ({
       {/*  Custom button */}
       <label
         htmlFor="file-upload"
-        className={`inline-block cursor-pointer text-white px-4 py-2 rounded transition text-sm ${uploading || disabled ? "opacity-50 cursor-not-allowed bg-gray-600" : "hover:bg-blue-600 bg-blue-500"}`}
+        className={`inline-block cursor-pointer text-white px-4 py-2 rounded transition text-sm ${uploading || disabled ? "opacity-50 cursor-not-allowed bg-gray-600" : "hover:bg-blue-500 bg-blue-600"}`}
       >
         Choose File
       </label>
 
-      <p className="text-xs text-gray-400 mt-2">
+      <p className="text-xs text-gray-600 mt-2">
         Allowed formats: MP3, WAV, M4A, MP4, WEBM • Max size: 5MB
       </p>
 
-      {uploading && <p className="text-blue-500 mt-3">Uploading...</p>}
+      {uploading && <p className="text-blue-600 mt-3">Uploading...</p>}
     </div>
   );
 };

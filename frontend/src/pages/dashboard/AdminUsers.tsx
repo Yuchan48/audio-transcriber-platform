@@ -73,13 +73,13 @@ const AdminUsers = () => {
 
       {/* Loading */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] py-10 text-gray-500">
+        <div className="flex flex-col items-center justify-center min-h-[80vh] py-10 text-gray-600">
           <Spinner className="h-6 w-6 mb-2" />
           <p className="text-sm">Loading users...</p>
         </div>
       ) : users.length === 0 ? (
         /* When no users are found */
-        <div className="flex flex-col items-center justify-center text-center py-10 text-gray-500 text-lg min-h-[80vh]">
+        <div className="flex flex-col items-center justify-center text-center py-10 text-gray-600 text-lg min-h-[80vh]">
           No users found.
         </div>
       ) : (
@@ -92,7 +92,7 @@ const AdminUsers = () => {
             >
               <div className="min-w-0">
                 <p className="truncate">{u.email}</p>
-                <p className="text-xs text-gray-500">{u.role}</p>
+                <p className="text-xs text-gray-600">{u.role}</p>
               </div>
 
               {u.role !== "admin" && (

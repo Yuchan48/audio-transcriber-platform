@@ -40,7 +40,7 @@ export default function Navbar({ onMenuClick }: Props) {
 
         <button
           onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
+          className="bg-red-600 hover:bg-red-600 text-white px-3 py-1 rounded transition"
         >
           Logout
         </button>

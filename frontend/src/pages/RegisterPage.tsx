@@ -95,8 +95,7 @@ const RegisterPage = () => {
       // If successful, set the user in context and navigate to dashboard
       setUser(user);
       navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
+    } catch {
       setError("Google login failed");
     } finally {
       setIsLoading(false);
@@ -104,7 +103,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col">
+    <main className="min-h-screen w-full bg-gray-100 flex flex-col">
       <div className="flex flex-1 flex-col lg:flex-row">
         {/* Hero Section */}
         <div className="relative lg:w-1/2 h-104 lg:h-screen lg:flex-row">
@@ -161,10 +160,14 @@ const RegisterPage = () => {
               >
                 {/* Email input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email
                   </label>
                   <input
+                    id="email"
                     type="email"
                     required
                     disabled={isLoading}
@@ -180,11 +183,15 @@ const RegisterPage = () => {
 
                 {/* Password input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Password
                   </label>
                   <div className="mt-1 relative">
                     <input
+                      id="password"
                       type={showPassword ? "text" : "password"}
                       required
                       disabled={isLoading}
@@ -200,6 +207,9 @@ const RegisterPage = () => {
                       type="button"
                       className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
                       onClick={() => setShowPassword(!showPassword)}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showPassword ? (
                         <EyeOffIcon className="h-5 w-5" />
@@ -212,11 +222,15 @@ const RegisterPage = () => {
 
                 {/* Confirm Password input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Confirm Password
                   </label>
                   <div className="mt-1 relative">
                     <input
+                      id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       required
                       disabled={isLoading}
@@ -234,6 +248,9 @@ const RegisterPage = () => {
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
+                      aria-label={
+                        showConfirmPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showConfirmPassword ? (
                         <EyeOffIcon className="h-5 w-5" />
@@ -249,6 +266,7 @@ const RegisterPage = () => {
                   type="submit"
                   disabled={isLoading}
                   className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 mt-4 px-4 py-2 text-white font-medium hover:bg-indigo-700 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Register"
                 >
                   {isLoading ? (
                     <>
@@ -276,11 +294,12 @@ const RegisterPage = () => {
             </div>
 
             {/* Login Link */}
-            <div className="mt-4 text-center text-sm text-gray-500">
+            <div className="mt-4 text-center text-sm text-gray-600">
               Already have an account?{" "}
               <button
                 onClick={handleGoToLogin}
                 className="text-indigo-600 hover:underline"
+                aria-label="Go to Login Page"
               >
                 Login
               </button>
@@ -293,14 +312,14 @@ const RegisterPage = () => {
               href="/impressum"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-gray-500 hover:underline"
+              className="text-sm text-gray-600 hover:underline"
             >
               Impressum
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -13,7 +13,7 @@ const AudioList = ({ audioFiles, onDelete }: Props) => {
     <>
       {!audioFiles || audioFiles.length === 0 ? (
         /* When no audio files exist */
-        <div className="p-4 text-center text-gray-500 pt-10">
+        <div className="p-4 text-center text-gray-600 pt-10">
           No audio files uploaded yet.
         </div>
       ) : (

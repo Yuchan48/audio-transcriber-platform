@@ -96,13 +96,6 @@ const UserDashboard = () => {
     );
   }, [wsUpdate]);
 
-  // websocket connection status effect
-  useEffect(() => {
-    if (status === "disconnected") {
-      console.warn("WebSocket disconnected, trying to reconnect...");
-    }
-  }, [status]);
-
   // upload audio file
   const handleUploadAudio = async (file: File) => {
     if (!file) return;

@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 // import UI components
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 
 const Dashboard = () => {
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -40,15 +41,13 @@ const Dashboard = () => {
         </main>
 
         {/* Footer */}
-
-        <a
-          href="/impressum"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/impressum"
+          state={{ from: location.pathname }}
           className="w-full text-center text-sm pb-4 text-gray-600 hover:underline"
         >
           Impressum
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -36,8 +36,8 @@ export default function useWebSocket(enabled: boolean) {
       };
 
       // Handle errors
-      ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
+      ws.onerror = () => {
+        setStatus("disconnected");
       };
       ws.onclose = () => {
         if (isUnmounted) return;

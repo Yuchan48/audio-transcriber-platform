@@ -729,3 +729,36 @@ Added Google OAuth authentication and tested the application in a Docker + Nginx
 ✔ Preserved existing login flow
 ✔ Verified Docker and Nginx production setup
 ✔ Improved portfolio-level user experience
+
+# Day 17 – Lighthouse, Accessibility & Production Improvements
+
+## Summary
+
+Tested the application with Lighthouse and improved accessibility, SEO, error handling, and Nginx production configuration.
+
+---
+
+## Changes Implemented
+
+### Frontend
+
+- Added Lighthouse performance, accessibility, and SEO checks
+- Improved accessibility with form labels and metadata
+- Added meta description and SEO tags
+- Improved form and API error handling
+
+### Infrastructure
+
+- Updated Nginx configuration for asset caching and performance
+- Added security headers and HTTPS-related protections
+- Fixed `robots.txt` handling
+
+---
+
+## Final Result
+
+✔ Improved accessibility and SEO
+✔ Improved error handling
+✔ Improved Lighthouse performance
+✔ Hardened Nginx production configuration
+✔ Improved overall production readiness

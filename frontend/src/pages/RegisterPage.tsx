@@ -14,7 +14,7 @@ import GitHubIcon from "../components/icons/GitHubIcon";
 
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 
-import loginBg from "../assets/login_bg.jpg";
+import loginBg from "../assets/login_bg.webp";
 
 const RegisterPage = () => {
   const navigate = useNavigate();

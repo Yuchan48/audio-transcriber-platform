@@ -10,14 +10,14 @@ const mocks = vi.hoisted(() => ({
 }));
 
 // Mock the useAuth hook to simulate an authenticated user context
-vi.mock("../src/context/AuthContext", () => ({
+vi.mock("../../src/context/AuthContext", () => ({
   useAuth: () => ({
     user: { id: 1, email: "user@example.com" },
   }),
 }));
 
 // Mock the useWebSocket hook to prevent actual WebSocket connections during tests
-vi.mock("../src/hooks/useWebSocket", () => ({
+vi.mock("../../src/hooks/useWebSocket", () => ({
   default: () => ({ data: null, status: "connected" }),
 }));
 
@@ -29,7 +29,7 @@ vi.mock("react-hot-toast", () => ({
 }));
 
 // Mock the audioService to control API interactions during tests
-vi.mock("../src/services/audioService", () => ({
+vi.mock("../../src/services/audioService", () => ({
   getAudioFiles: mocks.getAudioFiles,
   uploadAudioFile: mocks.uploadAudioFile,
   deleteAudioFile: vi.fn(),
@@ -38,7 +38,7 @@ vi.mock("../src/services/audioService", () => ({
   fetchAllAudioFiles: vi.fn(),
 }));
 
-import UserDashboard from "../src/pages/dashboard/UserDashboard";
+import UserDashboard from "../../src/pages/dashboard/UserDashboard";
 
 // Clear all mocks after each test
 afterEach(() => {

@@ -1,7 +1,6 @@
-// @vitest-environment jsdom
-
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
 
 const mocks = vi.hoisted(() => ({
   login: vi.fn(),
@@ -10,15 +9,19 @@ const mocks = vi.hoisted(() => ({
   setSkipAuthCheck: vi.fn(),
 }));
 
-vi.mock("../src/services/authService", () => ({
+vi.mock("../../src/services/authService", () => ({
   login: mocks.login,
 }));
 
-vi.mock("../src/context/AuthContext", () => ({
+vi.mock("../../src/context/AuthContext", () => ({
   useAuth: () => ({
     setUser: mocks.setUser,
     setSkipAuthCheck: mocks.setSkipAuthCheck,
   }),
+}));
+
+vi.mock("@react-oauth/google", () => ({
+  GoogleLogin: () => <button>Continue with Google</button>,
 }));
 
 // Mock the react-router-dom library to control navigation behavior during tests
@@ -35,7 +38,7 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-import LoginPage from "../src/pages/LoginPage";
+import LoginPage from "../../src/pages/LoginPage";
 
 // Clear all mocks after each test
 afterEach(() => {
@@ -49,7 +52,11 @@ describe("LoginPage", () => {
     // Mock the login function to resolve with a user object when called with valid credentials
     mocks.login.mockResolvedValueOnce(user);
 
-    const { container } = render(<LoginPage />);
+    const { container } = render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>,
+    );
     // get the email and password input fields from the rendered component
     const emailInput = container.querySelector('input[type="text"]');
     const passwordInput = container.querySelector('input[type="password"]');
@@ -86,7 +93,11 @@ describe("LoginPage", () => {
       .mockImplementation(() => {});
 
     // Render the LoginPage component and simulate user input for email and password fields with invalid credentials, then submit the form
-    const { container } = render(<LoginPage />);
+    const { container } = render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>,
+    );
     const emailInput = container.querySelector('input[type="text"]');
     const passwordInput = container.querySelector('input[type="password"]');
 

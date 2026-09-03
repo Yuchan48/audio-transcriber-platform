@@ -3,7 +3,7 @@
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import useWebSocket from "../src/hooks/useWebSocket";
+import useWebSocket from "../../src/hooks/useWebSocket";
 
 // A mock WebSocket class to simulate WebSocket behavior in tests without making real network connections
 class MockWebSocket {
@@ -58,6 +58,7 @@ afterEach(() => {
   cleanup();
   MockWebSocket.instances = [];
   vi.unstubAllGlobals();
+  vi.useRealTimers();
   vi.clearAllMocks();
 });
 
@@ -102,5 +103,37 @@ describe("useWebSocket", () => {
     // Assert that the UI updates to show the received transcription and audio ID
     expect(await screen.findByText(/transcription finished/i)).toBeTruthy();
     expect(screen.getByTestId("audio-id").textContent).toBe("42");
+  });
+
+  // Test that the hook attempts to reconnect when the WebSocket connection is closed unexpectedly
+  it("reconnects when the WebSocket connection closes", async () => {
+    vi.useFakeTimers();
+
+    vi.stubGlobal("WebSocket", MockWebSocket as unknown as typeof WebSocket);
+
+    render(<WebSocketHarness />);
+
+    expect(MockWebSocket.instances).toHaveLength(1);
+
+    act(() => {
+      MockWebSocket.instances[0]?.emitOpen();
+    });
+
+    act(() => {
+      MockWebSocket.instances[0]?.onclose?.(new CloseEvent("close"));
+    });
+
+    expect(screen.getByTestId("connection-status").textContent).toBe(
+      "disconnected",
+    );
+
+    // First reconnect uses a 1-second delay.
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+
+    expect(MockWebSocket.instances).toHaveLength(2);
+
+    vi.useRealTimers();
   });
 });

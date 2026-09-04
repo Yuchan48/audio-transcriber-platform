@@ -1,110 +1,161 @@
-# 🔊 AI-Driven Audio Transcriber Platform (Full-Stack SaaS)
+# 🔊 AI-Driven Audio Transcriber Platform
 
-### 🔑 Demo Access
+A full-stack, self-hosted SaaS platform for **real-time AI audio transcription**, featuring secure authentication, role-based access control, file management, background processing, real-time updates, automated testing, and production deployment.
 
-🚀 [Live Demo](https://audio-transcriber.duckdns.org)
+**Frontend:** React + TypeScript + Vite
+**Backend:** FastAPI + PostgreSQL
+**Transcription:** Deepgram API
+
+## 🔑 Demo
+
+🚀 **[Live Demo](https://audio-transcriber.duckdns.org)**
 
 Use the demo account to explore:
 
-- Upload audio files and view real-time transcription progress.
-- Record audio directly in the browser (up to 30 seconds per recording).
-- View completed transcriptions in the dashboard.
+- Upload audio files and view real-time transcription progress
+- Record audio directly in the browser (up to 30 seconds)
+- View and delete uploaded files
+- View completed transcriptions and play audio
 
-<img width="500" alt="dashboard my files audio" src="https://github.com/user-attachments/assets/d02db83e-e168-48c7-875d-c05a15ff9863" />
-<br><br>
+<img width="500" alt="Dashboard" src="https://github.com/user-attachments/assets/d02db83e-e168-48c7-875d-c05a15ff9863" />
 
-A full-stack, self-hosted platform for **real-time AI transcription**. This project demonstrates **user-focused SaaS development**, including secure authentication, file management, asynchronous processing, database design, and real-time updates. The backend uses **FastAPI + PostgreSQL**, the frontend is **React + Vite**, and transcription is powered by **DeepGram API**.
+<br>
 
----
+> ⚠️ For the best demo experience, use short audio clips (≤30 seconds).
 
 ## 🚀 Features
 
-### Authentication & Roles
+- **Audio Management:** Upload and browser-based recording with support for MP3, WAV, M4A, MP4, and WEBM files, with configurable file size and user limits.
+- **Real-Time Transcription:** Background processing through FastAPI `BackgroundTasks`, Deepgram API integration, and WebSocket-based status updates.
+- **Playback & Transcripts:** Play completed recordings and view their generated transcripts.
+- **Admin Management:** Administrators can manage users and audio files across the system.
 
-| Role      | Permissions                                                                                                                                       |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **User**  | - Register & log in<br>- Upload/record audio<br>- View & delete own files<br>- See transcription status and text                                  |
-| **Admin** | - All user permissions<br>- View all users and all audio files<br>- Delete any audio file or user<br>- Monitor system-wide transcription progress |
+## 🔐 Authentication & Security
 
----
-
-### Audio Management
-
-- **Upload & Record:** Supports file upload + in-browser recording (MediaRecorder API)
-- **Supported formats:** MP3, WAV, M4A, MP4, WEBM
-- **Limits:** max 5MB per file, max 20 files per user
-- **Delete files:** Users can delete their own files; admins can delete any file
-- **Transcription:** Background task sends audio to DeepGram API and updates status in real time
-- **Playback:** Completed files include built-in audio player + transcript viewer
-
-> ⚠️ Note: For best demo experience, use short audio clips (≤30 seconds). Large files may fail depending on API limits.
-
----
+- JWT authentication with HTTP-only cookies
+- Google OAuth integration
+- Role-based access control for users and admins
+- Server-side authorization and file ownership checks
+- Protected API endpoints
+- HTTPS with Nginx and Let's Encrypt
+- Security headers including HSTS and `X-Frame-Options`
 
 ## 🛠 Tech Stack
 
-| Layer            | Technology                                                       |
-| ---------------- | ---------------------------------------------------------------- |
-| **Frontend**     | React + TypeScript + Vite + TailwindCSS                          |
-| **Backend**      | FastAPI, JWT auth, Google OAuth, BackgroundTasks, WebSocket      |
-| **Database**     | PostgreSQL + SQLAlchemy + Alembic                                |
-| **External API** | DeepGram API                                                     |
-| **Deployment**   | Docker, Docker Compose, Nginx, Linux VPS, GitHub Actions (CI/CD) |
+| Layer        | Technology                                       |
+| ------------ | ------------------------------------------------ |
+| Frontend     | React (Vite), TypeScript, TailwindCSS            |
+| Backend      | FastAPI, Python, JWT, Google OAuth, WebSockets   |
+| Database     | PostgreSQL, SQLAlchemy, Alembic                  |
+| External API | Deepgram                                         |
+| Testing      | Vitest, pytest, Playwright                       |
+| Deployment   | Docker Compose, Nginx, Linux VPS, GitHub Actions |
 
----
+## 🏗 Architecture
 
-## ⚙️ Security Considerations
+```text
+Browser
+   │
+   ▼
+ Nginx
+   │
+   ├── React / Vite frontend
+   │
+   ├── REST API ──────────► FastAPI
+   │                          │
+   │                          ├── PostgreSQL
+   │                          ├── File Storage
+   │                          └── Deepgram API
+   │
+   └── WebSocket ─────────► FastAPI
+```
 
-- JWT stored in **HTTP-only cookies**
-- Role-based access control (user/admin separation)
-- Protected backend routes with dependency injection
-- Admin endpoints restricted server-side (not frontend-only)
-- File ownership enforced at database level
+The application uses Nginx as a reverse proxy for the frontend, REST API, and WebSocket connections.
 
----
+Transcription is handled through FastAPI background tasks so that the upload request is not blocked while audio is being processed.
 
-## 🏗 Architecture Philosophy
+## ⚙️ Development Setup
 
-- Synchronous transcription managed via FastAPI `BackgroundTasks` to ensure non-blocking user sessions
-- WebSocket-based per-user real-time updates and transcription delivery
-- Deepgram transcription requests use timeout (30 seconds) + retry/backoff (3 times) handling to improve resilience against transient API/network failures
-- File storage on server filesystem (`/uploads`)
-- PostgreSQL relational schema:
-  - users
-  - audio_files
-  - transcriptions
-- Nginx used as reverse proxy for API + frontend
+### Prerequisites
 
----
+- Docker
+- Docker Compose
 
-## 🛠 Skills Demonstrated
+### 1. Clone the repository
 
-- Full-stack development (React + FastAPI + PostgreSQL)
-- JWT authentication with secure HTTP-only cookies
-- Google OAuth integration
-- Real-time systems using WebSockets
-- Synchronous background processing for AI workloads
-- File upload & media handling
-- Admin/user role-based system design
-- Dockerized production deployment
-- End-to-end AI integration (Deepgram API)
-- Automated CI/CD workflows (GitHub Actions)
+```bash
+git clone <repository-url>
+cd audio-transcriber-platform
+```
 
----
+### 2. Configure environment variables
 
-## ⚠️ Current Limitations / Future Improvements
+Review the `.env.example` files in the root, `frontend`, and `backend` directories and create the corresponding `.env` files with your configuration.
 
-- Background transcription currently uses FastAPI `BackgroundTasks`; Redis/Celery-style durable queues are planned for larger-scale deployments.
-- WebSocket connection state is currently process-local and not horizontally distributed.
-- CSRF protection is not yet implemented because the project is currently intended as a portfolio/demo deployment.
+Do not commit `.env` files or API credentials.
 
----
+### 3. Run the Application
 
-## 🔗 Live Demo
+Start the application with Docker Compose:
 
-- 🌐 [https://audio-transcriber.duckdns.org](https://audio-transcriber.duckdns.org)
-  - Demo login available for recruiters
-  - Try upload / record / transcription flow
+```bash
+docker compose up -d --build
+```
+
+The application is served through Nginx.
+
+### 4. Run Tests
+
+The project includes unit, integration, and end-to-end tests.
+
+#### Frontend Unit and Integration Tests
+
+```bash
+cd frontend
+npm test
+```
+
+#### Backend Tests
+
+```bash
+cd backend
+pytest
+```
+
+#### End-to-End Tests
+
+Start the E2E environment:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d --build
+```
+
+Then run the Playwright tests:
+
+```bash
+cd frontend
+npm run test:e2e
+```
+
+The Playwright E2E suite covers:
+
+- Demo account login
+- Unauthenticated dashboard access
+- Invalid login credentials
+- Audio upload
+- Audio deletion
+
+E2E tests are located in:
+
+```text
+frontend/e2e/demo-account-flow.spec.ts
+```
+
+## ⚠️ Current Limitations
+
+- Transcription currently uses FastAPI `BackgroundTasks`; a durable task queue would be more suitable for larger-scale deployments.
+- WebSocket state is process-local and would require additional infrastructure for horizontal scaling.
+- CSRF protection is not currently implemented.
 
 ---
 
@@ -131,4 +182,3 @@ A full-stack, self-hosted platform for **real-time AI transcription**. This proj
 <br>
 
 <img width="450" alt="Login" src="https://github.com/user-attachments/assets/fa94ff60-26fe-4a26-9d70-2c03e3e1d3f0" />
-

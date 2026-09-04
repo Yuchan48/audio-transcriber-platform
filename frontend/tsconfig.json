@@ -12,7 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
 
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
 
     // For nodejs:
@@ -49,5 +49,5 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "e2e"]
 }

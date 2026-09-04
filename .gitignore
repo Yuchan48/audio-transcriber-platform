@@ -32,3 +32,12 @@ frontend/memo.txt
 .env
 memo.txt
 roadmap.txt
+
+
+# Playwright
+**/node_modules/
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/playwright/.cache/
+**/playwright/.auth/

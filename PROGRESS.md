@@ -67,6 +67,8 @@ Initialized the Audio Transcriber Platform project as a production-ready full-st
 - Repetition of JWT validation in each route
   - Planned refactor to use `Depends(get_current_user)` to remove duplicate validation
 
+<br>
+
 # Day 2 – Audio Management & DeepGram Integration
 
 ## Summary
@@ -118,6 +120,8 @@ Implemented full audio management functionality in FastAPI. Added audio upload, 
 - Some audio files initially failed due to incorrect MIME type headers — fixed using dynamic MIME detection and normalization.
 - Background task exceptions were previously swallowed — added logging for easier debugging.
 
+<br>
+
 # Day 3 – Frontend Implementation & CORS Configuration
 
 ## Summary
@@ -159,6 +163,8 @@ Implemented the frontend for the Audio Transcriber Platform using React + Vite +
 - Preflight OPTIONS requests from React caused 405 errors until CORS middleware was properly configured.
 - Ensured `credentials: "include"` in fetch calls to send cookies for http-only authentication.
 
+<br>
+
 # Day 4 – Dashboard Implementation, Services, and WebSocket Setup
 
 ## Summary
@@ -195,6 +201,8 @@ Implemented the main **Dashboard** for users, including audio file management an
     - React Strict Mode creating double connection attempts.
   - Resolved by including router, installing required package, and disabling Strict Mode in frontend development.
 
+<br>
+
 # Day 5 – Role-Based Access, UI Refactor, and Upload Improvements
 
 ## Summary
@@ -228,6 +236,8 @@ Improved backend security and frontend UX by introducing strict role-based acces
 - Required strict backend validation for admin-only routes.
 - Adjusted cascade delete logic to prevent unintended data loss.
 - Iterative UI fixes for mobile sidebar responsiveness.
+
+<br>
 
 # Day 6 – WebSocket Stabilization, Audio Playback, and UX Improvements
 
@@ -270,6 +280,8 @@ Improved real-time transcription reliability by fixing WebSocket async/thread ha
 - WebSocket updates initially failed due to incorrect event loop usage in background tasks.
 - Expandable UI bug caused unintended API calls when deleting audio items.
 - Duplicate filename issue resolved using UUID-based naming strategy.
+
+<br>
 
 # Day 7 – Auth Flow Stabilization, Role-Based Routing, and System Cleanup
 
@@ -320,6 +332,8 @@ Improved authentication flow reliability, introduced role-based routing guards, 
 - Orphaned audio files remained after user deletion due to missing filesystem cleanup.
 - Minor routing inconsistencies before introducing role-based route guards.
 
+<br>
+
 # Day 8 – Docker Production Stabilization & Full-Stack Deployment Readiness
 
 ## Summary
@@ -365,14 +379,7 @@ Completed full production readiness testing using Docker Compose. Resolved criti
 - Docker volume conflicts overwriting frontend dependencies.
 - Node build instability due to incorrect dependency installation strategy.
 
-## Result
-
-✔ Database migrations fully stable inside Docker
-✔ Backend startup consistent and production-safe
-✔ Frontend builds successfully in isolated environment
-✔ Nginx serves React frontend correctly
-✔ Full-stack app runs via single Docker Compose command
-✔ Application accessible locally via production-like setup
+<br>
 
 # Day 9 – Production Deployment & Full System Stabilization
 
@@ -407,14 +414,7 @@ Successfully deployed the full-stack Audio Transcriber Platform to a production 
 - Corrected reverse proxy configuration for API and WebSocket routes
 - Ensured stable Docker startup order (Postgres → Backend → Build)
 
-## Result
-
-✔ Full-stack app deployed on VPS
-✔ HTTPS enabled with valid SSL certificate
-✔ React frontend served via Nginx
-✔ FastAPI backend running in Docker
-✔ WebSocket real-time transcription working in production
-✔ Audio upload, playback, and transcription fully functional
+<br>
 
 # Day 10 – CI/CD Experiment & Deployment Stabilization
 
@@ -445,12 +445,7 @@ After debugging issues related to Nginx routing, backend environment variables, 
 - Restored stable Nginx routing for `/api` and `/ws`
 - Confirmed backend and frontend stability in production
 
-## Result
-
-✔ Stable production deployment restored
-✔ Nginx + Docker Compose working correctly
-✔ API and WebSocket routing fixed
-✔ Simplified deployment improved reliability
+<br>
 
 # Day 11 – CI/CD Fix & Environment Configuration Stabilization
 
@@ -480,9 +475,7 @@ The problem caused authentication and API routing failures, including intermitte
       - ./backend/.env
   ```
 
-## Final Result
-
-✔ CI/CD stabilized with proper environment variable injection via Docker Compose, restoring consistent backend behavior and fully reliable deployments.
+<br>
 
 # Day 12 – TypeScript Migration & License Setup
 
@@ -507,14 +500,7 @@ Migrated the frontend from JavaScript (JS/JSX) to TypeScript (TS/TSX) and added 
 - CI/CD pipeline remained stable throughout
 - Development workflow preserved using `development` branch before merge
 
----
-
-## Final Result
-
-✔ Frontend fully migrated to TypeScript with improved type safety
-✔ MIT License added for open-source readiness
-✔ CI/CD pipeline remains stable and unaffected
-✔ Codebase is now more maintainable and scalable
+<br>
 
 # Day 13 – Code Review Improvements & Production Hardening
 
@@ -562,16 +548,7 @@ The goal was to strengthen the project as a realistic mid-level full-stack portf
 - Background processing currently uses FastAPI `BackgroundTasks`
 - WebSocket connections are currently managed in-memory for single-instance deployment
 
----
-
-## Final Result
-
-✔ Improved backend type safety and API consistency
-✔ Improved authentication and cookie handling
-✔ Improved WebSocket reliability on frontend reconnects
-✔ Improved SQLAlchemy relationship clarity and indexing
-✔ Improved production-readiness and maintainability
-✔ Project remains intentionally lightweight and practical for portfolio scope
+<br>
 
 # Day 14 – Production Hardening & CI/CD Improvements
 
@@ -631,24 +608,7 @@ The project was tested through:
 - WebSocket connections are currently managed in-memory for single-instance deployment
 - CSRF protection is intentionally deferred for current portfolio scope
 
----
-
-## Future Considerations
-
-- Add CSRF protection for cookie-based authentication
-- Add Redis for scalable WebSocket and background task handling
-- Add automated backend/frontend/e2e tests
-
----
-
-## Final Result
-
-✔ Improved Docker production reliability
-✔ Improved CI/CD deployment consistency
-✔ Improved dependency reproducibility with `uv`
-✔ Improved API resilience and deployment stability
-✔ Successfully validated full production deployment workflow
-✔ Project now presents as a strong mid-level full-stack portfolio application
+<br>
 
 # Day 15 – Backend & Frontend Testing
 
@@ -679,13 +639,7 @@ Added automated backend and frontend test coverage using Copilot Agent to improv
 - Production application code was intentionally left unchanged
 - CI/CD deployment ignores test-only file changes
 
----
-
-## Final Result
-
-✔ Added backend and frontend automated tests
-✔ Improved project reliability and maintainability
-✔ Improved portfolio-level engineering quality
+<br>
 
 # Day 16 – Google OAuth & Production Testing
 
@@ -721,14 +675,7 @@ Added Google OAuth authentication and tested the application in a Docker + Nginx
 - Existing email/password login was preserved
 - Google users are created automatically on first login
 
----
-
-## Final Result
-
-✔ Added Google OAuth authentication
-✔ Preserved existing login flow
-✔ Verified Docker and Nginx production setup
-✔ Improved portfolio-level user experience
+<br>
 
 # Day 17 – Lighthouse, Accessibility & Production Improvements
 
@@ -753,12 +700,28 @@ Tested the application with Lighthouse and improved accessibility, SEO, error ha
 - Added security headers and HTTPS-related protections
 - Fixed `robots.txt` handling
 
+<br>
+
+# Day 18 – End-to-End Testing with Playwright
+
+## Summary
+
+Added end-to-end testing with Playwright to verify critical user flows through the production-like Nginx environment.
+
 ---
 
-## Final Result
+## Changes Implemented
 
-✔ Improved accessibility and SEO
-✔ Improved error handling
-✔ Improved Lighthouse performance
-✔ Hardened Nginx production configuration
-✔ Improved overall production readiness
+### E2E Testing
+
+- Added Playwright E2E test setup with Docker and Nginx
+- Tested demo account login and authentication protection
+- Tested invalid login handling
+- Tested audio upload and deletion flows
+
+<br>
+
+# Future Considerations
+
+- Add CSRF protection for cookie-based authentication
+- Add Redis for scalable WebSocket and background task handling

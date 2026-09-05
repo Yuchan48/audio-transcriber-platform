@@ -5,6 +5,13 @@ import App from "./App";
 
 import { AuthProvider } from "./context/AuthContext";
 
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_DSN,
+  environment: import.meta.env.MODE,
+});
+
 const root = document.getElementById("root");
 
 if (!root) {
@@ -12,7 +19,15 @@ if (!root) {
 }
 
 createRoot(root).render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>,
+  <Sentry.ErrorBoundary
+    fallback={
+      <div className="w-full h-screen flex items-center justify-center">
+        Something went wrong. Please refresh the page and try again.
+      </div>
+    }
+  >
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </Sentry.ErrorBoundary>,
 );

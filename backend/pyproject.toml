@@ -17,6 +17,7 @@ dependencies = [
     "python-jose>=3.5.0",
     "python-multipart>=0.0.29",
     "requests>=2.34.2",
+    "sentry-sdk>=2.68.1",
     "sqlalchemy>=2.0.49",
     "uvicorn[standard]>=0.48.0",
     "websockets>=16.0",

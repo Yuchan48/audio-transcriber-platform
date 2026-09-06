@@ -1,4 +1,5 @@
 import os
+import sentry_sdk
 from fastapi import FastAPI
 
 from app.routers import ws
@@ -11,6 +12,11 @@ from app.api import auth, audio, user
 
 load_dotenv(override=True)  # Load environment variables from .env file
 
+
+if os.getenv("ENVIRONMENT") == "production":
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_DSN"),
+    )
 
 from fastapi.middleware.cors import CORSMiddleware
 

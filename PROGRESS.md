@@ -719,6 +719,21 @@ Added end-to-end testing with Playwright to verify critical user flows through t
 - Tested invalid login handling
 - Tested audio upload and deletion flows
 
+# Day 19 – Sentry Error Monitoring & Data Compliance
+
+## Summary
+
+Added production error monitoring with Sentry for the React frontend and FastAPI backend, with a focus on data minimization and privacy.
+
+---
+
+## Changes Implemented
+
+- Added Sentry error monitoring for frontend and backend
+- Configured Sentry to run only in production
+- Enabled data scrubbing, sensitive field protection, and IP address prevention
+- Verified errors are captured without exposing sensitive authentication data
+
 <br>
 
 # Future Considerations

@@ -1,6 +1,11 @@
 services:
   db:
     image: postgres:15
+
+    # local dev
+    # ports:
+    #  - "5432:5432"
+
     container_name: postgres_db
     restart: always
     environment:
@@ -30,7 +35,10 @@ services:
       - "8000:8000"
 
   nginx:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN}
     container_name: nginx
     ports:
       - "80:80"

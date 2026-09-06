@@ -7,10 +7,11 @@ import { AuthProvider } from "./context/AuthContext";
 
 import * as Sentry from "@sentry/react";
 
-Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DSN,
-  environment: import.meta.env.MODE,
-});
+if (import.meta.env.PROD) {
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+  });
+}
 
 const root = document.getElementById("root");
 

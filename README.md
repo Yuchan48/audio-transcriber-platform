@@ -2,9 +2,9 @@
 
 A full-stack, self-hosted SaaS platform for **real-time AI audio transcription**, featuring secure authentication, role-based access control, file management, background processing, real-time updates, automated testing, and production deployment.
 
-**Frontend:** React + TypeScript + Vite
-**Backend:** FastAPI + PostgreSQL
-**Transcription:** Deepgram API
+- **Frontend:** React + TypeScript + Vite
+- **Backend:** FastAPI + PostgreSQL
+- **Transcription:** Deepgram API
 
 ## 🔑 Demo
 
@@ -16,6 +16,8 @@ Use the demo account to explore:
 - Record audio directly in the browser (up to 30 seconds)
 - View and delete uploaded files
 - View completed transcriptions and play audio
+
+<br>
 
 <img width="500" alt="Dashboard" src="https://github.com/user-attachments/assets/d02db83e-e168-48c7-875d-c05a15ff9863" />
 
@@ -29,6 +31,7 @@ Use the demo account to explore:
 - **Real-Time Transcription:** Background processing through FastAPI `BackgroundTasks`, Deepgram API integration, and WebSocket-based status updates.
 - **Playback & Transcripts:** Play completed recordings and view their generated transcripts.
 - **Admin Management:** Administrators can manage users and audio files across the system.
+- **Observability & Data Privacy:** Production error monitoring with Sentry, configured with data scrubbing and sensitive-data protection.
 
 ## 🔐 Authentication & Security
 
@@ -42,14 +45,15 @@ Use the demo account to explore:
 
 ## 🛠 Tech Stack
 
-| Layer        | Technology                                       |
-| ------------ | ------------------------------------------------ |
-| Frontend     | React (Vite), TypeScript, TailwindCSS            |
-| Backend      | FastAPI, Python, JWT, Google OAuth, WebSockets   |
-| Database     | PostgreSQL, SQLAlchemy, Alembic                  |
-| External API | Deepgram                                         |
-| Testing      | Vitest, pytest, Playwright                       |
-| Deployment   | Docker Compose, Nginx, Linux VPS, GitHub Actions |
+| Layer         | Technology                                       |
+| ------------- | ------------------------------------------------ |
+| Frontend      | React (Vite), TypeScript, TailwindCSS            |
+| Backend       | FastAPI, Python, JWT, Google OAuth, WebSockets   |
+| Database      | PostgreSQL, SQLAlchemy, Alembic                  |
+| External API  | Deepgram                                         |
+| Testing       | Vitest, pytest, Playwright                       |
+| Observability | Sentry                                           |
+| Deployment    | Docker Compose, Nginx, Linux VPS, GitHub Actions |
 
 ## 🏗 Architecture
 

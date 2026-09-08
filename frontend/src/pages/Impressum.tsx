@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import LeftArrow from "../components/icons/LeftArrow";
 
-const path = ["/dashboard", "/login", "/register"];
+const path = ["/dashboard", "/login", "/register", "/datenschutz"];
 
 const Impressum = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Impressum = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white px-6 py-12">
+    <main className="min-h-screen max-w-screen w-full bg-white px-6 py-12 overflow-x-hidden">
       <button
         type="button"
         onClick={handleBack}
@@ -78,7 +78,7 @@ const Impressum = () => {
           </p>
         </section>
       </div>
-    </div>
+    </main>
   );
 };
 

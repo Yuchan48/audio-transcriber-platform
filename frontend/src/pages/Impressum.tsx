@@ -63,9 +63,17 @@ const Impressum = () => {
           <h2 className="text-2xl font-semibold mb-4">Zweck der Website</h2>
 
           <p className="leading-8">
-            Diese Website dient ausschließlich als Bewerbungsportfolio zur
-            Präsentation von Arbeitsproben gegenüber potenziellen Arbeitgebern
-            und Recruitern.
+            Diese Website dient als persönliches Bewerbungsportfolio und zur
+            Bereitstellung einer technischen Arbeitsprobe. Die Website umfasst
+            unter anderem eine Audio-Transkriptionsanwendung, mit der
+            registrierte Nutzer Audiodateien hochladen und Transkriptionen
+            erstellen können.
+          </p>
+
+          <p className="leading-8">
+            Die Anwendung dient insbesondere der Demonstration von
+            Softwareentwicklungs-, Webentwicklungs- und Infrastrukturkenntnissen
+            und ist nicht als kommerzielles Angebot gedacht.
           </p>
         </section>
 

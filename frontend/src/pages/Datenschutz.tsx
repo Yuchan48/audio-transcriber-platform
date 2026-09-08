@@ -1,17 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import LeftArrow from "../components/icons/LeftArrow";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-const path = ["/dashboard", "/login", "/register", "/impressum"];
+import LeftArrow from "../components/icons/LeftArrow";
 
 const Datenschutz = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const from = location.state?.from;
-  const backPath = path.includes(from) ? from : "/login";
-
+  const { user } = useAuth();
   const handleBack = () => {
-    navigate(backPath);
+    navigate(user ? "/dashboard" : "/login");
   };
 
   return (
@@ -21,7 +18,7 @@ const Datenschutz = () => {
         className="mb-10 inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
       >
         <LeftArrow className="h-4 w-4" />
-        Back
+        {user ? "Back to Dashboard" : "Back to Login"}
       </button>
 
       <div className="mx-auto max-w-3xl text-gray-800">

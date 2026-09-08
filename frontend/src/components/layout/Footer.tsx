@@ -1,24 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import GitHubIcon from "../icons/GitHubIcon";
 
 const Footer = () => {
-  const location = useLocation();
   return (
     <footer className="bg-gray-800 px-6 py-4 z-100">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center  justify-center sm:justify-end gap-x-6 gap-y-2 text-sm sm:mr-6 text-white">
-        <Link
-          to="/impressum"
-          state={{ from: location.pathname }}
-          className="hover:text-gray-200 hover:underline"
-        >
+        <Link to="/impressum" className="hover:text-gray-200 hover:underline">
           Impressum
         </Link>
 
-        <Link
-          to="/datenschutz"
-          state={{ from: location.pathname }}
-          className="hover:text-gray-200 hover:underline"
-        >
+        <Link to="/datenschutz" className="hover:text-gray-200 hover:underline">
           Datenschutz
         </Link>
 

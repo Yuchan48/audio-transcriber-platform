@@ -1,16 +1,27 @@
-import { useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 // import UI components
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 
 const Dashboard = () => {
-  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
   return (
-    <div className="flex h-screen w-full  bg-gray-50">
+    <div className="flex min-h-screen w-full bg-gray-50">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -22,14 +33,14 @@ const Dashboard = () => {
       {/* Sidebar */}
       <div
         className={`
-          fixed md:static z-50
+          fixed min-h-screen z-50 md:sticky md:top-0
           h-full w-64 bg-gray-900 text-white p-4
           transform transition-transform duration-200
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0
         `}
       >
-        <Sidebar />
+        <Sidebar onClose={() => setSidebarOpen(false)} />
       </div>
 
       {/* Main */}

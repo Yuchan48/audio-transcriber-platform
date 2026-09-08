@@ -7,7 +7,11 @@ import { deleteUserAccount } from "../../services/userService";
 
 const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL || "demo@example.com";
 
-export default function Sidebar() {
+type SidebarProps = {
+  onClose: () => void;
+};
+
+export default function Sidebar({ onClose }: SidebarProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const btnClass =
@@ -24,7 +28,7 @@ export default function Sidebar() {
         toast.success("Account deleted. Redirecting to login page.");
         navigate("/login");
       } catch (err) {
-        alert(
+        toast.error(
           "Error deleting account: " +
             (err instanceof Error ? err.message : "Unknown error"),
         );
@@ -38,7 +42,13 @@ export default function Sidebar() {
       <div>
         <h1 className="text-xl font-bold mb-6">Audio Transcriber</h1>
 
-        <button className={btnClass} onClick={() => navigate("/dashboard")}>
+        <button
+          className={btnClass}
+          onClick={() => {
+            onClose();
+            navigate("/dashboard");
+          }}
+        >
           My Files
         </button>
 
@@ -46,14 +56,20 @@ export default function Sidebar() {
           <>
             <button
               className={btnClass}
-              onClick={() => navigate("/dashboard/users")}
+              onClick={() => {
+                onClose();
+                navigate("/dashboard/users");
+              }}
             >
               Users
             </button>
 
             <button
               className={btnClass}
-              onClick={() => navigate("/dashboard/all-audio")}
+              onClick={() => {
+                onClose();
+                navigate("/dashboard/all-audio");
+              }}
             >
               All Audio
             </button>

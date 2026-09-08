@@ -734,6 +734,20 @@ Added production error monitoring with Sentry for the React frontend and FastAPI
 - Enabled data scrubbing, sensitive field protection, and IP address prevention
 - Verified errors are captured without exposing sensitive authentication data
 
+# Day 20 – PostHog Analytics & Cookie Consent
+
+## Summary
+
+Added privacy-conscious product analytics with PostHog and implemented a cookie consent banner for analytics tracking.
+
+---
+
+## Changes Implemented
+
+- Added PostHog product analytics with consent-based tracking.
+- Implemented a cookie consent banner with Accept/Decline options and a Privacy Policy link.
+- Blocked PostHog tracking until analytics consent is granted.
+
 <br>
 
 # Future Considerations

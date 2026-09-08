@@ -31,7 +31,7 @@ Use the demo account to explore:
 - **Real-Time Transcription:** Background processing through FastAPI `BackgroundTasks`, Deepgram API integration, and WebSocket-based status updates.
 - **Playback & Transcripts:** Play completed recordings and view their generated transcripts.
 - **Admin Management:** Administrators can manage users and audio files across the system.
-- **Observability & Data Privacy:** Production error monitoring with Sentry, configured with data scrubbing and sensitive-data protection.
+- **Observability & Data Privacy:** Sentry error monitoring, PostHog analytics, and consent-based analytics cookies with data protection measures.
 
 ## 🔐 Authentication & Security
 
@@ -43,6 +43,11 @@ Use the demo account to explore:
 - HTTPS with Nginx and Let's Encrypt
 - Security headers including HSTS and `X-Frame-Options`
 
+## 📊 Monitoring & Analytics
+
+- **Sentry:** Production errors and performance data with sensitive-data scrubbing; no user information or IP addresses collected.
+- **PostHog:** Product events such as registration, login, transcription, and audio playback; analytics enabled only with user consent.
+
 ## 🛠 Tech Stack
 
 | Layer         | Technology                                       |
@@ -52,7 +57,7 @@ Use the demo account to explore:
 | Database      | PostgreSQL, SQLAlchemy, Alembic                  |
 | External API  | Deepgram                                         |
 | Testing       | Vitest, pytest, Playwright                       |
-| Observability | Sentry                                           |
+| Observability | Sentry, PostHog                                  |
 | Deployment    | Docker Compose, Nginx, Linux VPS, GitHub Actions |
 
 ## 🏗 Architecture

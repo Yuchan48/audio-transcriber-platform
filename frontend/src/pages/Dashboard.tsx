@@ -33,12 +33,7 @@ const Dashboard = () => {
       {/* Sidebar */}
       <div
         className={`
-          fixed min-h-screen z-50 md:sticky md:top-0
-          h-full w-64 bg-gray-900 text-white p-4
-          transform transition-transform duration-200
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0
-        `}
+               fixed md:relative z-50 min-h-screen w-64 shrink-0 bg-gray-900 p-4 text-white transform transition-transform duration-200 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         <Sidebar onClose={() => setSidebarOpen(false)} />
       </div>

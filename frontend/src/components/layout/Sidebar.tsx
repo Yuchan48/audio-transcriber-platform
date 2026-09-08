@@ -79,7 +79,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
 
       {/* Bottom */}
       {user?.role === "user" && user?.email !== DEMO_EMAIL && (
-        <div className="mt-6 border-t border-gray-700 pt-4">
+        <div className="mt-4 border-t border-gray-700 pt-4">
           <button
             onClick={onDeleteAccount}
             className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition"

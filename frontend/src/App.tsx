@@ -67,71 +67,55 @@ const App = () => {
       />
       <Router>
         <ScrollToTop />
-        <Suspense
-          fallback={
-            <div className="w-screen h-screen flex items-center justify-center">
-              Loading...
-              <Spinner className="ml-6 w-12 h-12" />
-            </div>
-          }
-        >
-          <Routes>
-            <Route
-              path="/login"
-              element={
-                <GoogleOAuthProvider
-                  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-                >
-                  <LoginPage />
-                </GoogleOAuthProvider>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <GoogleOAuthProvider
-                  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-                >
-                  <RegisterPage />
-                </GoogleOAuthProvider>
-              }
-            />
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <Suspense
+            fallback={
+              <div className="w-screen h-screen flex items-center justify-center">
+                Loading...
+                <Spinner className="ml-6 w-12 h-12" />
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
 
-            {/* Protected Dashboard Layout */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            >
-              {/* User Dashboard */}
-              <Route index element={<UserDashboard />} />
-              {/* Admin Routes */}
+              {/* Protected Dashboard Layout */}
               <Route
-                path="users"
+                path="/dashboard"
                 element={
-                  <AdminRoute>
-                    <AdminUsers />
-                  </AdminRoute>
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
                 }
-              />
-              <Route
-                path="all-audio"
-                element={
-                  <AdminRoute>
-                    <AdminAudio />
-                  </AdminRoute>
-                }
-              />
-            </Route>
+              >
+                {/* User Dashboard */}
+                <Route index element={<UserDashboard />} />
+                {/* Admin Routes */}
+                <Route
+                  path="users"
+                  element={
+                    <AdminRoute>
+                      <AdminUsers />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="all-audio"
+                  element={
+                    <AdminRoute>
+                      <AdminAudio />
+                    </AdminRoute>
+                  }
+                />
+              </Route>
 
-            <Route path="/impressum" element={<Impressum />} />
-            <Route path="/datenschutz" element={<Datenschutz />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
-        </Suspense>
+              <Route path="/impressum" element={<Impressum />} />
+              <Route path="/datenschutz" element={<Datenschutz />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </Suspense>
+        </GoogleOAuthProvider>
         <Footer />
       </Router>
 

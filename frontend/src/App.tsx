@@ -22,12 +22,17 @@ const AdminUsers = lazy(() => import("./pages/dashboard/AdminUsers"));
 const AdminAudio = lazy(() => import("./pages/dashboard/AdminAudio"));
 const UserDashboard = lazy(() => import("./pages/dashboard/UserDashboard"));
 const Impressum = lazy(() => import("./pages/Impressum"));
+const Datenschutz = lazy(() => import("./pages/Datenschutz"));
 
+import CookieConsentBanner from "./components/CookieConsent";
+import Footer from "./components/layout/Footer";
 import Spinner from "./components/icons/Spinner";
+
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
-    <div className="App bg-gray-300 min-h-screen w-full flex items-center justify-center">
+    <div className="App bg-gray-300 min-h-screen w-full flex flex-col">
       <Toaster
         position="top-right"
         reverseOrder={false}
@@ -61,6 +66,7 @@ const App = () => {
         }}
       />
       <Router>
+        <ScrollToTop />
         <Suspense
           fallback={
             <div className="w-screen h-screen flex items-center justify-center">
@@ -122,10 +128,14 @@ const App = () => {
             </Route>
 
             <Route path="/impressum" element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Suspense>
+        <Footer />
       </Router>
+
+      <CookieConsentBanner />
     </div>
   );
 };

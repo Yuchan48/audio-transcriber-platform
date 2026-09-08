@@ -39,15 +39,6 @@ const Dashboard = () => {
         <main className="flex-1 p-6">
           <Outlet />
         </main>
-
-        {/* Footer */}
-        <Link
-          to="/impressum"
-          state={{ from: location.pathname }}
-          className="w-full text-center text-sm pb-4 text-gray-600 hover:underline"
-        >
-          Impressum
-        </Link>
       </div>
     </div>
   );

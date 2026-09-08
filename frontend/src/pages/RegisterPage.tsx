@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // import functions
@@ -20,7 +20,6 @@ import loginBg from "../assets/login_bg.webp";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { setUser } = useAuth();
   const posthog = usePostHog();
@@ -72,7 +71,7 @@ const RegisterPage = () => {
       setUser(registeredUser);
 
       //posthog event
-      posthog.capture("user_registered", { method: "email" });
+      posthog.capture("user_signed_up", { method: "email" });
 
       navigate("/dashboard");
     } catch (err) {
@@ -217,7 +216,7 @@ const RegisterPage = () => {
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
+                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition w-6"
                       onClick={() => setShowPassword(!showPassword)}
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
@@ -256,7 +255,7 @@ const RegisterPage = () => {
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition"
+                      className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700 transition w-6"
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
@@ -316,17 +315,6 @@ const RegisterPage = () => {
                 Login
               </button>
             </div>
-          </div>
-
-          {/* Impressum */}
-          <div className="pb-6 text-center">
-            <Link
-              to="/impressum"
-              state={{ from: location.pathname }}
-              className="w-full text-center text-sm pb-4 text-gray-600 hover:underline"
-            >
-              Impressum
-            </Link>
           </div>
         </div>
       </div>

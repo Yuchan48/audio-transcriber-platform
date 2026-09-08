@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -271,17 +271,6 @@ const LoginPage = () => {
                 Register
               </button>
             </div>
-          </div>
-
-          {/* Impressum */}
-          <div className="pb-6 text-center">
-            <Link
-              to="/impressum"
-              state={{ from: location.pathname }}
-              className="w-full text-center text-sm pb-4 text-gray-600 hover:underline"
-            >
-              Impressum
-            </Link>
           </div>
         </div>
       </div>

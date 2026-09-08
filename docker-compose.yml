@@ -4,7 +4,7 @@ services:
 
     # local dev
     # ports:
-    #  - "5432:5432"
+    #   - "5432:5432"
 
     container_name: postgres_db
     restart: always
@@ -39,6 +39,9 @@ services:
       context: ./frontend
       args:
         VITE_SENTRY_DSN: ${VITE_SENTRY_DSN}
+        VITE_POSTHOG_PROJECT_TOKEN: ${VITE_POSTHOG_PROJECT_TOKEN}
+        VITE_POSTHOG_HOST: ${VITE_POSTHOG_HOST}
+
     container_name: nginx
     ports:
       - "80:80"

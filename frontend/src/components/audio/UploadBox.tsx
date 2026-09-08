@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type React from "react";
-const allowedTypes = ["audio/mpeg", "audio/wav", "audio/mp4", "video/webm"];
+const allowedTypes = ["audio/mpeg", "audio/wav", "audio/mp4", "audio/webm"];
 
 type Props = {
   uploading: boolean;

@@ -13,6 +13,11 @@ if (import.meta.env.PROD) {
   });
 }
 
+import { PostHogProvider } from "@posthog/react";
+const options = {
+  api_host: import.meta.env.VITE_POSTHOG_HOST,
+};
+
 const root = document.getElementById("root");
 
 if (!root) {
@@ -27,8 +32,13 @@ createRoot(root).render(
       </div>
     }
   >
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <PostHogProvider
+      apiKey={import.meta.env.VITE_POSTHOG_PROJECT_TOKEN}
+      options={options}
+    >
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </PostHogProvider>
   </Sentry.ErrorBoundary>,
 );

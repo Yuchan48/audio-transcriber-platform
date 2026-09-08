@@ -14,6 +14,8 @@ import GitHubIcon from "../components/icons/GitHubIcon";
 
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 
+import { usePostHog } from "@posthog/react";
+
 import loginBg from "../assets/login_bg.webp";
 
 const RegisterPage = () => {
@@ -21,6 +23,7 @@ const RegisterPage = () => {
   const location = useLocation();
 
   const { setUser } = useAuth();
+  const posthog = usePostHog();
 
   // input values
   const [email, setEmail] = useState("");
@@ -67,6 +70,10 @@ const RegisterPage = () => {
       const registeredUser = await register(email, password);
 
       setUser(registeredUser);
+
+      //posthog event
+      posthog.capture("user_registered", { method: "email" });
+
       navigate("/dashboard");
     } catch (err) {
       if (err instanceof Error) {
@@ -95,6 +102,10 @@ const RegisterPage = () => {
 
       // If successful, set the user in context and navigate to dashboard
       setUser(user);
+
+      //posthog event
+      posthog.capture("user_logged_in", { method: "google" });
+
       navigate("/dashboard");
     } catch {
       setError("Google login failed");

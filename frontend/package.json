@@ -13,8 +13,10 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@posthog/react": "^1.10.6",
     "@react-oauth/google": "^0.13.5",
     "@sentry/react": "^10.73.0",
+    "posthog-js": "^1.428.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hot-toast": "^2.6.0",

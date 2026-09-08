@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import type React from "react";
+import { usePostHog } from "@posthog/react";
 
 import { toast } from "react-hot-toast";
 
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
+  const posthog = usePostHog();
   const [recording, setRecording] = useState(false);
   const [loading, setLoading] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -89,12 +91,18 @@ const RecordAudio = ({ onUploadSuccess, setError, disabled }: Props) => {
       // upload file
       await uploadAudioFile(file);
 
+      //posthog event
+      posthog.capture("transcription_started", {
+        input_type: "recording",
+      });
+
       // refresh list
       onUploadSuccess();
       toast.success(
         `Recorded audio with filename "${file.name}" uploaded successfully`,
       );
     } catch {
+      posthog.capture("transcription_failed");
       setError("Error uploading audio");
     } finally {
       setLoading(false);

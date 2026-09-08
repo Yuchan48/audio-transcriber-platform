@@ -1,4 +1,5 @@
 import { useAudioExpand } from "../../hooks/useAudioExpand";
+import { usePostHog } from "@posthog/react";
 
 // import UI components
 import StatusBadge from "../icons/StatusBadge";
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const AudioItem = ({ audioFile, onDelete }: Props) => {
+  const posthog = usePostHog();
   const { open, toggleExpand, audioUrl, transcript, loading, fetchAudioError } =
     useAudioExpand(audioFile);
 
@@ -55,7 +57,11 @@ const AudioItem = ({ audioFile, onDelete }: Props) => {
             <>
               {/* Audio Player */}
               {audioUrl && (
-                <audio controls className="w-full">
+                <audio
+                  controls
+                  className="w-full"
+                  onPlay={() => posthog.capture("audio_played")}
+                >
                   <source src={audioUrl} />
                 </audio>
               )}

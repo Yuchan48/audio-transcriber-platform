@@ -13,6 +13,7 @@ import Spinner from "../components/icons/Spinner";
 import GitHubIcon from "../components/icons/GitHubIcon";
 
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+import { usePostHog } from "@posthog/react";
 
 // import assets
 import loginBg from "../assets/login_bg.webp";
@@ -20,6 +21,7 @@ import loginBg from "../assets/login_bg.webp";
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const posthog = usePostHog();
   const { setUser, setSkipAuthCheck } = useAuth();
 
   // input values
@@ -54,6 +56,10 @@ const LoginPage = () => {
       setIsLoading(true);
       const user = await login(email, password);
       setUser(user);
+
+      //posthog event
+      posthog.capture("user_logged_in", { method: "email" });
+
       navigate("/dashboard");
     } catch {
       setError("Login failed");
@@ -74,6 +80,10 @@ const LoginPage = () => {
 
       // If successful, set the user in context and navigate to dashboard
       setUser(user);
+
+      //posthog event
+      posthog.capture("user_logged_in", { method: "google" });
+
       navigate("/dashboard");
     } catch {
       setError("Google login failed");

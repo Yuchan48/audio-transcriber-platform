@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 
 import { toast } from "react-hot-toast";
 
+import { usePostHog } from "@posthog/react";
+
 // import functions
 import {
   getAudioFiles,
@@ -24,6 +26,8 @@ const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL || "demo@example.com";
 
 const UserDashboard = () => {
   const { user } = useAuth();
+  const posthog = usePostHog();
+
   const [audioLoading, setAudioLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -83,6 +87,14 @@ const UserDashboard = () => {
   useEffect(() => {
     if (!wsUpdate) return;
 
+    if (wsUpdate.status === "completed") {
+      posthog.capture("transcription_completed");
+    }
+
+    if (wsUpdate.status === "failed") {
+      posthog.capture("transcription_failed");
+    }
+
     setAudioFiles((prev) =>
       prev.map((file) =>
         file.id === wsUpdate.audio_id
@@ -104,9 +116,16 @@ const UserDashboard = () => {
       setUploading(true);
       setError("");
       await uploadAudioFile(file);
+
+      //posthog event
+      posthog.capture("transcription_started", {
+        input_type: "upload",
+      });
+
       fetchAudioFiles();
       toast.success(`Audio file "${file.name}" uploaded successfully`);
     } catch (err) {
+      posthog.capture("transcription_failed");
       if (err instanceof Error) {
         setError("Error uploading audio file: " + err.message);
       } else {
